@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block content%}
+<div class="container mx-auto">          
+    <div class="mt-10 sm:mt-10">
+      <div class="md:grid md:grid-cols-3 md:gap-6">
+        <div class="md:col-span-1">
+          <div class="px-4 sm:px-0">
+            <h3 class="text-base font-semibold leading-6 text-gray-900">Complete the buyer's fields </h3>
+            <p class="mt-1 text-sm text-gray-600">to make the sale of the car</p>
+          </div>
+        </div>
+        <div class="mt-5 md:col-span-2 md:mt-0 shadow-2xl mb-5">
+          <form action="#" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="overflow-hidden shadow sm:rounded-md">
+              <div class="bg-white px-4 py-5 sm:p-6">
+                <div class="grid grid-cols-6 gap-6">
+                  <!-- Nombre del carro -->
+                  <div class="col-span-6 sm:col-span-2">
+                    {{ form.brand|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
+                    {% render_field form.brand type="text" readonly="readonly" disabled="disabled" name="brand" id="brand" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %}
+                  </div>      
+                  <!-- Modelo del carro -->
+                  <div class="col-span-6 sm:col-span-2">
+                    {{ form.model|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
+                    {% render_field form.model type="text" readonly="readonly" disabled="disabled" name="model" id="model" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %}
+                  </div>
+                  <!-- ID del carro -->
+                  <div class="col-span-6 sm:col-span-2">
+                    {{ form.inventary_number|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
+                    {% render_field form.inventary_number type="text" readonly="readonly" disabled="disabled" name="inventary_number" id="inventary_number" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %}
+                  </div>
+                  <!-- Año del carro -->
+                  <div class="col-span-6 sm:col-span-2">
+                    {{ form.year|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
+                    {% render_field form.year type="number" name="year" id="year" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %}
+                  </div>   
+                  <!-- Fecha del carro -->
+                  <div class="col-span-6 sm:col-span-3">
+                    {{ form.entry_date|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
+                    {% render_field form.inventary_number type="date" name="date" id="date" readonly="readonly" disabled="disabled" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %}
+                  </div>
+                  <!-- Condicion del carro -->
+                  <div class="col-span-6 sm:col-span-3">
+                    {{ form.condition|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
+                    {% render_field form.condition name="condition" id="condition" readonly="readonly" disabled="disabled" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %}
+                  </div>            
+                </div>
+              </div>
+
+                <div class="space-y-6 bg-white px-4 py-5 sm:p-6">
+                  <fieldset>
+                    <legend class="sr-only">Buyer information:</legend>
+                      <div class="text-sm font-semibold leading-6 text-gray-900 mb-2" aria-hidden="true">Buyer information:</div>
+                      <div class="grid grid-cols-6 gap-6">
+                        <!-- Nombre del comprador -->
+                        <div class="col-span-6 sm:col-span-2">
+                          {{ buyerform.name|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
+                          {% render_field buyerform.name type="text" name="name" id="name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %}
+                        </div>    
+          
+                         <!-- Apellidos del comprador -->
+                         <div class="col-span-6 sm:col-span-2">
+                          {{ buyerform.last_name|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
+                          {% render_field buyerform.last_name type="text" name="last_name" id="last_name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %}
+                        </div>
+
+                         <!-- DNI del comprador -->
+                        <div class="col-span-6 sm:col-span-2">
+                          {{ buyerform.dni|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
+                          {% render_field buyerform.dni type="text" name="dni" id="dni" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %}
+                        </div>
+
+                         <!-- Phone Number del comprador -->
+                         <div class="col-span-6 sm:col-span-2">
+                          {{ buyerform.phone_number|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
+                          {% render_field buyerform.phone_number type="text" name="phone_number" id="phone_number" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %}
+                        </div>
+
+                         <!-- Fecha de la venta -->
+                         <div class="col-span-6 sm:col-span-2">
+                          {{ soldcarform.date|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
+                          {% render_field soldcarform.date type="date" name="date" id="date" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %}
+                        </div>
+
+                         <!-- Precio de la venta -->
+                         <div class="col-span-6 sm:col-span-2">
+                          {{ soldcarform.price|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
+                          {% render_field soldcarform.price type="number" name="price" id="price" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %}
+                        </div>                            
+                      </div>
+                  </fieldset>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
+                  <button type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Sell Car</button>
+                </div> 
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

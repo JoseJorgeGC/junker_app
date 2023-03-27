@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <style>
+      .ocultar{
+        display: none;
+      }
+    </style>
+
+    <title>Inventary Junk</title>
+</head>
+<body>
+  <div class="bg-white">
+    <header class="absolute inset-x-0 top-0 z-50">
+      <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+        <div class="flex lg:flex-1">
+          <a href="/" class="-m-1.5 p-1.5">
+            <span class="sr-only">Your Company</span>
+            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="">
+          </a>
+        </div>
+        <div class="flex lg:hidden">
+          <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+            <span class="sr-only">Open main menu</span>
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+          </button>
+        </div>
+        <div class="hidden lg:flex lg:gap-x-12">
+          <a href="/" class="text-sm font-semibold leading-6 text-gray-900">Home</a>
+  
+          <a href="{% url 'signup' %}" class="text-sm font-semibold leading-6 text-gray-900">Signup</a>
+  
+          <a href="{% url 'inventary' %}" class="text-sm font-semibold leading-6 text-gray-900">Inventary</a>
+  
+          <a href="{% url 'entry' %}" class="text-sm font-semibold leading-6 text-gray-900">Entry</a>
+
+          <a href="{% url 'sell' %}" class="text-sm font-semibold leading-6 text-gray-900">Sell</a>
+
+          <a href="{% url 'junk' %}" class="text-sm font-semibold leading-6 text-gray-900">Junk Car</a>
+        </div>
+        <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+          <a href="{% url 'signin' %}" class="text-sm font-semibold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </nav>
+      
+
+      
+{% block content %}
+{% endblock %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/flowbite.min.js"></script>
+<script>
+// Obtener la tabla
+let table = document.getElementById('miTablas');
+
+// Obtener las filas de la tabla
+let rows = table.getElementsByTagName('tr');
+
+// Obtener el input del usuario
+let input = document.getElementById('search');
+
+// Obtener los enlaces de ordenamiento de la tabla
+let links = table.getElementsByTagName('a');
+
+// Convertir los enlaces de ordenamiento en un array
+let linksArray = Array.prototype.slice.call(links);
+
+// Agregar un evento de escucha al input
+input.addEventListener('keyup', function() {
+
+  // Obtener el valor del input
+  let filter = input.value;
+
+  // Crear una expresión regular para buscar en todas las columnas y filas
+  let regex = new RegExp(filter, 'i');
+
+  // Recorrer todas las filas de la tabla y ocultar aquellas que no coincidan con la expresión regular
+  for (let i = 1; i < rows.length; i++) {
+    let cells = rows[i].getElementsByTagName('td');
+    let found = false;
+    for (let j = 0; j < cells.length; j++) {
+      if (regex.test(cells[j].textContent)) {
+        found = true;
+        break;
+      }
+    }
+    if (found) {
+      rows[i].style.display = '';
+    } else {
+      rows[i].style.display = 'none';
+    }
+  }
+});
+
+// Agregar un evento de escucha a cada enlace de ordenamiento
+linksArray.forEach(function(link) {
+  link.addEventListener('click', function(event) {
+    event.preventDefault();
+
+    // Obtener el índice de la columna
+    let index = linksArray.indexOf(link);
+
+    // Crear un array con los valores de la fila completa y su primera columna correspondiente
+    let rowsArray = [];
+    for (let i = 1; i < rows.length; i++) {
+      let cells = rows[i].getElementsByTagName('td');
+      rowsArray.push({
+        row: rows[i],
+        value: cells[0].textContent,
+        content: []
+      });
+      for (let j = 1; j < cells.length; j++) {
+        rowsArray[i - 1].content.push(cells[j].textContent);
+      }
+    }
+
+    // Ordenar el array en orden ascendente o descendente según sea necesario
+    if (link.classList.contains('asc')) {
+      rowsArray.sort(function(a, b) {
+        if (isNaN(a.value) && isNaN(b.value)) {
+          return a.value.localeCompare(b.value);
+        } else {
+          return parseFloat(a.value) - parseFloat(b.value);
+        }
+      });
+      link.classList.remove('asc');
+      link.classList.add('desc');
+    } else {
+      rowsArray.sort(function(a, b) {
+        if (isNaN(a.value) && isNaN(b.value)) {
+          return b.value.localeCompare(a.value);
+        } else {
+          return parseFloat(b.value) - parseFloat(a.value);
+        }
+      });
+      link.classList.remove('desc');
+      link.classList.add('asc');
+    }
+
+    // Recorrer todas las filas de la tabla y reordenarlas según el array ordenado
+    for (let i = 1; i < rows.length; i++) {
+      let cells = rows[i].getElementsByTagName('td');
+      for (let j = 0; j < cells.length; j++) {
+        if (j === 0) {
+          cells[j].textContent = rowsArray[i - 1].value;
+        } else {
+          cells[j].textContent = rowsArray[i - 1].content[j - 1];
+        }
+      }
+    }
+  });
+});
+</script>
+
+<script>
+  tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        primary: {"50":"#eff6ff","100":"#dbeafe","200":"#bfdbfe","300":"#93c5fd","400":"#60a5fa","500":"#3b82f6","600":"#2563eb","700":"#1d4ed8","800":"#1e40af","900":"#1e3a8a"}
+      }
+    },
+    fontFamily: {
+      'body': [
+    'Inter', 
+    'ui-sans-serif', 
+    'system-ui', 
+    '-apple-system', 
+    'system-ui', 
+    'Segoe UI', 
+    'Roboto', 
+    'Helvetica Neue', 
+    'Arial', 
+    'Noto Sans', 
+    'sans-serif', 
+    'Apple Color Emoji', 
+    'Segoe UI Emoji', 
+    'Segoe UI Symbol', 
+    'Noto Color Emoji'
+  ],
+      'sans': [
+    'Inter', 
+    'ui-sans-serif', 
+    'system-ui', 
+    '-apple-system', 
+    'system-ui', 
+    'Segoe UI', 
+    'Roboto', 
+    'Helvetica Neue', 
+    'Arial', 
+    'Noto Sans', 
+    'sans-serif', 
+    'Apple Color Emoji', 
+    'Segoe UI Emoji', 
+    'Segoe UI Symbol', 
+    'Noto Color Emoji'
+  ]
+    }
+  }
+}
+</script>
+<!-- <script>
+  $(document).ready(function () {
+    $('#example').DataTable();
+  });
+</script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/flowbite.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script> -->
+</body>
+</html>
