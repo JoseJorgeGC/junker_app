@@ -4,6 +4,7 @@ from .entry_functions import *
 from .forms import *
 
 # Create your views here.
+# cars = form.save(commit=false)
 def entry(request):
     validate = True
     error_messages = []
