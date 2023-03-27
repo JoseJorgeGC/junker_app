@@ -18,6 +18,8 @@ def entry(request):
         context = {'form': CarsForm(), 'errors': error_messages}
         return render(request, 'entry.html', context)
     
+    entry_car = Cars(form.save(commit = False))
+
     cars = Cars.objects.all()
     for car in cars:
         if car.inventary_number == request.POST['inventary_number']:
