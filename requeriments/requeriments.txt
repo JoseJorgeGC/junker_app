@@ -1,0 +1,14 @@
+Package              Version
+-------------------- -------
+asgiref              3.6.0
+Django               4.1.7
+django-widget-tweaks 1.4.12
+mysql                0.0.3
+mysqlclient          2.1.1
+Pillow               9.4.0
+pip                  22.3.1
+py                   1.11.0
+PyMySQL              1.0.2
+setuptools           65.5.0
+sqlparse             0.4.3
+tzdata               2023.2
