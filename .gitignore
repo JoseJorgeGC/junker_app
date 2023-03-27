@@ -1,2 +1,4 @@
 inventary/media/
 system_junk/__pycache__/
+inventary/migrations/__pycache__/
+inventary/__pycache__/
