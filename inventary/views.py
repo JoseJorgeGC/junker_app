@@ -104,3 +104,10 @@ def to_junk(request, id):
     context = {'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date'), 'message': messages}
     return render(request, 'inventary.html', context)
 
+def scratched(request, id):
+    junkcar = JunkCars.objects.get(id = id)
+    junkcar.waiting = False
+    junkcar.save()
+    messages = f'Car {junkcar.car.inventary_number} added to scratched cars successfully.'
+    context = {'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date'), 'message': messages}
+    return render(request, 'inventary.html', context)

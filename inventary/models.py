@@ -15,7 +15,7 @@ class Models(models.Model):
     name = models.CharField(max_length = 100, verbose_name = "model name")
 
     def __str__(self):
-        return f'{self.name} - {self.brand.name}'
+        return f'{self.brand.name} - {self.name}'
 
 
 
@@ -68,6 +68,8 @@ class SoldCars(models.Model):
 class JunkCars(models.Model):
     id = models.AutoField(primary_key = True)
     car = models.ForeignKey(Cars, on_delete = models.CASCADE)
+    to_junk_date = models.DateField(auto_now_add = True)
+    scratched_date = models.DateField(null = True)
     waiting = models.BooleanField(default = True)
 
     def __str__(self):
