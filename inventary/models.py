@@ -40,6 +40,11 @@ class Cars(models.Model):
     def __str__(self):
         return f'{self.brand.name} - {self.model.name} {self.inventary_number}'
 
+    def delete(self, using=None, keep_parents=False):
+        self.image.storage.delete(self.image.name)
+        self.title.storage.delete(self.title.name)
+        super().delete()
+
 class Buyers(models.Model):
     id = models.AutoField(primary_key = True)
     name = models.CharField(max_length = 100)

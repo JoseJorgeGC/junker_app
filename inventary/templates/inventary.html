@@ -78,15 +78,12 @@
                                                     <a href="{% url 'junk' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
                                                 </li>
                                                 <li>
-                                                    <a href="{% url 'junk' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">To Junk</a>
+                                                    <a href="{% url 'to_junk' car.id %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">To Junk</a>
                                                 </li>
                                                 <li>
-                                                    <a href="{% url 'junk' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
+                                                    <a href="{% url 'delete' car.id %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
                                                 </li>
                                                 </ul>
-                                            <div class="py-2">
-                                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Separated link</a>
-                                            </div>
                                         </div>
                                         </div>
                                     </td>
