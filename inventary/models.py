@@ -33,12 +33,17 @@ class Cars(models.Model):
     inventary_number = models.CharField(max_length = 25, null = True)
     condition = models.CharField(choices = CONDITIONS, max_length = 6)
     entry_date = models.DateField(null = True)
-    title = models.FileField(upload_to="titles/", null = True)
-    image = models.ImageField(upload_to="cars/", null = True)
+    title = models.FileField(upload_to="media/titles/", null = True)
+    image = models.ImageField(upload_to="static/cars/", null = True)
     waiting = models.BooleanField(default = True)
 
     def __str__(self):
         return f'{self.brand.name} - {self.model.name} {self.inventary_number}'
+
+    def delete(self, using=None, keep_parents=False):
+        self.image.storage.delete(self.image.name)
+        self.title.storage.delete(self.title.name)
+        super().delete()
 
 class Buyers(models.Model):
     id = models.AutoField(primary_key = True)

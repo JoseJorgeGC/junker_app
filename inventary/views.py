@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 from .entry_functions import *
 from .forms import *
@@ -22,11 +22,12 @@ def entry(request):
     entry_car = form.save(commit = False)
 
     cars = Cars.objects.all()
-    for car in cars:
-        if car.inventary_number == entry_car.inventary_number:
-            error_messages.append('Inventary number already exist.')
-            context = {'form': CarsForm(), 'errors': error_messages}
-            return render(request, 'entry.html', context) 
+    if cars:
+        for car in cars:
+            if car.inventary_number == entry_car.inventary_number:
+                error_messages.append('Inventary number already exist.')
+                context = {'form': CarsForm(), 'errors': error_messages}
+                return render(request, 'entry.html', context) 
 
     title_sufix = entry_car.title.name.split('.')[-1]
     if not (str.lower(title_sufix) == 'pdf'):
@@ -75,7 +76,7 @@ def signup(request):
     return render(request, 'signup.html')
 
 def inventary(request):
-    context = {'cars': Cars.objects.all().order_by('-entry_date')}
+    context = {'cars': Cars.objects.filter(waiting = True).order_by('-entry_date')}
     return render(request, 'inventary.html', context)
 
 def junk(request):
@@ -85,3 +86,21 @@ def junk(request):
 def sell(request):
     context = {'form': CarsForm(), 'buyerform': BuyersForm(), 'soldcarform': SoldCarsForm() }
     return render(request, 'sell.html', context) 
+
+def delete(request, id):
+    car = Cars.objects.get(id = id)
+    car.delete()
+    messages = f'Car {car.inventary_number} deleted successfully.'
+    context = {'cars': Cars.objects.filter(waiting = True).order_by('-entry_date'), 'message': messages}
+    return render(request, 'inventary.html', context)
+
+def to_junk(request, id):
+    car = Cars.objects.get(id = id)
+    car.waiting = False
+    car.save()
+    car_to_junk = JunkCars(car = car)
+    car_to_junk.save()
+    messages = f'Car {car.inventary_number} marked to junk successfully.'
+    context = {'cars': Cars.objects.filter(waiting = True).order_by('-entry_date'), 'message': messages}
+    return render(request, 'inventary.html', context)
+
