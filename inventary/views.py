@@ -76,7 +76,7 @@ def signup(request):
     return render(request, 'signup.html')
 
 def inventary(request):
-    context = {'cars': Cars.objects.filter(waiting = True).order_by('-entry_date')}
+    context = {'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date')}
     return render(request, 'inventary.html', context)
 
 def junk(request):
@@ -91,7 +91,7 @@ def delete(request, id):
     car = Cars.objects.get(id = id)
     car.delete()
     messages = f'Car {car.inventary_number} deleted successfully.'
-    context = {'cars': Cars.objects.filter(waiting = True).order_by('-entry_date'), 'message': messages}
+    context = {'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date'), 'message': messages}
     return render(request, 'inventary.html', context)
 
 def to_junk(request, id):
@@ -101,6 +101,6 @@ def to_junk(request, id):
     car_to_junk = JunkCars(car = car)
     car_to_junk.save()
     messages = f'Car {car.inventary_number} marked to junk successfully.'
-    context = {'cars': Cars.objects.filter(waiting = True).order_by('-entry_date'), 'message': messages}
+    context = {'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date'), 'message': messages}
     return render(request, 'inventary.html', context)
 
