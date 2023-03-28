@@ -1,3 +1,9 @@
-inventary/__pycache__/
+inventary__pycache__/*
 inventary/media/
+<<<<<<< HEAD
 system_junk/__pycache__/
+=======
+system_junk/__pycache__/*
+inventary/migrations/__pycache__/*
+
+>>>>>>> Frontend
