@@ -44,7 +44,7 @@
 
             <div class="overflow-hidden shadow sm:rounded-md">
               <div class="bg-white px-4 py-5 sm:p-6">
-                <div class="grid grid-cols-6 gap-6">
+                <div class="grid grid-cols-6 gap-6" id="test">
                   <!-- Nombre del carro -->
                   <div class="col-span-6 sm:col-span-2">
                     {{ form.brand|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
@@ -95,4 +95,69 @@
       </div>
     </div>
 </div>
+
+
+
+<!-- Script select dependientes  -->
+<script>
+
+  function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
+  const csrftoken = getCookie('csrftoken');
+
+
+
+
+alert("hi")
+
+
+  let brand_field = document.getElementById("brand")
+  alert(brand_field)
+  let model_field = document.getElementById("model")
+  
+  brand_field.addEventListener("change", pickState)
+  function pickState(e){
+      brand_id = e.target.value
+      const data = { user_id: brand_id}
+      let url = " {% url 'models' %} "
+
+fetch(url, {
+method: 'POST', // or 'PUT'
+headers: {
+'Content-Type': 'application/json',
+'X-CSRFToken': csrftoken
+},
+body: JSON.stringify(data),
+})
+.then(response => response.json())
+.then(data => {
+console.log('Success:', data[0]['name']);
+
+model_field.innerHTML = `<option value = "" selescted>---------------</option>`
+for(let i = 0; i<data.length; i++){
+model_field.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["name"]}</option>`
+
+}
+})
+.catch((error) => {
+console.error('Error:', error);
+});
+
+  }
+</script>
+<!-- End -->
 {% endblock %}
+
