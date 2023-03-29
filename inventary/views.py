@@ -90,9 +90,7 @@ def sell(request):
 def delete(request, id):
     car = Cars.objects.get(id = id)
     car.delete()
-    messages = f'Car {car.inventary_number} deleted successfully.'
-    context = {'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date'), 'message': messages}
-    return render(request, 'inventary.html', context)
+    return redirect('/inventary/')
 
 def to_junk(request, id):
     car = Cars.objects.get(id = id)
@@ -100,14 +98,10 @@ def to_junk(request, id):
     car.save()
     car_to_junk = JunkCars(car = car)
     car_to_junk.save()
-    messages = f'Car {car.inventary_number} marked to junk successfully.'
-    context = {'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date'), 'message': messages}
-    return render(request, 'inventary.html', context)
+    return redirect('/inventary/')
 
 def scratched(request, id):
     junkcar = JunkCars.objects.get(id = id)
     junkcar.waiting = False
     junkcar.save()
-    messages = f'Car {junkcar.car.inventary_number} added to scratched cars successfully.'
-    context = {'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date'), 'message': messages}
-    return render(request, 'inventary.html', context)
+    return redirect('/inventary/')
