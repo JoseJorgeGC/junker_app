@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from .models import *
 from .entry_functions import *
 from .forms import *
+import json
 
 # Create your views here.
 # cars = form.save(commit=false)
@@ -105,3 +107,9 @@ def scratched(request, id):
     junkcar.waiting = False
     junkcar.save()
     return redirect('/inventary/')
+
+def models(request):
+    data = json.loads(request.body)
+    models = Models.objects.filter(brand__id=data['user_id'])
+    print(models.values("id", "name"))
+    return JsonResponse(list(models.values("id", "name")), safe=False)

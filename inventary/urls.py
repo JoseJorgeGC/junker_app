@@ -14,5 +14,7 @@ urlpatterns = [
     path('junk/', views.junk, name='junk'),
     path('cars/delete/<int:id>', views.delete, name='delete'),
     path('cars/to_junk/<int:id>', views.to_junk, name='to_junk'),
+    path('cars/scratched/<int:id>', views.scratched, name='scratched'),
+    path('models/', views.models, name='models'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
