@@ -85,7 +85,7 @@ def junk(request):
     context = {'form': CarsForm() }
     return render(request, 'junk.html', context)
 
-def sell(request):
+def sell(request, id):
     context = {'form': CarsForm(), 'buyerform': BuyersForm(), 'soldcarform': SoldCarsForm() }
     return render(request, 'sell.html', context) 
 
