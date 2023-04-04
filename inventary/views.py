@@ -80,7 +80,8 @@ def signup(request):
     if request.method == "POST":
         if not form.is_valid():
             print(f"Formulario no valido: {form}")
-    context = {'form': UserCreationForm()}
+    context = {'signupform': UserCreationForm()}
+    print(request.POST)
     return render(request, 'signup.html', context)
 
 def inventary(request):

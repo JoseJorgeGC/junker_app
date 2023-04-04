@@ -21,21 +21,6 @@
         </div>
 
     </div>
-    <div
-        class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
-        <svg class="relative left-[calc(50%+3rem)] h-[21.1875rem] max-w-none -translate-x-1/2 sm:left-[calc(50%+36rem)] sm:h-[42.375rem]"
-            viewBox="0 0 1155 678">
-            <path fill="url(#ecb5b0c9-546c-4772-8c71-4d3f06d544bc)" fill-opacity=".3"
-                d="M317.219 518.975L203.852 678 0 438.341l317.219 80.634 204.172-286.402c1.307 132.337 45.083 346.658 209.733 145.248C936.936 126.058 882.053-94.234 1031.02 41.331c119.18 108.451 130.68 295.337 121.53 375.223L855 299l21.173 362.054-558.954-142.079z" />
-            <defs>
-                <linearGradient id="ecb5b0c9-546c-4772-8c71-4d3f06d544bc" x1="1155.49" x2="-78.208" y1=".177"
-                    y2="474.645" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#9089FC" />
-                    <stop offset="1" stop-color="#FF80B5" />
-                </linearGradient>
-            </defs>
-        </svg>
-    </div>
 </div>
 </div>
 <!-- Aqui termina el background -->
@@ -45,42 +30,43 @@
 <div class="container mt-20 mb-5 mx-auto w-2/4 shadow-2xl h-auto rounded-md md:grid">
     <img class="mx-auto shadow-xl rounded-full w-40 h-40" src="{% static 'img/logo.jpg' %}" alt="image description">
     <form class="mx-auto w-64 py-5 w-full" method="POST" action="/signup/">
-        {% csrf_token %}
-        {{prueba}}
-        <!-- Username -->
-        <div class="mx-4 col-span-1">
-            {{ form.username|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
-            {% render_field form.username type="text" id="user" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="User"%}
-        </div>   
-           <!-- First Name -->
-        <div class="mx-4 grid col-span-1 ">
-            <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name:</label>
-            {% render_field form.first_name type="text" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Type your name" %}
-        </div>   
-          <!-- Last Name -->
-          <div class="mx-4 my-10 col-span-1">
-            <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Lastname:</label>
-            {% render_field form.last_name type="text" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Type your lastname" %}
-          </div>
-          <!-- Email -->
-          <div class="mx-4 my-10 grid col-span-1">
-            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email:</label>
-            {% render_field form.email type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Type your email" %}
-          </div>
-          <!-- Password -->
-          <div class="my-1 mx-4 grid col-span-1">
-            <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
-                Password</label>
-            {% render_field form.password type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Password" %}
-          </div> 
-          <!-- Re Password -->
-          <div class="my-1 mx-4 grid col-span-1 ">
-            <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm your
-                password</label>
-            <input type="repassword" name="repassword" id="repassword"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Write your password" required>
-           </div>
+        <div class="w-full md:grid grid grid-cols-2 gap-4 mt-5">
+            {% csrf_token %}
+            {{prueba}}
+            <!-- Username -->
+            <div class="mx-4 col-span-1">
+                {{ signupform.username|add_label_class:"block mb-2 text-sm font-medium text-gray-900" }}
+                {% render_field signupform.username type="text" id="user" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="User"%}
+            </div>   
+            <!-- First Name -->
+            <div class="mx-4 grid col-span-1 ">
+                {{ signupform.first_name|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
+                {% render_field signupform.first_name type="text" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Type your name" %}
+            </div>   
+            <!-- Last Name -->
+            <div class="mx-4 my-10 col-span-1">
+                {{ signupform.last_name|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
+                {% render_field signupform.last_name type="text" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Type your lastname" %}
+            </div>
+            <!-- Email -->
+            <div class="mx-4 my-10 grid col-span-1">
+                {{ signupform.email|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
+                {% render_field signupform.email type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Type your email" %}
+            </div>
+            <!-- Password -->
+            <div class="my-1 mx-4 grid col-span-1">
+                {{ signupform.password|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}    
+                {% render_field signupform.password type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Password" %}
+            </div> 
+            <!-- Re Password -->
+            <div class="my-1 mx-4 grid col-span-1 ">
+                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm your
+                    password</label>
+                <input type="repassword" name="repassword" id="repassword"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Write your password" required>
+            </div>
+        </div>
 
 
                 <div class="flex items-center justify-center">
