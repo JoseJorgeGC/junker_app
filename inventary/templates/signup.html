@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 {% block content%}
 <div class="flex container items-center">
     <!-- Todo esto es el background -->
@@ -43,47 +44,45 @@
 <!-- Comienzo del Form -->
 <div class="container mt-20 mb-5 mx-auto w-2/4 shadow-2xl h-auto rounded-md md:grid">
     <img class="mx-auto shadow-xl rounded-full w-40 h-40" src="{% static 'img/logo.jpg' %}" alt="image description">
-    <form class="mx-auto w-64 py-5 w-full">
-        <div class="w-full md:grid grid grid-cols-2 gap-4">
-            <div class="mx-4 col-span-1">
-                <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username:</label>
-                <input type="text" id="username"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Type your username" required>
-            </div>
-            <div class="mx-4 grid col-span-1 ">
-                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email:</label>
-                <input type="email" id="email"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Type your email" required>
-            </div>
-            <div class="mx-4 my-10 col-span-1">
-                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name:</label>
-                <input type="text" id="name"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Type your name" required>
-            </div>
-            <div class="mx-4 my-10 grid col-span-1 ">
-                <label for="lastname" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Lastname:</label>
-                <input type="text" id="lastname"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Type your lastname" required>
-            </div>
-            <div class="my-1 mx-4 grid col-span-1">
-                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
-                    password</label>
-                <input type="password" id="password"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Password" required>
-            </div>
-            <div class="my-1 mx-4 grid col-span-1 ">
-                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm your
-                    password</label>
-                <input type="repassword" id="repassword"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Write your password" required>
-            </div>
-        </div>
+    <form class="mx-auto w-64 py-5 w-full" method="POST" action="/signup/">
+        {% csrf_token %}
+        {{prueba}}
+        <!-- Username -->
+        <div class="mx-4 col-span-1">
+            {{ form.username|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
+            {% render_field form.username type="text" id="user" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="User"%}
+        </div>   
+           <!-- First Name -->
+        <div class="mx-4 grid col-span-1 ">
+            <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name:</label>
+            {% render_field form.first_name type="text" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Type your name" %}
+        </div>   
+          <!-- Last Name -->
+          <div class="mx-4 my-10 col-span-1">
+            <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Lastname:</label>
+            {% render_field form.last_name type="text" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Type your lastname" %}
+          </div>
+          <!-- Email -->
+          <div class="mx-4 my-10 grid col-span-1">
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email:</label>
+            {% render_field form.email type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Type your email" %}
+          </div>
+          <!-- Password -->
+          <div class="my-1 mx-4 grid col-span-1">
+            <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+                Password</label>
+            {% render_field form.password type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Password" %}
+          </div> 
+          <!-- Re Password -->
+          <div class="my-1 mx-4 grid col-span-1 ">
+            <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm your
+                password</label>
+            <input type="repassword" name="repassword" id="repassword"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Write your password" required>
+           </div>
+
+
                 <div class="flex items-center justify-center">
                     <div class="flex items-center mx-5 my-10">
                         <div class="flex items-center h-5">

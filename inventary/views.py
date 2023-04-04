@@ -75,7 +75,13 @@ def signin(request):
     return render(request, 'signin.html')
 
 def signup(request):
-    return render(request, 'signup.html')
+
+    form = UserCreationForm(request.POST)
+    if request.method == "POST":
+        if not form.is_valid():
+            print(f"Formulario no valido: {form}")
+    context = {'form': UserCreationForm()}
+    return render(request, 'signup.html', context)
 
 def inventary(request):
     context = {'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date')}
