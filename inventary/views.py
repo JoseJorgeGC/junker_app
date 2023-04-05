@@ -1,5 +1,9 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, logout, authenticate
 from django.http import JsonResponse
+from django.db import IntegrityError
 from .models import *
 from .entry_functions import *
 from .forms import *
@@ -72,16 +76,52 @@ def home(request):
     return render(request, 'index.html')
 
 def signin(request):
-    return render(request, 'signin.html')
+    if request.method == "POST":
+        messages = []
+        user = authenticate(request, username = request.POST['username'], password = request.POST['password'])
+        if user is None:
+            print('Error usuario')
+            messages.append('User or password incorrect.')
+            context = {'signinform': AuthenticationForm()}            
+            return render(request, 'signin.html', context)
+
+        login(request, user)
+        return redirect('/')
+    context = {'signinform': AuthenticationForm()}            
+    return render(request, 'signin.html', context)
+
+def signout(request):
+    logout(request)
+    return redirect('/signin/')
 
 def signup(request):
 
-    form = UserCreationForm(request.POST)
+    #POST Method
     if request.method == "POST":
+        messages = []
+        form = UserCreationForm(request.POST)
         if not form.is_valid():
-            print(f"Formulario no valido: {form}")
+            messages.append('Complete all data.')
+            context = {'signupform': UserCreationForm(), 'messages': messages}
+            return render(request, 'signup.html', context)
+        
+        if not request.POST['password'] == request.POST['repassword']:
+            messages.append('Passwords does not match.')
+            context = {'signupform': UserCreationForm(), 'messages': messages}
+            return render(request, 'signup.html', context)
+        
+        try:
+            user = User.objects.create_user(username = request.POST['username'], first_name = request.POST['first_name'], last_name = request.POST['last_name'], email = request.POST['email'], password = request.POST['password'])
+            user.save()
+            return redirect('/signin/')
+        except IntegrityError:
+            messages.append(f'Username {user.username} already exist.')
+            context = {'signupform': UserCreationForm(), 'messages': messages}
+            return render(request, 'signup.html', context)
+
+
+    #GET Method
     context = {'signupform': UserCreationForm()}
-    print(request.POST)
     return render(request, 'signup.html', context)
 
 def inventary(request):

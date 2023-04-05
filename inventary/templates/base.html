@@ -34,19 +34,30 @@
             </svg>
           </button>
         </div>
-        <div class="hidden lg:flex lg:gap-x-12">
-          <a href="/" class="text-sm font-semibold leading-6 text-gray-900">Home</a>
+        
+          
+          {% if user.is_authenticated %}
+            <div class="hidden lg:flex lg:gap-x-12">
+              <a href="/" class="text-sm font-semibold leading-6 text-gray-900">Home</a>
+              <a href="{% url 'inventary' %}" class="text-sm font-semibold leading-6 text-gray-900">Inventary</a>
+              <a href="{% url 'entry' %}" class="text-sm font-semibold leading-6 text-gray-900">Entry</a>
+            </div>
+            <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+              <a href="{% url 'signout' %}" class="text-sm font-semibold leading-6 text-gray-900">Logout <span aria-hidden="true">{{user.username}}</span></a>
+            </div>
+          {% else %}
+            <div class="hidden lg:flex lg:gap-x-12">
+              <a href="{% url 'signup' %}" class="text-sm font-semibold leading-6 text-gray-900">Signup</a>
+              <a href="{% url 'signin' %}" class="text-sm font-semibold leading-6 text-gray-900">Signin</a>
+              <a href="" class="text-sm font-semibold leading-6 text-gray-900">About</a>
+            </div>
+          {% endif %}
+          
   
-          <a href="{% url 'signup' %}" class="text-sm font-semibold leading-6 text-gray-900">Signup</a>
-  
-          <a href="{% url 'inventary' %}" class="text-sm font-semibold leading-6 text-gray-900">Inventary</a>
-  
-          <a href="{% url 'entry' %}" class="text-sm font-semibold leading-6 text-gray-900">Entry</a>
+          
 
-        </div>
-        <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="{% url 'signin' %}" class="text-sm font-semibold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
-        </div>
+        
+        
       </nav>
       
 

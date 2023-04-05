@@ -6,8 +6,11 @@ from django.contrib import admin
 
 urlpatterns = [
     path('', views.home, name='home'),
+    #Sessions Urls
+    path('logout/', views.signout, name='signout'),
     path('signin/', views.signin, name='signin'),
     path('signup/', views.signup, name='signup'),
+    #App Urls
     path('inventary/', views.inventary, name='inventary'),
     path('entry/', views.entry, name='entry'),
     path('sell/<int:id>', views.sell, name='sell'),
@@ -15,6 +18,7 @@ urlpatterns = [
     path('cars/delete/<int:id>', views.delete, name='delete'),
     path('cars/to_junk/<int:id>', views.to_junk, name='to_junk'),
     path('cars/scratched/<int:id>', views.scratched, name='scratched'),
+    #JSON Urls
     path('models/', views.models, name='models'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 

@@ -32,37 +32,36 @@
     <form class="mx-auto w-64 py-5 w-full" method="POST" action="/signup/">
         <div class="w-full md:grid grid grid-cols-2 gap-4 mt-5">
             {% csrf_token %}
-            {{prueba}}
             <!-- Username -->
             <div class="mx-4 col-span-1">
                 {{ signupform.username|add_label_class:"block mb-2 text-sm font-medium text-gray-900" }}
-                {% render_field signupform.username type="text" id="user" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="User"%}
+                {% render_field signupform.username name="username" type="text" id="user" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="User"%}
             </div>   
             <!-- First Name -->
             <div class="mx-4 grid col-span-1 ">
                 {{ signupform.first_name|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
-                {% render_field signupform.first_name type="text" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Type your name" %}
+                {% render_field signupform.first_name name="first_name" type="text" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Type your name" %}
             </div>   
             <!-- Last Name -->
             <div class="mx-4 my-10 col-span-1">
                 {{ signupform.last_name|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
-                {% render_field signupform.last_name type="text" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Type your lastname" %}
+                {% render_field signupform.last_name name="last_name" type="text" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Type your lastname" %}
             </div>
             <!-- Email -->
             <div class="mx-4 my-10 grid col-span-1">
                 {{ signupform.email|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
-                {% render_field signupform.email type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Type your email" %}
+                {% render_field signupform.email name="email" type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Type your email" %}
             </div>
             <!-- Password -->
             <div class="my-1 mx-4 grid col-span-1">
                 {{ signupform.password|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}    
-                {% render_field signupform.password type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Password" %}
+                {% render_field signupform.password name="password" type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Password" %}
             </div> 
             <!-- Re Password -->
             <div class="my-1 mx-4 grid col-span-1 ">
                 <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm your
                     password</label>
-                <input type="repassword" name="repassword" id="repassword"
+                <input type="password" name="repassword" id="repassword"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Write your password" required>
             </div>
