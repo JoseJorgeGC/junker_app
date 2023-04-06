@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db import IntegrityError
 from .models import *
@@ -11,6 +12,72 @@ import json
 
 # Create your views here.
 # cars = form.save(commit=false)
+
+
+#Sessions views
+def signin(request):
+    if request.method == "POST":
+        messages = []
+        user = authenticate(request, username = request.POST['username'], password = request.POST['password'])
+        if user is None:
+            print('Error usuario')
+            messages.append('User or password incorrect.')
+            context = {'signinform': AuthenticationForm()}            
+            return render(request, 'signin.html', context)
+
+        login(request, user)
+        return redirect('/')
+    context = {'signinform': AuthenticationForm()}            
+    return render(request, 'signin.html', context)
+
+@login_required
+def signout(request):
+    logout(request)
+    return redirect('/signin/')
+
+def signup(request):
+
+    #POST Method
+    if request.method == "POST":
+        messages = []
+        form = UserCreationForm(request.POST)
+        if not form.is_valid():
+            messages.append('Complete all data.')
+            context = {'signupform': UserCreationForm(), 'messages': messages}
+            return render(request, 'signup.html', context)
+        
+        if not request.POST['password'] == request.POST['repassword']:
+            messages.append('Passwords does not match.')
+            context = {'signupform': UserCreationForm(), 'messages': messages}
+            return render(request, 'signup.html', context)
+        
+        try:
+            user = User.objects.create_user(username = request.POST['username'], first_name = request.POST['first_name'], last_name = request.POST['last_name'], email = request.POST['email'], password = request.POST['password'])
+            user.save()
+            return redirect('/signin/')
+        except IntegrityError:
+            messages.append(f'Username {user.username} already exist.')
+            context = {'signupform': UserCreationForm(), 'messages': messages}
+            return render(request, 'signup.html', context)
+
+
+    #GET Method
+    context = {'signupform': UserCreationForm()}
+    return render(request, 'signup.html', context)
+
+
+#Views
+@login_required
+def home(request):
+    return render(request, 'index.html')
+
+@login_required
+def inventary(request):
+    context = {'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date')}
+    return render(request, 'inventary.html', context)
+
+
+@login_required
 def entry(request):
     validate = True
     error_messages = []
@@ -72,75 +139,24 @@ def entry(request):
     context = {'form': CarsForm(), 'errors': error_messages, 'success': success_messages}
     return render(request, 'entry.html', context)
 
-def home(request):
-    return render(request, 'index.html')
-
-def signin(request):
-    if request.method == "POST":
-        messages = []
-        user = authenticate(request, username = request.POST['username'], password = request.POST['password'])
-        if user is None:
-            print('Error usuario')
-            messages.append('User or password incorrect.')
-            context = {'signinform': AuthenticationForm()}            
-            return render(request, 'signin.html', context)
-
-        login(request, user)
-        return redirect('/')
-    context = {'signinform': AuthenticationForm()}            
-    return render(request, 'signin.html', context)
-
-def signout(request):
-    logout(request)
-    return redirect('/signin/')
-
-def signup(request):
-
-    #POST Method
-    if request.method == "POST":
-        messages = []
-        form = UserCreationForm(request.POST)
-        if not form.is_valid():
-            messages.append('Complete all data.')
-            context = {'signupform': UserCreationForm(), 'messages': messages}
-            return render(request, 'signup.html', context)
-        
-        if not request.POST['password'] == request.POST['repassword']:
-            messages.append('Passwords does not match.')
-            context = {'signupform': UserCreationForm(), 'messages': messages}
-            return render(request, 'signup.html', context)
-        
-        try:
-            user = User.objects.create_user(username = request.POST['username'], first_name = request.POST['first_name'], last_name = request.POST['last_name'], email = request.POST['email'], password = request.POST['password'])
-            user.save()
-            return redirect('/signin/')
-        except IntegrityError:
-            messages.append(f'Username {user.username} already exist.')
-            context = {'signupform': UserCreationForm(), 'messages': messages}
-            return render(request, 'signup.html', context)
-
-
-    #GET Method
-    context = {'signupform': UserCreationForm()}
-    return render(request, 'signup.html', context)
-
-def inventary(request):
-    context = {'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date')}
-    return render(request, 'inventary.html', context)
-
+@login_required
 def junk(request):
     context = {'form': CarsForm() }
     return render(request, 'junk.html', context)
 
+#SQL Operations
+@login_required
 def sell(request, id):
     context = {'form': CarsForm(), 'buyerform': BuyersForm(), 'soldcarform': SoldCarsForm() }
     return render(request, 'sell.html', context) 
 
+@login_required
 def delete(request, id):
     car = Cars.objects.get(id = id)
     car.delete()
     return redirect('/inventary/')
 
+@login_required
 def to_junk(request, id):
     car = Cars.objects.get(id = id)
     car.waiting = False
@@ -149,12 +165,15 @@ def to_junk(request, id):
     car_to_junk.save()
     return redirect('/inventary/')
 
+@login_required
 def scratched(request, id):
     junkcar = JunkCars.objects.get(id = id)
     junkcar.waiting = False
     junkcar.save()
     return redirect('/inventary/')
 
+
+#JSON Responses
 def models(request):
     data = json.loads(request.body)
     models = Models.objects.filter(brand__id=data['user_id'])
