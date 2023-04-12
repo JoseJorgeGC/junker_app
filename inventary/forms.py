@@ -35,3 +35,8 @@ class SoldCarsForm(forms.ModelForm):
     class Meta:
         model = SoldCars
         fields = ('date', 'price')
+
+class ShowCarsForm(forms.ModelForm):
+    class Meta:
+        model = Cars
+        fields = ('brand', 'model', 'inventary_number', 'year', 'entry_date', 'condition', 'title', 'image')

@@ -147,7 +147,9 @@ def junk(request):
 #SQL Operations
 @login_required
 def sell(request, id):
-    context = {'form': CarsForm(), 'buyerform': BuyersForm(), 'soldcarform': SoldCarsForm() }
+    car = Cars.objects.get(id=id)
+    print(car.brand)
+    context = {'form': ShowCarsForm(instance=car), 'buyerform': BuyersForm(), 'soldcarform': SoldCarsForm() }
     return render(request, 'sell.html', context) 
 
 @login_required
