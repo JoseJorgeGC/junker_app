@@ -9,6 +9,7 @@ from .models import *
 from .entry_functions import *
 from .forms import *
 import json
+import datetime
 
 # Create your views here.
 # cars = form.save(commit=false)
@@ -148,8 +149,23 @@ def junk(request):
 @login_required
 def sell(request, id):
     car = Cars.objects.get(id=id)
-    print(car.brand)
-    context = {'form': ShowCarsForm(instance=car), 'buyerform': BuyersForm(), 'soldcarform': SoldCarsForm() }
+    if request.method == "POST":
+        buyer = Buyers(name = str(request.POST['name']), last_name = request.POST['last_name'], dni = request.POST['dni'], phone_number = request.POST['phone_number'] )
+        sold_car = SoldCars(car = car, buyer = buyer, price = request.POST['price'], date = request.POST['date'])
+        print(sold_car)
+        print(buyer)
+        car.waiting = False
+        car.save()
+        try:
+            junk = JunkCars.objects.get(car = car)
+            junk.waiting = False
+            junk.save()
+        except:
+            pass
+
+        return redirect('/inventary/')
+
+    context = {'form': ShowCarsForm(instance=car), 'buyerform': BuyersForm(), 'soldcarform': SoldCarsForm(), 'car': car }
     return render(request, 'sell.html', context) 
 
 @login_required
@@ -170,9 +186,22 @@ def to_junk(request, id):
 @login_required
 def scratched(request, id):
     junkcar = JunkCars.objects.get(id = id)
-    junkcar.waiting = False
-    junkcar.save()
-    return redirect('/inventary/')
+    if request.method == "POST":
+        junkcar.waiting = False
+        junkcar.scratched_date = datetime.date.today()
+        junkcar.save()
+        if 'rims' in request.POST:
+            print(request.POST['rims'])
+            print(datetime.date.today())
+        else:
+            print('No hay rims')
+        return redirect('/inventary/')
+    junkcar = JunkCars.objects.get(id = id)
+    car = Cars.objects.get(id = junkcar.car.id)
+    context = {'form': ShowCarsForm(instance=car)}
+    #junkcar.waiting = False
+    #junkcar.save()
+    return render(request, 'junk.html', context)
 
 
 #JSON Responses
