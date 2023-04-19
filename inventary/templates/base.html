@@ -50,7 +50,7 @@
               <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
                 <div class="px-4 py-3">
                   <span class="block text-sm text-gray-900 dark:text-white">{{user.username}}</span>
-                  <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">name@flowbite.com</span>
+                  <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{user.email}}</span>
                 </div>
                 <ul class="py-2" aria-labelledby="user-menu-button">
                   <li>
@@ -88,7 +88,7 @@
             </div>
                 <div class="hidden lg:flex lg:flex-1 lg:justify-center mr-24 lg:gap-x-12">
                   <a href="{% url 'signup' %}" class="text-sm font-semibold leading-6 text-gray-900">Signup</a>
-                  <a href="{% url 'signin' %}" class="text-sm font-semibold leading-6 text-gray-900">Signup</a>
+                  <a href="{% url 'signin' %}" class="text-sm font-semibold leading-6 text-gray-900">Signin</a>
                 </div>
                 
           </nav>
