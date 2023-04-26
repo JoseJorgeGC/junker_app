@@ -74,7 +74,8 @@ def home(request):
 
 @login_required
 def inventary(request):
-    context = {'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date')}
+    junkcar_counter = JunkCars.objects.filter(waiting = True).count()
+    context = {'junkcar_counter': junkcar_counter,'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date')}
     return render(request, 'inventary.html', context)
 
 
