@@ -211,3 +211,6 @@ def models(request):
     models = Models.objects.filter(brand__id=data['user_id'])
     print(models.values("id", "name"))
     return JsonResponse(list(models.values("id", "name")), safe=False)
+
+def parts_sell(request):
+    return render(request, 'parts.html')

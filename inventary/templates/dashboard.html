@@ -1,12 +1,14 @@
-{% extends "base.html" %}
-
-{% load static %}
+{% extends "layouts/base.html" %}
 
 {% block title %} Dashboard {% endblock %} 
 
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
 {% block content %}
+
     <!-- [ Main Content ] start -->
-    <div class="pcoded-main-container m-8">
+    <div class="pcoded-main-container">
         <div class="pcoded-content">
             <!-- [ Main Content ] start -->
             <div class="row">
@@ -1592,7 +1594,6 @@
         </div>
     </div>
     <!-- [ Main Content ] end -->
- 
 
 {% endblock content %}
 

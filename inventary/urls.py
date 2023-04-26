@@ -20,5 +20,6 @@ urlpatterns = [
     path('cars/scratched/<int:id>', views.scratched, name='scratched'),
     #JSON Urls
     path('models/', views.models, name='models'),
+    path('parts/', views.parts_sell, name='parts_sell'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
