@@ -26,11 +26,20 @@ class Cars(models.Model):
         ('BAD', 'BAD')
     )
 
+    TITLE_CONDITIONS = (
+        ('CLEAN', 'Clean'),
+        ('REBUILT', 'Rebuilt'),
+        ('OTHER', 'Other')
+    )
+
     id = models.AutoField(primary_key = True)
     brand = models.ForeignKey(Brands, on_delete = models.CASCADE, null = True)
     model = models.ForeignKey(Models, on_delete = models.CASCADE, null = True)
     year = models.IntegerField(default = 2000)
     inventary_number = models.CharField(max_length = 25, null = True)
+    vin_number = models.CharField(max_length=15, default = '00')
+    title_condition = models.CharField(choices=TITLE_CONDITIONS, max_length=7, default='Clean')
+    price = models.FloatField(default=1000.00)
     condition = models.CharField(choices = CONDITIONS, max_length = 6)
     entry_date = models.DateField(null = True)
     title = models.FileField(upload_to="media/titles/", null = True)
@@ -82,3 +91,12 @@ class CarsOut(models.Model):
 
     def __str__(self):
         return f'{self.car.model.name} - {self.car.brand.name} {self.car.inventary_number}'
+    
+class Parts(models.Model):
+    id = models.AutoField(primary_key=True)
+    part_name = models.CharField(max_length=60)
+    buyer = models.ForeignKey(Buyers, on_delete = models.CASCADE)
+    car = models.ForeignKey(Cars, on_delete = models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    sale_date = models.DateField()
+    price = models.FloatField()
