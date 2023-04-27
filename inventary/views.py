@@ -70,7 +70,9 @@ def signup(request):
 #Views
 @login_required
 def home(request):
-    return render(request, 'index.html')
+    junkcar_counter = JunkCars.objects.filter(waiting = True).count()
+    context = {'junkcar_counter': junkcar_counter,'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date')}
+    return render(request, 'index.html', context)
 
 @login_required
 def inventary(request):
@@ -214,3 +216,6 @@ def models(request):
 
 def parts_sell(request):
     return render(request, 'parts.html')
+
+def chart_prueba(request):
+    return render(request, 'chart_mio.html')

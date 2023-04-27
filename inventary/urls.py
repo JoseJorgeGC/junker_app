@@ -21,5 +21,6 @@ urlpatterns = [
     #JSON Urls
     path('models/', views.models, name='models'),
     path('parts/', views.parts_sell, name='parts_sell'),
+    path('charts/', views.chart_prueba, name='charts'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
