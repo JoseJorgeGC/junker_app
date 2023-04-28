@@ -60,6 +60,8 @@
                                     <th scope="col" class="px-4 py-3">Year</th>
                                     <th scope="col" class="px-4 py-3">Entry Date</th>
                                     <th scope="col" class="px-4 py-3">Condition</th>
+                                    <th scope="col" class="px-4 py-3">Title Condition</th>
+                                    <th scope="col" class="px-4 py-3">VIN Number</th>
                                     <th scope="col" class="pl-12">Actions</th>
                                 </tr>
                             </thead>
@@ -72,6 +74,8 @@
                                     <td class="px-4 py-3"> {{car.year}}</td>   
                                     <td class="px-4 py-3">{{car.entry_date|date:"M, j Y"}}</td>
                                     <td class="px-4 py-3">{{car.condition}}</td>                        
+                                    <td class="px-4 py-3">{{car.title_condition}}</td>                        
+                                    <td class="px-4 py-3">{{car.vin_number}}</td>                        
                                     <td class="px-4 py-3">
                                         <a href="{% url 'sell' car.id %}">
                                             <button class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button"> 
@@ -184,6 +188,8 @@
                                     <th scope="col" class="px-4 py-3">Year</th>
                                     <th scope="col" class="px-4 py-3">Entry Date</th>
                                     <th scope="col" class="px-4 py-3">Condition</th>
+                                    <th scope="col" class="px-4 py-3">Title Condition</th>
+                                    <th scope="col" class="px-4 py-3">VIN Number</th>
                                     <th scope="col" class="pl-7 px-4 py-3">Actions</th>
                                 </tr>
                             </thead>
@@ -196,6 +202,8 @@
                                     <td class="px-4 py-3">{{junkcar.car.year}}</td>
                                     <td class="px-4 py-3">{{junkcar.car.entry_date|date:"M, j Y"}}</td>
                                     <td class="px-4 py-3">{{junkcar.car.condition}}</td>
+                                    <td class="px-4 py-3">{{junkcar.car.title_condition}}</td>                        
+                                    <td class="px-4 py-3">{{junkcar.car.vin_number}}</td>
                                     <td class="px-4 py-3 flex items-center justify-start">
                                         <a href="{% url 'sell' junkcar.id %}">
                                             <button class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button"> 

@@ -11,7 +11,7 @@ class UserCreationForm(forms.ModelForm):
 class CarsForm(forms.ModelForm):
     class Meta:
         model = Cars
-        fields = ('brand', 'model', 'inventary_number', 'year', 'entry_date', 'condition', 'title', 'image')
+        fields = ('brand', 'model', 'inventary_number', 'year', 'entry_date', 'condition', 'title', 'image', 'title_condition', 'vin_number', 'price')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

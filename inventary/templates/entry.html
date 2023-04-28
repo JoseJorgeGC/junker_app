@@ -67,26 +67,42 @@
                     {% render_field form.year type="number" name="year" id="year" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %}
                   </div>   
                   <!-- Fecha del carro -->
-                  <div class="col-span-6 sm:col-span-3">
+                  <div class="col-span-6 sm:col-span-2">
                     {{ form.entry_date|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
                     {% render_field form.entry_date type="date" name="date" id="date" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %}
                   </div>
+                  <!-- VIN del carro -->
+                  <div class="col-span-6 sm:col-span-2">
+                    {{ form.vin_number|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
+                    {% render_field form.vin_number type="text" name="vin_number" id="vin_number" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %}
+                  </div>
                   <!-- Condicion del carro -->
-                  <div class="col-span-6 sm:col-span-3">
+                  <div class="col-span-6 sm:col-span-2">
                     {{ form.condition|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
                     {% render_field form.condition name="condition" id="condition" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %}
                   </div>
+                  <!-- Condicion del titulo -->
+                  <div class="col-span-6 sm:col-span-2">
+                    {{ form.title_condition|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
+                    {% render_field form.title_condition name="title_condition" id="title_condition" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %}
+                  </div>
+                  <!-- Precio del Carro -->
+                  <div class="col-span-6 sm:col-span-2">
+                    {{ form.price|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
+                    {% render_field form.price name="price" id="price" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %}
+                  </div>
                   <!-- Titulo del carro -->
-                  <div class="col-span-6 sm:col-span-3">
+                  <div class="col-span-6 sm:col-span-3 mt-8">
                     {{ form.title|add_label_class:"block text-sm font-medium leading-6 text-gray-900" }}
                     {% render_field form.title name="title" id="title" class="block w-full text-lg text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:border-gray-600 dark:placeholder-gray-400" %}
+                  </div>
+                  <div class="col-span-6 sm:col-span-3">                  
+                    {{ form.image|add_label_class:"block text-sm font-medium leading-6 text-gray-900 mt-2" }}
+                    {% render_field form.image name="car_image" id="car_image" class="mt-2 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6" %}                               
                   </div> 
                 </div>
                 <!-- Imagen del carro -->              
-                  <div class="mx-auto">                  
-                    {{ form.image|add_label_class:"block text-sm font-medium leading-6 text-gray-900 mt-2" }}
-                    {% render_field form.image name="condition" id="condition" class="mt-2 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6" %}                               
-                  </div>                        
+                                          
                 <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
                   <button type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Save</button>
                 </div>
