@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-kts5(7v*8&em1bhee6&w#^7mbsj(!mne4xt^km8g04(n9_mjko
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['josejorgegc.pythonanywhere.com']
 
 
 # Application definition
@@ -78,10 +78,10 @@ WSGI_APPLICATION = 'system_junk.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'junker',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
+        'NAME': 'JoseJorgeGC$junker',
+        'USER': 'JoseJorgeGC',
+        'PASSWORD': 'MySQL2023/*',
+        'HOST': 'JoseJorgeGC.mysql.pythonanywhere-services.com',
         'PORT': '3306',
     }
 }
