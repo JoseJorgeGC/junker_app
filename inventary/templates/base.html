@@ -13,6 +13,13 @@
         display: none;
       }
     </style>
+       <!-- Favicon icon -->
+       <link rel="icon" href="/static/assets/images/favicon.ico" type="image/x-icon">
+
+       <!-- vendor css -->
+       
+       <!-- Specific Page CSS goes HERE  -->
+       {% block stylesheets %}{% endblock stylesheets %}
 
     <title>Inventary Junk</title>
 </head>
@@ -97,6 +104,10 @@
       
 {% block content %}
 {% endblock %}
+{% include 'includes/scripts.html' %} 
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
 <script src="{% static 'js/tailwind.config.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/flowbite.min.js"></script>
 <script>

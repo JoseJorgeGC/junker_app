@@ -28,8 +28,8 @@ class Cars(models.Model):
 
     TITLE_CONDITIONS = (
         ('CLEAN', 'Clean'),
-        ('REBUILT', 'Rebuilt'),
-        ('OTHER', 'Other')
+        ('SALVAGE', 'Salvage'),
+        ('DISTRACTION', 'Distraction')
     )
 
     id = models.AutoField(primary_key = True)
@@ -37,8 +37,8 @@ class Cars(models.Model):
     model = models.ForeignKey(Models, on_delete = models.CASCADE, null = True)
     year = models.IntegerField(default = 2000)
     inventary_number = models.CharField(max_length = 25, null = True)
-    vin_number = models.CharField(max_length=15, default = '00')
-    title_condition = models.CharField(choices=TITLE_CONDITIONS, max_length=7, default='Clean')
+    vin_number = models.CharField(max_length=17, default = '00')
+    title_condition = models.CharField(choices=TITLE_CONDITIONS, max_length=11, default='Clean')
     price = models.FloatField(default=1000.00)
     condition = models.CharField(choices = CONDITIONS, max_length = 6)
     entry_date = models.DateField(null = True)
