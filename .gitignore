@@ -1,6 +1,7 @@
 inventary__pycache__/*
 inventary/media/
-inventary/static/
+inventary/static/cars
+inventary/static/img
 system_junk/__pycache__/
 system_junk/__pycache__/*
 inventary/migrations/__pycache__/*
