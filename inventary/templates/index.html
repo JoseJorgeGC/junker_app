@@ -4,8 +4,11 @@
 
 {% block title %} Dashboard {% endblock %} 
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+{% endblock %}
+
 {% block content %}
-<link rel="stylesheet" href="/static/assets/css/main.css">
     <!-- [ Main Content ] start -->
     <div class="pcoded-main-container m-8">
         <div class="pcoded-content">
@@ -1510,9 +1513,9 @@
 {% block javascripts %}
 
     <!-- Apex Chart -->
-    <script src="/static/assets/js/plugins/apexcharts.min.js"></script>
+    <script src="{% static 'assets/js/plugins/apexcharts.min.js' %}"></script>
 
     <!-- custom-chart js -->
-    <script src="/static/assets/js/pages/dashboard-main.js"></script>
+    <script src="{% static 'assets/js/pages/dashboard-main.js' %}"></script>
 
 {% endblock javascripts %}
