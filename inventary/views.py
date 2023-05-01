@@ -5,6 +5,8 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db import IntegrityError
+from django.core.paginator import Paginator
+from django.http import Http404
 from .models import *
 from .entry_functions import *
 from .forms import *
@@ -76,8 +78,20 @@ def home(request):
 
 @login_required
 def inventary(request):
+    
+    cars = Cars.objects.filter(waiting = True).all()
+    page = request.GET.get('page', 1)
+
+    try:
+        paginator = Paginator(cars, 1)
+        cars = paginator.page(page)
+    except:
+        raise Http404
+
+
     junkcar_counter = JunkCars.objects.filter(waiting = True).count()
-    context = {'junkcar_counter': junkcar_counter,'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date')}
+    context = {'junkcar_counter': junkcar_counter,'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date'), 'cars':cars, 'paginator':paginator}
+
     return render(request, 'inventary.html', context)
 
 
