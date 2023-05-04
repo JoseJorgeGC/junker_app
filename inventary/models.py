@@ -100,3 +100,15 @@ class Parts(models.Model):
     date = models.DateField(auto_now_add=True)
     sale_date = models.DateField()
     price = models.FloatField()
+
+class RemoveParts(models.Model):
+    id = models.AutoField(primary_key=True)
+    car = models.ForeignKey(Cars, on_delete=models.CASCADE)
+    rims = models.IntegerField()
+    tires = models.IntegerField()
+    engine = models.BooleanField()
+    catalyst = models.IntegerField()
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Rims: {self.rims} --- Tires: {self.tires} --- Catalyst: {self.catalyst} --- Engine: {self.engine}'

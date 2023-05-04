@@ -202,22 +202,36 @@ def to_junk(request, id):
 
 @login_required
 def scratched(request, id):
-    junkcar = JunkCars.objects.get(id = id)
-    if request.method == "POST":
-        junkcar.waiting = False
-        junkcar.scratched_date = datetime.date.today()
-        junkcar.save()
-        if 'rims' in request.POST:
-            print(request.POST['rims'])
-            print(datetime.date.today())
-        else:
-            print('No hay rims')
+    try:
+        junkcar = JunkCars.objects.get(id = id)
+    except:
+       return redirect('/inventary/')
+    
+    if not junkcar.waiting:
         return redirect('/inventary/')
-    junkcar = JunkCars.objects.get(id = id)
-    car = Cars.objects.get(id = junkcar.car.id)
-    context = {'form': ShowCarsForm(instance=car)}
-    #junkcar.waiting = False
-    #junkcar.save()
+
+    if request.method == "POST":
+        try:
+            if not (int(request.POST['rims']) <= 4 and int(request.POST['rims']) >= 0) and (int(request.POST['tires']) <= 4 and int(request.POST['tires']) >= 0) and (int(request.POST['catalyst']) <= 5 and int(request.POST['catalyst']) >= 0):
+                context = {'form': ShowCarsForm(instance=junkcar.car)}
+                return render(request, 'junk.html', context)
+        except:
+            context = {'form': ShowCarsForm(instance=junkcar.car)}
+            return render(request, 'junk.html', context)
+        
+        junkcar.scratched_date = datetime.date.today()
+        if 'engine' in request.POST:
+            engine = True
+        else:
+            engine = False
+
+        remove_parts = RemoveParts(car = junkcar.car, rims = request.POST['rims'], tires = request.POST['tires'], catalyst = request.POST['catalyst'], engine = engine)
+        remove_parts.save()
+        junkcar.waiting = False
+        junkcar.save()
+        return redirect('/inventary/')
+    
+    context = {'form': ShowCarsForm(instance=junkcar.car)}
     return render(request, 'junk.html', context)
 
 
