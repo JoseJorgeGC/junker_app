@@ -6,6 +6,8 @@ from django.contrib import admin
 
 urlpatterns = [
     path('', views.home, name='home'),
+    #404
+    path('404/', views.error404, name='404'),
     #Sessions Urls
     path('logout/', views.signout, name='signout'),
     path('signin/', views.signin, name='signin'),

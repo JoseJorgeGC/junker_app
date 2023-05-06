@@ -70,6 +70,11 @@ def signup(request):
     return render(request, 'signup.html', context)
 
 
+#404 Error
+def error404(request):
+    return render(request, '404.html')
+
+
 #Views
 @login_required
 def home(request):
@@ -200,7 +205,10 @@ def delete(request, id):
 
 @login_required
 def to_junk(request, id):
-    car = Cars.objects.get(id = id)
+    try:
+        car = Cars.objects.get(id = id)
+    except:
+        return redirect('/404/')
     car.waiting = False
     car.save()
     car_to_junk = JunkCars(car = car)
@@ -212,10 +220,10 @@ def scratched(request, id):
     try:
         junkcar = JunkCars.objects.get(id = id)
     except:
-       return redirect('/inventary/')
+       return redirect('/404/')
     
     if not junkcar.waiting:
-        return redirect('/inventary/')
+        return redirect('/404/')
 
     if request.method == "POST":
         try:
