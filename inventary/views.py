@@ -176,14 +176,17 @@ def junk(request):
 #SQL Operations
 @login_required
 def sell(request, id):
-    car = Cars.objects.get(id=id)
+    try:
+        car = Cars.objects.get(id=id)
+    except:
+        return redirect('/404/')
+    
     if request.method == "POST":
         buyer = Buyers(name = str(request.POST['name']), last_name = request.POST['last_name'], dni = request.POST['dni'], phone_number = request.POST['phone_number'] )
         sold_car = SoldCars(car = car, buyer = buyer, price = request.POST['price'], date = request.POST['date'])
-        print(sold_car)
-        print(buyer)
         car.waiting = False
         car.save()
+        sold_car.save()
         try:
             junk = JunkCars.objects.get(car = car)
             junk.waiting = False
@@ -209,6 +212,10 @@ def to_junk(request, id):
         car = Cars.objects.get(id = id)
     except:
         return redirect('/404/')
+    
+    if car.waiting == False:
+        return redirect('/inventary/')
+    
     car.waiting = False
     car.save()
     car_to_junk = JunkCars(car = car)
