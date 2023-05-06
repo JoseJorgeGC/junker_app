@@ -201,7 +201,11 @@ def sell(request, id):
 
 @login_required
 def delete(request, id):
-    car = Cars.objects.get(id = id)
+    try:
+        car = Cars.objects.get(id = id)
+    except:
+        return redirect('/404/')
+    
     car.delete()
     messages.success(request, "The car has been deleted.")
     return redirect('/inventary/')
