@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db import IntegrityError
 from django.core.paginator import Paginator
+from django.contrib import messages
 from django.http import Http404
 from .models import *
 from .entry_functions import *
@@ -78,7 +79,7 @@ def home(request):
 
 @login_required
 def inventary(request):
-    
+    car_counter = Cars.objects.filter(waiting = True).count()
     cars = Cars.objects.filter(waiting = True).all()
     page = request.GET.get('page', 1)
 
@@ -90,7 +91,7 @@ def inventary(request):
 
 
     junkcar_counter = JunkCars.objects.filter(waiting = True).count()
-    context = {'junkcar_counter': junkcar_counter,'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date'), 'cars':cars, 'paginator':paginator}
+    context = {'junkcar_counter': junkcar_counter,'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date'), 'cars':cars, 'paginator':paginator, 'car_counter':car_counter}
 
     return render(request, 'inventary.html', context)
 
@@ -123,6 +124,7 @@ def entry(request):
     title_sufix = entry_car.title.name.split('.')[-1]
     if not (str.lower(title_sufix) == 'pdf'):
         error_messages.append('Title: Unknow file type. Select a PDF file.')
+        messages.warning(request, "Error select a PDF file.")
         context = {'form': CarsForm(), 'errors': error_messages}
         return render(request, 'entry.html', context)   
         
@@ -149,12 +151,16 @@ def entry(request):
         print('error except')
         error_messages.append('Year: Enter a valid year(1940-today).')
         context = {'form': CarsForm(), 'errors': error_messages}
+        #messages.warning(request, "Error enter a valid year")
         return render(request, 'entry.html', context)
 
     print(title_sufix)
     entry_car.save()
     success_messages.append(f'Car {entry_car.inventary_number} added successfully.')
+    #probando swet_alert
+    messages.success(request, "Car added successfully")
     context = {'form': CarsForm(), 'errors': error_messages, 'success': success_messages}
+
     return render(request, 'entry.html', context)
 
 @login_required
@@ -189,6 +195,7 @@ def sell(request, id):
 def delete(request, id):
     car = Cars.objects.get(id = id)
     car.delete()
+    messages.success(request, "The car has been deleted.")
     return redirect('/inventary/')
 
 @login_required
@@ -246,4 +253,5 @@ def parts_sell(request):
     return render(request, 'parts.html')
 
 def chart_prueba(request):
-    return render(request, 'chart_mio.html')
+    numeros = [20, 30, 40, 100, 70, 90]
+    return render(request, 'chart_mio.html', {'numeros':numeros})

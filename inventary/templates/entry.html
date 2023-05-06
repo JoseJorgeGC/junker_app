@@ -1,4 +1,32 @@
 {% extends 'base.html' %}
+{% block js %}
+    {% if messages %}
+    {% for m in messages %}
+        <script>
+            Swal.fire({
+                "title": "Done!",
+                "text": "{{m}}",
+                "icon":"success"
+            })
+        </script>
+    {% endfor %}
+    {% endif %}
+
+    {% if messages %}
+    {% for m in messages %}
+        <script>
+            Swal.fire({
+                "title": "Ups!",
+                "text": "{{m}}",
+                "icon":"error"
+            })
+        </script>
+    {% endfor %}
+    {% endif %}
+</script>
+
+{% endblock %}
+
 {% load widget_tweaks %}
 {% load static %}
 {% block content%}

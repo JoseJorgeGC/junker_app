@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['josejorgegc.pythonanywhere.com']
 
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
+
 
 # Application definition
 
