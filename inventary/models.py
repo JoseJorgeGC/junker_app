@@ -80,6 +80,8 @@ class JunkCars(models.Model):
     to_junk_date = models.DateField(auto_now_add = True)
     scratched_date = models.DateField(null = True)
     waiting = models.BooleanField(default = True)
+    out = models.BooleanField(default=False)
+    date_out = models.DateField(null = True)
 
     def __str__(self):
         return f'{self.car.model.name} - {self.car.brand.name} {self.car.inventary_number}'
@@ -96,7 +98,7 @@ class Parts(models.Model):
     id = models.AutoField(primary_key=True)
     part_name = models.CharField(max_length=60)
     buyer = models.ForeignKey(Buyers, on_delete = models.CASCADE)
-    car = models.ForeignKey(Cars, on_delete = models.CASCADE)
+    car_i_n = models.CharField(max_length=15, default='Inventary')
     date = models.DateField(auto_now_add=True)
     sale_date = models.DateField()
     price = models.FloatField()
