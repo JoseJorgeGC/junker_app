@@ -11,18 +11,6 @@
         </script>
     {% endfor %}
     {% endif %}
-
-    {% if messages %}
-    {% for m in messages %}
-        <script>
-            Swal.fire({
-                "title": "Ups!",
-                "text": "{{m}}",
-                "icon":"error"
-            })
-        </script>
-    {% endfor %}
-    {% endif %}
 </script>
 
 {% endblock %}
