@@ -96,9 +96,9 @@ class CarsOut(models.Model):
     
 class Parts(models.Model):
     id = models.AutoField(primary_key=True)
-    part_name = models.CharField(max_length=60)
+    car = models.ForeignKey(Cars, on_delete=models.CASCADE, null=True)
+    name = models.CharField(max_length=60)
     buyer = models.ForeignKey(Buyers, on_delete = models.CASCADE)
-    car_i_n = models.CharField(max_length=15, default='Inventary')
     date = models.DateField(auto_now_add=True)
     sale_date = models.DateField()
     price = models.FloatField()

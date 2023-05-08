@@ -88,6 +88,13 @@ def inventary(request):
     cars = Cars.objects.filter(waiting = True).all()
     page = request.GET.get('page', 1)
 
+    #Data 
+    cars = Cars.objects.filter(waiting=True).order_by('-entry_date')
+    pendings = JunkCars.objects.filter(waiting=True).order_by('to_junk_date')
+    scratched_cars = JunkCars.objects.filter(waiting=False, out=False).order_by('-scratched_date')
+    parts_sold = Parts.objects.all().order_by('-sale_date')
+    cars_sold = SoldCars.objects.all().order_by('-date')
+
     try:
         paginator = Paginator(cars, 1)
         cars = paginator.page(page)
@@ -96,7 +103,7 @@ def inventary(request):
 
 
     junkcar_counter = JunkCars.objects.filter(waiting = True).count()
-    context = {'junkcar_counter': junkcar_counter,'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date'), 'cars':cars, 'paginator':paginator, 'car_counter':car_counter}
+    context = {'junkcar_counter': junkcar_counter,'junkcars': pendings,'cars': cars, 'scratched_cars': scratched_cars, 'parts_sold': parts_sold, 'cars_sold': cars_sold,'paginator':paginator, 'car_counter':car_counter}
 
     return render(request, 'inventary.html', context)
 
