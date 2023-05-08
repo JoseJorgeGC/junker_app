@@ -106,14 +106,13 @@ def entry(request):
     validate = True
     error_messages = []
     success_messages = []
+    context = {'form': CarsForm(), 'errors': error_messages, 'success': success_messages}
     if request.method == "GET":
-        context = {'form': CarsForm(), 'errors': error_messages}
         return render(request, 'entry.html', context)
     
     form = CarsForm(request.POST, request.FILES)
     if not form.is_valid():
         error_messages.append('Complete all data')
-        context = {'form': CarsForm(), 'errors': error_messages}
         return render(request, 'entry.html', context)
     
     entry_car = form.save(commit = False)
@@ -123,14 +122,12 @@ def entry(request):
         for car in cars:
             if car.inventary_number == entry_car.inventary_number:
                 error_messages.append('Inventary number already exist.')
-                context = {'form': CarsForm(), 'errors': error_messages}
                 return render(request, 'entry.html', context) 
 
     title_sufix = entry_car.title.name.split('.')[-1]
     if not (str.lower(title_sufix) == 'pdf'):
         error_messages.append('Title: Unknow file type. Select a PDF file.')
         messages.warning(request, "Error select a PDF file.")
-        context = {'form': CarsForm(), 'errors': error_messages}
         return render(request, 'entry.html', context)   
         
     entry_car.title = rename_file(entry_car.title, entry_car.inventary_number, entry_car.entry_date)
@@ -139,23 +136,20 @@ def entry(request):
     image_sufix = entry_car.image.name.split('.')[-1]
     if not (str.lower(image_sufix) == 'jpeg' or str.lower(image_sufix) == 'jpg' or str.lower(image_sufix) == 'png'):
         error_messages.append('Image: Unknow image type. Select a JPG or PNG file.')
-        context = {'form': CarsForm(), 'errors': error_messages}
         return render(request, 'entry.html', context)
     
     entry_car.image = rename_file(entry_car.image, entry_car.inventary_number, entry_car.entry_date)
     print(entry_car.year)
     try:
         year = int(entry_car.year)
-        if not (year <= 2023 and year >= 1940):
+        if not ((year <= 2023) and (year >= 1940)):
             print('Error if year')
-            error_messages.append('Year: Enter a valid year(1959-today).')
-            context = {'form': CarsForm(), 'errors': error_messages}
+            error_messages.append('Year: Enter a valid year(1940-today).')
             return render(request, 'entry.html', context)
 
     except:
         print('error except')
         error_messages.append('Year: Enter a valid year(1940-today).')
-        context = {'form': CarsForm(), 'errors': error_messages}
         #messages.warning(request, "Error enter a valid year")
         return render(request, 'entry.html', context)
 
@@ -164,8 +158,6 @@ def entry(request):
     success_messages.append(f'Car {entry_car.inventary_number} added successfully.')
     #probando swet_alert
     messages.success(request, "Car added successfully")
-    context = {'form': CarsForm(), 'errors': error_messages, 'success': success_messages}
-
     return render(request, 'entry.html', context)
 
 @login_required
