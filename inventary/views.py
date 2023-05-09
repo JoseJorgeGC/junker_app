@@ -273,3 +273,7 @@ def parts_sell(request):
 def chart_prueba(request):
     numeros = [20, 30, 40, 100, 70, 90]
     return render(request, 'chart_mio.html', {'numeros':numeros})
+
+def profile(request):
+    
+    return render(request, 'profile.html')
