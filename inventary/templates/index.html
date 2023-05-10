@@ -20,8 +20,8 @@
                     <div class="card-body">
                         <h6 class="text-2xl text-white">Pendings for Junk</h6>
                         <h2 class="text-3xl text-end text-white"><i
-                                class="feather icon-bookmark float-start"></i><span>{{junkcar_counter}}</span></h2>
-                        <p class="m-b-0">Completed Junk<span class="float-end">351</span></p>
+                                class="feather icon-bookmark float-start"></i><span>{{pendings_for_junk}}</span></h2>
+                        <p class="m-b-0">Completed Junk<span class="float-end">{{total_junked_cars}}</span></p>
                     </div>
                 </div>
             </div>
@@ -30,9 +30,9 @@
                     <div class="card-body">
                         <h6 class="text-2xl text-white">Tires and Rims Sales</h6>
                         <h2 class="text-3xl text-end text-white"><i
-                                class="feather icon-tag float-start"></i><span>1641</span>
+                                class="feather icon-tag float-start"></i><span>{{total_rims_and_tires}}</span>
                         </h2>
-                        <p class="m-b-0">This Month<span class="float-end">213</span></p>
+                        <p class="m-b-0">This Month<span class="float-end">{{rims_and_tires_last_month}}</span></p>
                     </div>
                 </div>
             </div>
@@ -207,7 +207,7 @@
 <!--  Inventary Chart -->
 <script>
     var options = {
-        series: [44, 55, 13, 43, 22],
+        series: [{{total_cars|safe}}, {{total_catalyst|safe}}, {{total_rims|safe}}, {{total_tires|safe}}, {{total_junked_cars|safe}}],
         chart: {
         width: 380,
         type: 'pie',
@@ -236,7 +236,7 @@
     var options = {
         series: [{
         name: 'Cars',
-        data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+        data: {{cars_data|safe}}
       }, {
         name: 'Parts',
         data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
@@ -267,7 +267,7 @@
         colors: ['transparent']
       },
       xaxis: {
-        categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+        categories: {{categories_all_profit|safe}},
       },
       yaxis: {
         title: {

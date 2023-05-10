@@ -9,6 +9,10 @@ from django.core.paginator import Paginator
 from django.contrib import messages
 from django.http import Http404
 from django.db.models import Q
+from django.utils import timezone
+from . import utils
+import pandas as pd
+import numpy as np
 from .models import *
 from .entry_functions import *
 from .forms import *
@@ -79,8 +83,89 @@ def error404(request):
 #Views
 @login_required
 def home(request):
-    junkcar_counter = JunkCars.objects.filter(waiting = True).count()
-    context = {'junkcar_counter': junkcar_counter,'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date')}
+    today = timezone.localtime(timezone.now())
+    first_day = utils.get_first_day(today.year, today.month)
+    context = {}
+    #Data for counters
+    pendings_for_junk = JunkCars.objects.filter(waiting = True).count()
+    total_junked_cars = JunkCars.objects.filter(scratched_date__isnull = False).count()
+    
+    remove_parts = RemoveParts.objects.all()
+    remove_parts_last_month = RemoveParts.objects.filter(date__range=(first_day, today))
+    total_rims_and_tires = 0
+    rims_and_tires_last_month = 0
+    total_catalyst = 0
+    total_engines = 0
+    total_rims = 0
+    total_tires = 0 
+
+    for parts in remove_parts:
+        if parts.date > first_day:
+            rims_and_tires_last_month += parts.rims + parts.tires
+        total_rims_and_tires += parts.rims + parts.tires
+        total_catalyst += parts.catalyst
+        total_engines += parts.engine
+        total_tires += parts.tires
+        total_rims += parts.rims
+
+    total_cars = Cars.objects.filter(waiting = True).count()
+    total_cars += JunkCars.objects.filter(waiting=True).count()
+
+    #Data for Inventary Chart
+    context |= {'total_cars': total_cars, 'total_engines': total_engines, 'total_rims': total_rims, 'total_tires': total_tires, 'total_catalyst': total_catalyst}
+    context |= {'total_rims_and_tires': total_rims_and_tires, 'rims_and_tires_last_month': rims_and_tires_last_month}
+    context |= {'pendings_for_junk': pendings_for_junk}
+    context |= {'total_junked_cars': total_junked_cars}
+
+
+    #Data for All profit chart
+    cars_data = []
+    categories_all_profit = []
+    year = []
+    month = []
+    for month_ in range(8, -1, -1):
+        month_to_function = today.month - month_
+        year_ = today.year
+        if month_to_function <=0:
+            month_to_function += 12
+            year_ = today.year - 1
+        year.append(year_)
+        month.append(month_to_function)
+        categories_all_profit.append(utils.return_month_name(month_to_function))
+    print(categories_all_profit)
+    print(year)
+
+    context |= {'categories_all_profit': categories_all_profit}
+    cars1 = SoldCars.objects.filter(date__month = month[0], date__year = year[0]).count()
+    cars_data.append(cars1)
+
+    cars2 = SoldCars.objects.filter(date__month = month[1], date__year = year[1]).count()
+    cars_data.append(cars2)
+
+    cars3 = SoldCars.objects.filter(date__month = month[2], date__year = year[2]).count()
+    cars_data.append(cars3)
+
+    cars4 = SoldCars.objects.filter(date__month = month[3], date__year = year[3]).count()
+    cars_data.append(cars4)
+
+    cars5 = SoldCars.objects.filter(date__month = month[4], date__year = year[4]).count()
+    cars_data.append(cars5)
+
+    cars6 = SoldCars.objects.filter(date__month = month[5], date__year = year[5]).count()
+    cars_data.append(cars6)
+
+    cars7 = SoldCars.objects.filter(date__month = month[6], date__year = year[6]).count()
+    cars_data.append(cars7)
+
+    cars8 = SoldCars.objects.filter(date__month = month[7], date__year = year[7]).count()
+    cars_data.append(cars8)
+
+    cars9 = SoldCars.objects.filter(date__month = month[8], date__year = year[8]).count()
+    cars_data.append(cars9)
+
+    context |= {'cars_data': cars_data}
+
+    
     return render(request, 'index.html', context)
 
 @login_required
@@ -185,6 +270,7 @@ def sell(request, id):
         sold_car = SoldCars(car = car, buyer = buyer, price = request.POST['price'], date = request.POST['date'])
         car.waiting = False
         car.save()
+        buyer.save()
         sold_car.save()
         try:
             junk = JunkCars.objects.get(car = car)
