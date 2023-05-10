@@ -1,3 +1,5 @@
+{% load static %}
+
 {% if user.is_authenticated %}
 <nav class="bg-gray-800">
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -26,8 +28,9 @@
       </div>
       <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
         <div class="flex flex-shrink-0 items-center">
-          <img class="block h-8 w-auto lg:hidden" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
-          <img class="hidden h-8 w-auto lg:block" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
+          <img class="block h-8 w-auto lg:hidden" src="{% static 'img/smr.png' %}" alt="Your Company">
+          <img class="hidden h-8 w-auto lg:block" src="{% static 'img/smr.png' %}" alt="Your Company">
+          <span class="self-center text-3xl font-semibold whitespace-nowrap text-white ml-5 font-black">Recycling</span>
         </div>
         <div class="hidden sm:ml-6 sm:block">
           <div class="flex space-x-4">

@@ -8,6 +8,7 @@ from django.db import IntegrityError
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.http import Http404
+from django.db.models import Q
 from .models import *
 from .entry_functions import *
 from .forms import *
@@ -94,7 +95,6 @@ def inventary(request):
     scratched_cars = JunkCars.objects.filter(waiting=False, out=False).order_by('-scratched_date')
     parts_sold = Parts.objects.all().order_by('-sale_date')
     cars_sold = SoldCars.objects.all().order_by('-date')
-
     try:
         paginator = Paginator(cars, 1)
         cars = paginator.page(page)
@@ -275,5 +275,4 @@ def chart_prueba(request):
     return render(request, 'chart_mio.html', {'numeros':numeros})
 
 def profile(request):
-    
     return render(request, 'profile.html')
