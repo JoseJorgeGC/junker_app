@@ -124,8 +124,170 @@
 <script src="{% static 'assets/js/plugins/apexcharts.min.js' %}"></script>
 
 <!-- custom-chart js -->
-<script src="{% static 'assets/js/pages/sales_ratio_chart.js' %}"></script>
-<script src="{% static 'assets/js/pages/total_inventary_chart.js' %}"></script>
-<script src="{% static 'assets/js/pages/all_profit_chart.js' %}"></script>
+<!-- Sales Ratio Chart -->
+<script>
+    var options = {
+        chart: {
+            height: 230,
+            type: 'line',
+            toolbar: {
+                show: false,
+            },
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            width: 2,
+            curve: 'smooth'
+        },
+        series: [{
+            name: 'Engines',
+            data: [50, 50, 30, 60, 30, 50]
+        }, {
+            name: 'Catalyst',
+            data: [60, 30, 65, 45, 67, 70]
+        }],
+        legend: {
+            position: 'top',
+        },
+        xaxis: {
+            type: 'datetime',
+            categories: ['1/11/2000', '2/11/2000', '3/11/2000', '4/11/2000', '5/11/2000', '6/11/2000'],
+            axisBorder: {
+                show: false,
+            },
+            label: {
+                style: {
+                    color: '#ccc'
+                }
+            },
+        },
+        yaxis: {
+            show: true,
+            min: 10,
+            max: 70,
+            labels: {
+                style: {
+                    color: '#ccc'
+                }
+            }
+        },
+        colors: ['#73b4ff', '#59e0c5'],
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shade: 'light',
+                gradientToColors: ['#4099ff', '#2ed8b6'],
+                shadeIntensity: 0.5,
+                type: 'horizontal',
+                opacityFrom: 1,
+                opacityTo: 1,
+                stops: [0, 100]
+            },
+        },
+        markers: {
+            size: 5,
+            colors: ['#4099ff', '#2ed8b6'],
+            opacity: 0.9,
+            strokeWidth: 2,
+            hover: {
+                size: 7,
+            }
+        },
+        grid: {
+            borderColor: '#cccccc3b',
+        }
+      }
+      var chart = new ApexCharts(document.querySelector("#sales_ratio"), options);
+      chart.render();
+</script>
+
+
+<!--  Inventary Chart -->
+<script>
+    var options = {
+        series: [44, 55, 13, 43, 22],
+        chart: {
+        width: 380,
+        type: 'pie',
+      },
+      labels: ['Cars', 'Catalizt', 'Rims', 'Tires', 'Junked Cars'],
+      responsive: [{
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200
+          },
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }]
+      };
+    
+      var chart = new ApexCharts(document.querySelector("#total_inventary"), options);
+      chart.render();
+</script>
+
+
+<!-- All profit char -->
+<script>
+    var options = {
+        series: [{
+        name: 'Cars',
+        data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+      }, {
+        name: 'Parts',
+        data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+      }, {
+        name: 'Tires',
+        data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+      },{
+        name: 'Rims',
+        data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+      }],
+        chart: {
+        type: 'bar',
+        height: 350
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '55%',
+          endingShape: 'rounded'
+        },
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ['transparent']
+      },
+      xaxis: {
+        categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+      },
+      yaxis: {
+        title: {
+          text: '$ (thousands)'
+        }
+      },
+      fill: {
+        opacity: 1
+      },
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return "$ " + val + " thousands"
+          }
+        }
+      }
+      };
+    
+      var chart = new ApexCharts(document.querySelector("#all_profits"), options);
+      chart.render();
+</script>
 
 {% endblock javascripts %}
