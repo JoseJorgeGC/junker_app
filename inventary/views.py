@@ -362,3 +362,6 @@ def chart_prueba(request):
 
 def profile(request):
     return render(request, 'profile.html')
+
+def user_settings(request):
+    return render(request, 'user_settings.html')
