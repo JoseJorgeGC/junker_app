@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Mis Charts {% endblock %}
-
 {% block content %}
 <div class="flex justify-start">
   <div class="grid grid-cols-6 md:grid-cols-6 sm:grid-cols-4 gap-8 mt-10 flex justify-center xl:ml-32 ml-10">
@@ -57,7 +55,7 @@
 
 
       <!-- User Information -->
-      <div class="col-span-6 xl:col-span-2 sm:col-span-4 space-y-12 p-6 shadow-xl rounded-lg transition-all hover:shadow-xl duration-300">
+      <div class="col-span-6 xl:col-span-3 sm:col-span-4 space-y-12 p-6 shadow-xl rounded-lg transition-all hover:shadow-xl duration-300">
         <div class="border-b border-gray-900/10 pb-12">
             <h2 class="text-xl font-bold leading-7 text-gray-900">General information</h2>
             <p class="mt-1 text-sm leading-6 text-gray-600">Complete de inputs bellow for change your password.</p>
@@ -101,8 +99,6 @@
   </div>
 </div>
 {% include 'layouts/footer.html' %}
-
-
 
 {% endblock content %}
 

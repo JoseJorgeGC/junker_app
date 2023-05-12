@@ -181,7 +181,7 @@ def inventary(request):
     parts_sold = Parts.objects.all().order_by('-sale_date')
     cars_sold = SoldCars.objects.all().order_by('-date')
     try:
-        paginator = Paginator(cars, 1)
+        paginator = Paginator(cars, 10)
         cars = paginator.page(page)
     except:
         raise Http404
