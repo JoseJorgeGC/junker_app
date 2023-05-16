@@ -52,12 +52,37 @@
 
         <!-- Profile dropdown -->
         <div class="relative ml-3">
-          <div>
+          <div class="flex items-center md:order-2">
+            <button type="button" class="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+              <span class="sr-only">Open user menu</span>
+              <img class="w-8 h-8 rounded-full" src="{% static 'img/Default.png' %}" alt="user photo">
+            </button>
+            <!-- Dropdown menu -->
+            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
+              <div class="px-4 py-3">
+                <span class="block text-sm text-gray-900 dark:text-white">{{user.username}}</span>
+                <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{user.email}}</span>
+              </div>
+              <ul class="py-2" aria-labelledby="user-menu-button">
+                <li>
+                  <a href="{% url 'user_settings' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Settings</a>
+                </li>               
+                <li>
+                  <a href="{% url 'signout' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>
+                </li>
+              </ul>
+            </div>
+            <button data-collapse-toggle="mobile-menu-2" type="button" class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
+              <span class="sr-only">Open main menu</span>
+              <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+          <!-- <div>
             <button data-dropdown-toggle="user_menu" type="button" class="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" aria-expanded="false" aria-haspopup="true">
               <span class="sr-only">Open user menu</span>
               <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
             </button>
-          </div>
+          </div> -->
 
           <!--
             Dropdown menu, show/hide based on menu state.
@@ -69,13 +94,13 @@
               From: "transform opacity-100 scale-100"
               To: "transform opacity-0 scale-95"
           -->
-          <div id="user_menu" class="text-center divide-y divide-gray-100 hidden absolute right-0 z-10 mt-2 w-28 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+          <!-- <div id="user_menu" class="text-center divide-y divide-gray-100 hidden absolute right-0 z-10 mt-2 w-28 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1"> -->
             <!-- Active: "bg-gray-100", Not Active: "" -->
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Nombre_correo</a>
+            <!-- <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Nombre_correo</a>
             <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Profile</a>
             <a href="{% url 'user_settings' %}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Settings</a>
             <a href="{% url 'signout' %}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -141,12 +166,37 @@
 
         <!-- Profile dropdown -->
         <div class="relative ml-3">
-          <div>
+          <div class="flex items-center md:order-2">
+            <button type="button" class="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+              <span class="sr-only">Open user menu</span>
+              <img class="w-8 h-8 rounded-full" src="{% static 'img/Default.png' %}" alt="user photo">
+            </button>
+            <!-- Dropdown menu -->
+            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
+              <div class="px-4 py-3">
+                <span class="block text-sm text-gray-900 dark:text-white">{{user.username}}</span>
+                <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{user.email}}</span>
+              </div>
+              <ul class="py-2" aria-labelledby="user-menu-button">               
+                <li>
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Settings</a>
+                </li>              
+                <li>
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>
+                </li>
+              </ul>
+            </div>
+            <button data-collapse-toggle="mobile-menu-2" type="button" class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
+              <span class="sr-only">Open main menu</span>
+              <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+          <!-- <div>
             <button type="button" class="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
               <span class="sr-only">Open user menu</span>
               <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
             </button>
-          </div>
+          </div> -->
 
           <!--
             Dropdown menu, show/hide based on menu state.
@@ -158,12 +208,12 @@
               From: "transform opacity-100 scale-100"
               To: "transform opacity-0 scale-95"
           -->
-          <div class="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+          <!-- <div class="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1"> -->
             <!-- Active: "bg-gray-100", Not Active: "" -->
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Profile</a>
+            <!-- <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Profile</a>
             <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
             <a href="{% url 'signout' %}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

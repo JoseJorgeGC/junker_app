@@ -353,12 +353,12 @@
                                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:text-gray-400">
                                         <tr>
+                                            <th scope="col" class="px-4 py-3">Name</th>
                                             <th scope="col" class="px-4 py-3">Car Inv. Num.</th>
                                             <th scope="col" class="px-4 py-3">Car VIN</th>
                                             <th scope="col" class="px-4 py-3">Car Brand</th>
                                             <th scope="col" class="px-4 py-3">Car Model</th>
                                             <th scope="col" class="px-4 py-3">Quantity</th>
-                                            <th scope="col" class="px-4 py-3">Name</th>
                                             <th scope="col" class="px-4 py-3">Sale Date</th>
                                             <th scope="col" class="px-4 py-3">Price</th>
                                         </tr>
@@ -366,14 +366,25 @@
                                     <tbody>
                                         {% for part in parts_sold %}
                                         <tr class="border-b dark:border-gray-700">
-                                            <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{part.car.inventary_number}}</td>
+                                            {% if part.car.inventary_number == NULL %}
+                                                <td class="px-4 py-3">{{part.name}}-{{part.part_type}}</td>
+                                                <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">--</td>                                            
+                                                <td class="px-4 py-3">--</td>
+                                                <td class="px-4 py-3">--</td>
+                                                <td class="px-4 py-3">--</td>
+                                                <td class="px-4 py-3">{{part.quantity}}</td>
+                                                <td class="px-4 py-3">{{part.sold_date|date:"M, j Y"}}</td>
+                                                <td class="px-4 py-3">{{part.price}}</td>
+                                            {% else %}
+                                            <td class="px-4 py-3">{{part.name}}-{{part.part_type}}</td>
+                                            <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{part.car.inventary_number}}</td>                                            
                                             <td class="px-4 py-3">{{part.car.vin_number}}</td>
                                             <td class="px-4 py-3">{{part.car.brand.name}}</td>
                                             <td class="px-4 py-3">{{part.car.model.name}}</td>
                                             <td class="px-4 py-3">{{part.quantity}}</td>
-                                            <td class="px-4 py-3">{{part.name}}-{{part.part_type}}</td>
                                             <td class="px-4 py-3">{{part.sold_date|date:"M, j Y"}}</td>
-                                            <td class="px-4 py-3">{{part.price}}</td>                        
+                                            <td class="px-4 py-3">{{part.price}}</td>
+                                            {% endif %}                        
                                         </tr>
                                         {% endfor %}
                                     </tbody>
