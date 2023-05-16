@@ -126,3 +126,6 @@ class SoldParts(models.Model):
     add_date = models.DateField(auto_now_add=True)
     quantity = models.IntegerField(default=1)
     price = models.FloatField()
+
+    def __str__(self):
+        return f'{self.part_type} --- quantity: {self.quantity}'

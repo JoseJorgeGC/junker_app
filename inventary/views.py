@@ -178,7 +178,7 @@ def inventary(request):
     cars = Cars.objects.filter(waiting=True).order_by('-entry_date')
     pendings = JunkCars.objects.filter(waiting=True).order_by('to_junk_date')
     scratched_cars = JunkCars.objects.filter(waiting=False, out=False).order_by('-scratched_date')
-    parts_sold = Parts.objects.all().order_by('-sale_date')
+    parts_sold = SoldParts.objects.all().order_by('-sold_date')
     cars_sold = SoldCars.objects.all().order_by('-date')
     try:
         paginator = Paginator(cars, 10)
@@ -354,6 +354,156 @@ def models(request):
     return JsonResponse(list(models.values("id", "name")), safe=False)
 
 def parts_sell(request):
+    #Procesamiento de los Forms
+    if request.method == "POST":
+        #Forms Tires
+        if request.POST['form_type'] == 'tires':
+            if not (request.POST['name'] != '' and request.POST['last_name'] != '' and request.POST['dni'] != '' and request.POST['date'] != '' and request.POST['quantity'] != '' and request.POST['amount'] != ''):
+              print('Error')
+              return redirect('/parts/')
+
+            try:
+                amount = float(request.POST['amount'])
+                quantity = int(request.POST['quantity'])
+            except:
+                print('Errores numerico.')
+                return redirect('/parts/')  
+            
+            #if not (request.POST['date'] <= datetime.date.today):
+                #return redirect('/parts/')
+            #buyer = Buyers.objects.filter(dni = request.POST['dni'])
+            try:
+                buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+            except:
+                print('Comprador nuevo')
+                buyer = Buyers(name = request.POST['name'], last_name = request.POST['last_name'], dni = request.POST['dni'])
+                buyer.save()
+            print(buyer.dni)
+
+            sold_part = SoldParts(buyer = buyer, quantity = quantity, part_type = 'Tires', price = amount, sold_date = request.POST['date'], name='Tires')
+            print(sold_part)
+            sold_part.save()
+            print(request.POST['form_type'])
+        
+        #Forms Rims
+        if request.POST['form_type'] == 'rims':
+            if not (request.POST['name'] != '' and request.POST['last_name'] != '' and request.POST['dni'] != '' and request.POST['date'] != '' and request.POST['quantity'] != '' and request.POST['amount'] != ''):
+              print('Error')
+              return redirect('/parts/')
+
+            try:
+                amount = float(request.POST['amount'])
+                quantity = int(request.POST['quantity'])
+            except:
+                print('Errores numerico.')
+                return redirect('/parts/')  
+            
+            #if not (request.POST['date'] <= datetime.date.today):
+                #return redirect('/parts/')
+            #buyer = Buyers.objects.filter(dni = request.POST['dni'])
+            try:
+                buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+            except:
+                print('Comprador nuevo')
+                buyer = Buyers(name = request.POST['name'], last_name = request.POST['last_name'], dni = request.POST['dni'])
+                buyer.save()
+            print(buyer.dni)
+
+            sold_part = SoldParts(buyer = buyer, quantity = quantity, part_type = 'Rims', price = amount, sold_date = request.POST['date'], name='Rims')
+            print(sold_part)
+            sold_part.save()
+            print(request.POST['form_type'])
+
+        #Forms Catalysts
+        if request.POST['form_type'] == 'catalysts':
+            if not (request.POST['name'] != '' and request.POST['last_name'] != '' and request.POST['dni'] != '' and request.POST['date'] != '' and request.POST['quantity'] != '' and request.POST['amount'] != ''):
+              print('Error')
+              return redirect('/parts/')
+
+            try:
+                amount = float(request.POST['amount'])
+                quantity = int(request.POST['quantity'])
+            except:
+                print('Errores numerico.')
+                return redirect('/parts/')  
+            
+            #if not (request.POST['date'] <= datetime.date.today):
+                #return redirect('/parts/')
+            #buyer = Buyers.objects.filter(dni = request.POST['dni'])
+            try:
+                buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+            except:
+                print('Comprador nuevo')
+                buyer = Buyers(name = request.POST['name'], last_name = request.POST['last_name'], dni = request.POST['dni'])
+                buyer.save()
+            print(buyer.dni)
+
+            sold_part = SoldParts(buyer = buyer, quantity = quantity, part_type = 'Catalyst', price = amount, sold_date = request.POST['date'], name='Catalyst')
+            print(sold_part)
+            sold_part.save()
+            print(request.POST['form_type'])
+
+        #Forms Engines
+        if request.POST['form_type'] == 'engines':
+            if not (request.POST['name'] != '' and request.POST['last_name'] != '' and request.POST['dni'] != '' and request.POST['date'] != '' and request.POST['quantity'] != '' and request.POST['amount'] != ''):
+              print('Error')
+              return redirect('/parts/')
+
+            try:
+                amount = float(request.POST['amount'])
+                quantity = int(request.POST['quantity'])
+            except:
+                print('Errores numerico.')
+                return redirect('/parts/')  
+            
+            #if not (request.POST['date'] <= datetime.date.today):
+                #return redirect('/parts/')
+            #buyer = Buyers.objects.filter(dni = request.POST['dni'])
+            try:
+                buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+            except:
+                print('Comprador nuevo')
+                buyer = Buyers(name = request.POST['name'], last_name = request.POST['last_name'], dni = request.POST['dni'])
+                buyer.save()
+            print(buyer.dni)
+
+            sold_part = SoldParts(buyer = buyer, quantity = quantity, part_type = 'Engines', price = amount, sold_date = request.POST['date'], name='Engines')
+            print(sold_part)
+            sold_part.save()
+            print(request.POST['form_type'])
+
+        #Forms Others
+        if request.POST['form_type'] == 'others':
+            if not (request.POST['name'] != '' and request.POST['last_name'] != '' and request.POST['dni'] != '' and request.POST['date'] != '' and request.POST['part_name'] != '' and request.POST['price'] != '' and request.POST['car_id'] != ''):
+              print('Error')
+              return redirect('/parts/')
+
+            try:
+                price = float(request.POST['price'])
+                car = Cars.objects.filter(inventary_number = request.POST['car_id']).get()
+            except:
+                print('Errores numerico o ID de auto.')
+                return redirect('/parts/')  
+            
+            #if not (request.POST['date'] <= datetime.date.today):
+                #return redirect('/parts/')
+            #buyer = Buyers.objects.filter(dni = request.POST['dni'])
+            try:
+                buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+            except:
+                print('Comprador nuevo')
+                buyer = Buyers(name = request.POST['name'], last_name = request.POST['last_name'], dni = request.POST['dni'])
+                buyer.save()
+            print(buyer.dni)
+
+            sold_part = SoldParts(car = car,buyer = buyer, part_type = 'Others', price = price, sold_date = request.POST['date'], name=request.POST['part_name'])
+            print(sold_part)
+            sold_part.save()
+            print(request.POST['form_type'])
+
+        else:
+            return redirect('/parts/')
+
     return render(request, 'parts.html')
 
 def chart_prueba(request):
