@@ -357,6 +357,7 @@
                                             <th scope="col" class="px-4 py-3">Car VIN</th>
                                             <th scope="col" class="px-4 py-3">Car Brand</th>
                                             <th scope="col" class="px-4 py-3">Car Model</th>
+                                            <th scope="col" class="px-4 py-3">Quantity</th>
                                             <th scope="col" class="px-4 py-3">Name</th>
                                             <th scope="col" class="px-4 py-3">Sale Date</th>
                                             <th scope="col" class="px-4 py-3">Price</th>
@@ -369,8 +370,9 @@
                                             <td class="px-4 py-3">{{part.car.vin_number}}</td>
                                             <td class="px-4 py-3">{{part.car.brand.name}}</td>
                                             <td class="px-4 py-3">{{part.car.model.name}}</td>
-                                            <td class="px-4 py-3">{{part.name}}</td>
-                                            <td class="px-4 py-3">{{part.sale_date|date:"M, j Y"}}</td>
+                                            <td class="px-4 py-3">{{part.quantity}}</td>
+                                            <td class="px-4 py-3">{{part.name}}-{{part.part_type}}</td>
+                                            <td class="px-4 py-3">{{part.sold_date|date:"M, j Y"}}</td>
                                             <td class="px-4 py-3">{{part.price}}</td>                        
                                         </tr>
                                         {% endfor %}
