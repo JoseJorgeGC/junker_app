@@ -80,6 +80,8 @@ class JunkCars(models.Model):
     to_junk_date = models.DateField(auto_now_add = True)
     scratched_date = models.DateField(null = True)
     waiting = models.BooleanField(default = True)
+    out = models.BooleanField(default=False)
+    date_out = models.DateField(null = True)
 
     def __str__(self):
         return f'{self.car.model.name} - {self.car.brand.name} {self.car.inventary_number}'
@@ -92,14 +94,6 @@ class CarsOut(models.Model):
     def __str__(self):
         return f'{self.car.model.name} - {self.car.brand.name} {self.car.inventary_number}'
     
-class Parts(models.Model):
-    id = models.AutoField(primary_key=True)
-    part_name = models.CharField(max_length=60)
-    buyer = models.ForeignKey(Buyers, on_delete = models.CASCADE)
-    car = models.ForeignKey(Cars, on_delete = models.CASCADE)
-    date = models.DateField(auto_now_add=True)
-    sale_date = models.DateField()
-    price = models.FloatField()
 
 class RemoveParts(models.Model):
     id = models.AutoField(primary_key=True)
@@ -112,3 +106,26 @@ class RemoveParts(models.Model):
 
     def __str__(self):
         return f'Rims: {self.rims} --- Tires: {self.tires} --- Catalyst: {self.catalyst} --- Engine: {self.engine}'
+    
+
+class SoldParts(models.Model):
+    PART_TYPE = (
+        ('Tires', 'Tires'),
+        ('Rims', 'Rims'),
+        ('Engines', 'Engines'),
+        ('Catalyst', 'Catalyst'),
+        ('Others', 'Others')
+    )
+
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=60)
+    car = models.ForeignKey(Cars, on_delete=models.CASCADE, blank=True, null=True)
+    part_type = models.CharField(choices=PART_TYPE, max_length=8)
+    buyer = models.ForeignKey(Buyers, on_delete=models.CASCADE)
+    sold_date = models.DateField()
+    add_date = models.DateField(auto_now_add=True)
+    quantity = models.IntegerField(default=1)
+    price = models.FloatField()
+
+    def __str__(self):
+        return f'{self.part_type} --- quantity: {self.quantity}'

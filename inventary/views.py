@@ -8,6 +8,11 @@ from django.db import IntegrityError
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.http import Http404
+from django.db.models import Q
+from django.utils import timezone
+from . import utils
+import pandas as pd
+import numpy as np
 from .models import *
 from .entry_functions import *
 from .forms import *
@@ -70,11 +75,97 @@ def signup(request):
     return render(request, 'signup.html', context)
 
 
+#404 Error
+def error404(request):
+    return render(request, '404.html')
+
+
 #Views
 @login_required
 def home(request):
-    junkcar_counter = JunkCars.objects.filter(waiting = True).count()
-    context = {'junkcar_counter': junkcar_counter,'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date')}
+    today = timezone.localtime(timezone.now())
+    first_day = utils.get_first_day(today.year, today.month)
+    context = {}
+    #Data for counters
+    pendings_for_junk = JunkCars.objects.filter(waiting = True).count()
+    total_junked_cars = JunkCars.objects.filter(scratched_date__isnull = False).count()
+    
+    remove_parts = RemoveParts.objects.all()
+    remove_parts_last_month = RemoveParts.objects.filter(date__range=(first_day, today))
+    total_rims_and_tires = 0
+    rims_and_tires_last_month = 0
+    total_catalyst = 0
+    total_engines = 0
+    total_rims = 0
+    total_tires = 0 
+
+    for parts in remove_parts:
+        if parts.date > first_day:
+            rims_and_tires_last_month += parts.rims + parts.tires
+        total_rims_and_tires += parts.rims + parts.tires
+        total_catalyst += parts.catalyst
+        total_engines += parts.engine
+        total_tires += parts.tires
+        total_rims += parts.rims
+
+    total_cars = Cars.objects.filter(waiting = True).count()
+    total_cars += JunkCars.objects.filter(waiting=True).count()
+
+    #Data for Inventary Chart
+    context |= {'total_cars': total_cars, 'total_engines': total_engines, 'total_rims': total_rims, 'total_tires': total_tires, 'total_catalyst': total_catalyst}
+    context |= {'total_rims_and_tires': total_rims_and_tires, 'rims_and_tires_last_month': rims_and_tires_last_month}
+    context |= {'pendings_for_junk': pendings_for_junk}
+    context |= {'total_junked_cars': total_junked_cars}
+
+
+    #Data for All profit chart
+    cars_data = []
+    categories_all_profit = []
+    year = []
+    month = []
+    for month_ in range(8, -1, -1):
+        month_to_function = today.month - month_
+        year_ = today.year
+        if month_to_function <=0:
+            month_to_function += 12
+            year_ = today.year - 1
+        year.append(year_)
+        month.append(month_to_function)
+        categories_all_profit.append(utils.return_month_name(month_to_function))
+    print(categories_all_profit)
+    print(year)
+
+    context |= {'categories_all_profit': categories_all_profit}
+    cars1 = SoldCars.objects.filter(date__month = month[0], date__year = year[0]).count()
+    cars_data.append(cars1)
+
+    cars2 = SoldCars.objects.filter(date__month = month[1], date__year = year[1]).count()
+    cars_data.append(cars2)
+
+    cars3 = SoldCars.objects.filter(date__month = month[2], date__year = year[2]).count()
+    cars_data.append(cars3)
+
+    cars4 = SoldCars.objects.filter(date__month = month[3], date__year = year[3]).count()
+    cars_data.append(cars4)
+
+    cars5 = SoldCars.objects.filter(date__month = month[4], date__year = year[4]).count()
+    cars_data.append(cars5)
+
+    cars6 = SoldCars.objects.filter(date__month = month[5], date__year = year[5]).count()
+    cars_data.append(cars6)
+
+    cars7 = SoldCars.objects.filter(date__month = month[6], date__year = year[6]).count()
+    cars_data.append(cars7)
+
+    cars8 = SoldCars.objects.filter(date__month = month[7], date__year = year[7]).count()
+    cars_data.append(cars8)
+
+    cars9 = SoldCars.objects.filter(date__month = month[8], date__year = year[8]).count()
+    cars_data.append(cars9)
+
+    context |= {'cars_data': cars_data}
+
+    
     return render(request, 'index.html', context)
 
 @login_required
@@ -83,15 +174,21 @@ def inventary(request):
     cars = Cars.objects.filter(waiting = True).all()
     page = request.GET.get('page', 1)
 
+    #Data 
+    cars = Cars.objects.filter(waiting=True).order_by('-entry_date')
+    pendings = JunkCars.objects.filter(waiting=True).order_by('to_junk_date')
+    scratched_cars = JunkCars.objects.filter(waiting=False, out=False).order_by('-scratched_date')
+    parts_sold = SoldParts.objects.all().order_by('-sold_date')
+    cars_sold = SoldCars.objects.all().order_by('-date')
     try:
-        paginator = Paginator(cars, 1)
+        paginator = Paginator(cars, 10)
         cars = paginator.page(page)
     except:
         raise Http404
 
 
     junkcar_counter = JunkCars.objects.filter(waiting = True).count()
-    context = {'junkcar_counter': junkcar_counter,'junkcars': JunkCars.objects.filter(waiting = True),'cars': Cars.objects.filter(waiting = True).order_by('-entry_date'), 'cars':cars, 'paginator':paginator, 'car_counter':car_counter}
+    context = {'junkcar_counter': junkcar_counter,'junkcars': pendings,'cars': cars, 'scratched_cars': scratched_cars, 'parts_sold': parts_sold, 'cars_sold': cars_sold,'paginator':paginator, 'car_counter':car_counter}
 
     return render(request, 'inventary.html', context)
 
@@ -101,14 +198,13 @@ def entry(request):
     validate = True
     error_messages = []
     success_messages = []
+    context = {'form': CarsForm(), 'errors': error_messages, 'success': success_messages}
     if request.method == "GET":
-        context = {'form': CarsForm(), 'errors': error_messages}
         return render(request, 'entry.html', context)
     
     form = CarsForm(request.POST, request.FILES)
     if not form.is_valid():
         error_messages.append('Complete all data')
-        context = {'form': CarsForm(), 'errors': error_messages}
         return render(request, 'entry.html', context)
     
     entry_car = form.save(commit = False)
@@ -118,14 +214,12 @@ def entry(request):
         for car in cars:
             if car.inventary_number == entry_car.inventary_number:
                 error_messages.append('Inventary number already exist.')
-                context = {'form': CarsForm(), 'errors': error_messages}
                 return render(request, 'entry.html', context) 
 
     title_sufix = entry_car.title.name.split('.')[-1]
     if not (str.lower(title_sufix) == 'pdf'):
         error_messages.append('Title: Unknow file type. Select a PDF file.')
         messages.warning(request, "Error select a PDF file.")
-        context = {'form': CarsForm(), 'errors': error_messages}
         return render(request, 'entry.html', context)   
         
     entry_car.title = rename_file(entry_car.title, entry_car.inventary_number, entry_car.entry_date)
@@ -134,23 +228,20 @@ def entry(request):
     image_sufix = entry_car.image.name.split('.')[-1]
     if not (str.lower(image_sufix) == 'jpeg' or str.lower(image_sufix) == 'jpg' or str.lower(image_sufix) == 'png'):
         error_messages.append('Image: Unknow image type. Select a JPG or PNG file.')
-        context = {'form': CarsForm(), 'errors': error_messages}
         return render(request, 'entry.html', context)
     
     entry_car.image = rename_file(entry_car.image, entry_car.inventary_number, entry_car.entry_date)
     print(entry_car.year)
     try:
         year = int(entry_car.year)
-        if not (year <= 2023 and year >= 1940):
+        if not ((year <= 2023) and (year >= 1940)):
             print('Error if year')
-            error_messages.append('Year: Enter a valid year(1959-today).')
-            context = {'form': CarsForm(), 'errors': error_messages}
+            error_messages.append('Year: Enter a valid year(1940-today).')
             return render(request, 'entry.html', context)
 
     except:
         print('error except')
         error_messages.append('Year: Enter a valid year(1940-today).')
-        context = {'form': CarsForm(), 'errors': error_messages}
         #messages.warning(request, "Error enter a valid year")
         return render(request, 'entry.html', context)
 
@@ -159,8 +250,6 @@ def entry(request):
     success_messages.append(f'Car {entry_car.inventary_number} added successfully.')
     #probando swet_alert
     messages.success(request, "Car added successfully")
-    context = {'form': CarsForm(), 'errors': error_messages, 'success': success_messages}
-
     return render(request, 'entry.html', context)
 
 @login_required
@@ -171,14 +260,18 @@ def junk(request):
 #SQL Operations
 @login_required
 def sell(request, id):
-    car = Cars.objects.get(id=id)
+    try:
+        car = Cars.objects.get(id=id)
+    except:
+        return redirect('/404/')
+    
     if request.method == "POST":
         buyer = Buyers(name = str(request.POST['name']), last_name = request.POST['last_name'], dni = request.POST['dni'], phone_number = request.POST['phone_number'] )
         sold_car = SoldCars(car = car, buyer = buyer, price = request.POST['price'], date = request.POST['date'])
-        print(sold_car)
-        print(buyer)
         car.waiting = False
         car.save()
+        buyer.save()
+        sold_car.save()
         try:
             junk = JunkCars.objects.get(car = car)
             junk.waiting = False
@@ -193,14 +286,25 @@ def sell(request, id):
 
 @login_required
 def delete(request, id):
-    car = Cars.objects.get(id = id)
+    try:
+        car = Cars.objects.get(id = id)
+    except:
+        return redirect('/404/')
+    
     car.delete()
     messages.success(request, "The car has been deleted.")
     return redirect('/inventary/')
 
 @login_required
 def to_junk(request, id):
-    car = Cars.objects.get(id = id)
+    try:
+        car = Cars.objects.get(id = id)
+    except:
+        return redirect('/404/')
+    
+    if car.waiting == False:
+        return redirect('/inventary/')
+    
     car.waiting = False
     car.save()
     car_to_junk = JunkCars(car = car)
@@ -212,10 +316,10 @@ def scratched(request, id):
     try:
         junkcar = JunkCars.objects.get(id = id)
     except:
-       return redirect('/inventary/')
+       return redirect('/404/')
     
     if not junkcar.waiting:
-        return redirect('/inventary/')
+        return redirect('/404/')
 
     if request.method == "POST":
         try:
@@ -250,8 +354,164 @@ def models(request):
     return JsonResponse(list(models.values("id", "name")), safe=False)
 
 def parts_sell(request):
+    #Procesamiento de los Forms
+    if request.method == "POST":
+        #Forms Tires
+        if request.POST['form_type'] == 'tires':
+            if not (request.POST['name'] != '' and request.POST['last_name'] != '' and request.POST['dni'] != '' and request.POST['date'] != '' and request.POST['quantity'] != '' and request.POST['amount'] != ''):
+              print('Error')
+              return redirect('/parts/')
+
+            try:
+                amount = float(request.POST['amount'])
+                quantity = int(request.POST['quantity'])
+            except:
+                print('Errores numerico.')
+                return redirect('/parts/')  
+            
+            #if not (request.POST['date'] <= datetime.date.today):
+                #return redirect('/parts/')
+            #buyer = Buyers.objects.filter(dni = request.POST['dni'])
+            try:
+                buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+            except:
+                print('Comprador nuevo')
+                buyer = Buyers(name = request.POST['name'], last_name = request.POST['last_name'], dni = request.POST['dni'])
+                buyer.save()
+            print(buyer.dni)
+
+            sold_part = SoldParts(buyer = buyer, quantity = quantity, part_type = 'Tires', price = amount, sold_date = request.POST['date'], name='Tires')
+            print(sold_part)
+            sold_part.save()
+            print(request.POST['form_type'])
+        
+        #Forms Rims
+        if request.POST['form_type'] == 'rims':
+            if not (request.POST['name'] != '' and request.POST['last_name'] != '' and request.POST['dni'] != '' and request.POST['date'] != '' and request.POST['quantity'] != '' and request.POST['amount'] != ''):
+              print('Error')
+              return redirect('/parts/')
+
+            try:
+                amount = float(request.POST['amount'])
+                quantity = int(request.POST['quantity'])
+            except:
+                print('Errores numerico.')
+                return redirect('/parts/')  
+            
+            #if not (request.POST['date'] <= datetime.date.today):
+                #return redirect('/parts/')
+            #buyer = Buyers.objects.filter(dni = request.POST['dni'])
+            try:
+                buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+            except:
+                print('Comprador nuevo')
+                buyer = Buyers(name = request.POST['name'], last_name = request.POST['last_name'], dni = request.POST['dni'])
+                buyer.save()
+            print(buyer.dni)
+
+            sold_part = SoldParts(buyer = buyer, quantity = quantity, part_type = 'Rims', price = amount, sold_date = request.POST['date'], name='Rims')
+            print(sold_part)
+            sold_part.save()
+            print(request.POST['form_type'])
+
+        #Forms Catalysts
+        if request.POST['form_type'] == 'catalysts':
+            if not (request.POST['name'] != '' and request.POST['last_name'] != '' and request.POST['dni'] != '' and request.POST['date'] != '' and request.POST['quantity'] != '' and request.POST['amount'] != ''):
+              print('Error')
+              return redirect('/parts/')
+
+            try:
+                amount = float(request.POST['amount'])
+                quantity = int(request.POST['quantity'])
+            except:
+                print('Errores numerico.')
+                return redirect('/parts/')  
+            
+            #if not (request.POST['date'] <= datetime.date.today):
+                #return redirect('/parts/')
+            #buyer = Buyers.objects.filter(dni = request.POST['dni'])
+            try:
+                buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+            except:
+                print('Comprador nuevo')
+                buyer = Buyers(name = request.POST['name'], last_name = request.POST['last_name'], dni = request.POST['dni'])
+                buyer.save()
+            print(buyer.dni)
+
+            sold_part = SoldParts(buyer = buyer, quantity = quantity, part_type = 'Catalyst', price = amount, sold_date = request.POST['date'], name='Catalyst')
+            print(sold_part)
+            sold_part.save()
+            print(request.POST['form_type'])
+
+        #Forms Engines
+        if request.POST['form_type'] == 'engines':
+            if not (request.POST['name'] != '' and request.POST['last_name'] != '' and request.POST['dni'] != '' and request.POST['date'] != '' and request.POST['quantity'] != '' and request.POST['amount'] != ''):
+              print('Error')
+              return redirect('/parts/')
+
+            try:
+                amount = float(request.POST['amount'])
+                quantity = int(request.POST['quantity'])
+            except:
+                print('Errores numerico.')
+                return redirect('/parts/')  
+            
+            #if not (request.POST['date'] <= datetime.date.today):
+                #return redirect('/parts/')
+            #buyer = Buyers.objects.filter(dni = request.POST['dni'])
+            try:
+                buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+            except:
+                print('Comprador nuevo')
+                buyer = Buyers(name = request.POST['name'], last_name = request.POST['last_name'], dni = request.POST['dni'])
+                buyer.save()
+            print(buyer.dni)
+
+            sold_part = SoldParts(buyer = buyer, quantity = quantity, part_type = 'Engines', price = amount, sold_date = request.POST['date'], name='Engines')
+            print(sold_part)
+            sold_part.save()
+            print(request.POST['form_type'])
+
+        #Forms Others
+        if request.POST['form_type'] == 'others':
+            if not (request.POST['name'] != '' and request.POST['last_name'] != '' and request.POST['dni'] != '' and request.POST['date'] != '' and request.POST['part_name'] != '' and request.POST['price'] != '' and request.POST['car_id'] != ''):
+              print('Error')
+              return redirect('/parts/')
+
+            try:
+                price = float(request.POST['price'])
+                car = Cars.objects.filter(inventary_number = request.POST['car_id']).get()
+            except:
+                print('Errores numerico o ID de auto.')
+                return redirect('/parts/')  
+            
+            #if not (request.POST['date'] <= datetime.date.today):
+                #return redirect('/parts/')
+            #buyer = Buyers.objects.filter(dni = request.POST['dni'])
+            try:
+                buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+            except:
+                print('Comprador nuevo')
+                buyer = Buyers(name = request.POST['name'], last_name = request.POST['last_name'], dni = request.POST['dni'])
+                buyer.save()
+            print(buyer.dni)
+
+            sold_part = SoldParts(car = car,buyer = buyer, part_type = 'Others', price = price, sold_date = request.POST['date'], name=request.POST['part_name'])
+            print(sold_part)
+            sold_part.save()
+            print(request.POST['form_type'])
+
+        else:
+            return redirect('/parts/')
+
     return render(request, 'parts.html')
 
 def chart_prueba(request):
     numeros = [20, 30, 40, 100, 70, 90]
     return render(request, 'chart_mio.html', {'numeros':numeros})
+
+def profile(request):
+    return render(request, 'profile.html')
+
+def user_settings(request):
+    return render(request, 'user_settings.html')

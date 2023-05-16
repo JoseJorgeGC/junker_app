@@ -12,61 +12,300 @@
           </div>
         </div>
         <div class="mt-5 md:col-span-2 md:mt-0 shadow-2xl mb-5">
-          <form action="#" method="POST">
-            <div class="overflow-hidden shadow sm:rounded-md">
-              <div class="bg-white px-4 py-5 sm:p-6">
-                <div class="grid grid-cols-6 gap-6">    
-                  <div class="col-span-6 sm:col-span-4">
-                    <label for="first-name" class="block text-sm font-medium leading-6 text-gray-900">Name of the Part:</label>
-                    <input type="text" name="first-part-name" id="part-name" autocomplete="given-name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                  </div>
-    
-                  <div class="col-span-6 sm:col-span-2">
-                    <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Price</label>
-                    <input type="number" name="part-price" id="part-price" autocomplete="family-name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                  </div>
-                  <div class="col-span-6 sm:col-span-2">
-                    <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Name of Client:</label>
-                    <input type="text" name="last-name" id="last-name" autocomplete="family-name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                  </div>
-    
-                  <div class="col-span-6 sm:col-span-2">
-                    <label for="email-address" class="block text-sm font-medium leading-6 text-gray-900">Last Name:</label>
-                    <input type="text" name="year" id="car-year" autocomplete="year" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                  </div>
-                  <div class="col-span-6 sm:col-span-2">
-                    <label for="email-address" class="block text-sm font-medium leading-6 text-gray-900">DNI:</label>
-                    <input type="text" name="year" id="car-year" autocomplete="year" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                  </div>
-                  <div class="col-span-6 sm:col-span-3">
-                    <label for="email-address" class="block text-sm font-medium leading-6 text-gray-900">Sale Date:</label>
-                    <input type="date" name="date" id="date" autocomplete="date" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                  </div>
-    
-                  <div class="col-span-6 sm:col-span-3">
-                    <label for="country" class="block text-sm font-medium leading-6 text-gray-900">Condition</label>
-                    <select id="country" name="country" autocomplete="country-name" class="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                      <option>Good</option>
-                      <option>Medium</option>
-                      <option>Bad</option>
-                    </select>
-                  </div>
-                     
+          <!-- Select para seleccionar tipo parte a vender -->
+          <label for="countries" class="text-center block mb-2 mt-4 text-lg font-medium text-gray-900 dark:text-white">Select what you want to sell</label>
+            <div class="justify-center">
+              <!-- Tabs  -->
+              <div class="flex justify-center mb-4 border-b border-gray-200 dark:border-gray-700 ">
+                <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+                    <li class="mr-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Tires</button>
+                    </li>
+                    <li class="mr-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Rims</button>
+                    </li>
+                    <li class="mr-2" role="presentation">
+                      <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="engines-tab" data-tabs-target="#engines" type="button" role="tab" aria-controls="engines" aria-selected="false">Engines</button>
+                    </li>
+                    <li class="mr-2" role="presentation">
+                      <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="catalizt-tab" data-tabs-target="#catalizt" type="button" role="tab" aria-controls="catalizt" aria-selected="false">Catalizt</button>
+                    </li>
+
+                    <li class="mr-2" role="presentation">
+                      <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Other Parts</button>
+                  </li>
+                    
+                </ul>
+              </div>
+              <!-- Fin Tabs -->
+
+              <!-- Contenido de Tabs -->
+              <div id="myTabContent">
+                <!-- Gomas -->
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                  <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" value="tires" name="form_type">
+                    <div class="overflow-hidden shadow sm:rounded-md">
+                        <div class="bg-white px-4 py-5 sm:p-6">
+                          <!-- Vender Gomas -->
+                          <div id="showtires" class="grid grid-cols-6 gap-6">
+                            <div class="col-span-6 sm:col-span-2">
+                              <label for="quantity" class="block text-sm font-medium leading-6 text-gray-900">Quantity of tires to sell:</label>
+                              <input type="number" name="quantity" id="quantity" autocomplete="quantity" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" min="1">
+                            </div>
+              
+                            <div class="col-span-6 sm:col-span-2">
+                              <label for="amount" class="block text-sm font-medium leading-6 text-gray-900">Amount:</label>
+                              <input type="number" name="amount" id="amount" autocomplete="family-name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" min="1">
+                            </div>
+                            <div class="col-span-6 sm:col-span-2">
+                              <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Name of Client:</label>
+                              <input type="text" name="name" id="name" autocomplete="family-name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            </div>
+              
+                            <div class="col-span-6 sm:col-span-2">
+                              <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Last Name:</label>
+                              <input type="text" name="last_name" id="last-name" autocomplete="year" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            </div>
+                            <div class="col-span-6 sm:col-span-2">
+                              <label for="dni" class="block text-sm font-medium leading-6 text-gray-900">DNI:</label>
+                              <input type="text" name="dni" id="dni" autocomplete="year" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            </div>
+                            <div class="col-span-6 sm:col-span-2">
+                              <label for="date" class="block text-sm font-medium leading-6 text-gray-900">Sale Date:</label>
+                              <input type="date" name="date" id="date" autocomplete="date" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            </div>
+                              
+                          </div>
+                          <!-- Fin vender gomas -->
+                        </div>
+                        <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
+                          <button type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Sell</button>
+                        </div>
+                    </div>
+                  </form>
                 </div>
+                <!-- Fin de Gomas -->
+
+                <!-- Llantas -->
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                  <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" value="rims" name="form_type">
+                    <div class="overflow-hidden shadow sm:rounded-md">
+                        <div class="bg-white px-4 py-5 sm:p-6">
+                          <!-- Vender Llantas -->
+                          <div id="showrims" class="grid grid-cols-6 gap-6">
+                            <div class="col-span-6 sm:col-span-2">
+                              <label for="quantity" class="block text-sm font-medium leading-6 text-gray-900">Quantity of rims to sell:</label>
+                              <input type="number" name="quantity" id="quantity" autocomplete="quantity" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" min="1">
+                            </div>
+              
+                            <div class="col-span-6 sm:col-span-2">
+                              <label for="amount" class="block text-sm font-medium leading-6 text-gray-900">Amount:</label>
+                              <input type="number" name="amount" id="amount" autocomplete="amount" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" min="1">
+                            </div>
+                            <div class="col-span-6 sm:col-span-2">
+                              <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Name of Client:</label>
+                              <input type="text" name="name" id="name" autocomplete="name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            </div>
+              
+                            <div class="col-span-6 sm:col-span-2">
+                              <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Last Name:</label>
+                              <input type="text" name="last_name" id="last-name" autocomplete="last-name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            </div>
+                            <div class="col-span-6 sm:col-span-2">
+                              <label for="dni" class="block text-sm font-medium leading-6 text-gray-900">DNI:</label>
+                              <input type="text" name="dni" id="dni" autocomplete="dni" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            </div>
+                            <div class="col-span-6 sm:col-span-2">
+                              <label for="date" class="block text-sm font-medium leading-6 text-gray-900">Sale Date:</label>
+                              <input type="date" name="date" id="date" autocomplete="date" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            </div>
+                              
+                          </div>
+                          <!-- Fin vender Llantas -->
+                        </div>
+                        <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
+                          <button type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Sell</button>
+                        </div>
+                    </div>
+                  </form>
+
+                </div>
+                <!-- Fin de Llantas -->
+
+                <!-- Motores -->
+                  <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="engines" role="tabpanel" aria-labelledby="engines-tab">
+                    <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" value="engines" name="form_type">
+                      <div class="overflow-hidden shadow sm:rounded-md">
+                          <div class="bg-white px-4 py-5 sm:p-6">
+                            <!-- Vender Gomas -->
+                            <div id="showtires" class="grid grid-cols-6 gap-6">
+                              <div class="col-span-6 sm:col-span-2">
+                                <label for="quantity" class="block text-sm font-medium leading-6 text-gray-900">Quantity of engines to sell:</label>
+                                <input type="number" name="quantity" id="quantity" autocomplete="quantity" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" min="1">
+                              </div>
+                
+                              <div class="col-span-6 sm:col-span-2">
+                                <label for="amount" class="block text-sm font-medium leading-6 text-gray-900">Amount:</label>
+                                <input type="number" name="amount" id="amount" autocomplete="amount" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" min="1">
+                              </div>
+                              <div class="col-span-6 sm:col-span-2">
+                                <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Name of Client:</label>
+                                <input type="text" name="name" id="name" autocomplete="name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                              </div>
+                
+                              <div class="col-span-6 sm:col-span-2">
+                                <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Last Name:</label>
+                                <input type="text" name="last_name" id="last-name" autocomplete="year" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                              </div>
+                              <div class="col-span-6 sm:col-span-2">
+                                <label for="dni" class="block text-sm font-medium leading-6 text-gray-900">DNI:</label>
+                                <input type="text" name="dni" id="dni" autocomplete="dni" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                              </div>
+                              <div class="col-span-6 sm:col-span-2">
+                                <label for="date" class="block text-sm font-medium leading-6 text-gray-900">Sale Date:</label>
+                                <input type="date" name="date" id="date" autocomplete="date" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                              </div>
+                                
+                            </div>
+                            <!-- Fin vender gomas -->
+                          </div>
+                          <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
+                            <button type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Sell</button>
+                          </div>
+                      </div>
+                    </form>
+                  </div>
+                <!-- Fin Motores -->
+
+                <!-- Catalizadores -->
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="catalizt" role="tabpanel" aria-labelledby="catalizt-tab">
+                  <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" value="catalysts" name="form_type">
+                    <div class="overflow-hidden shadow sm:rounded-md">
+                        <div class="bg-white px-4 py-5 sm:p-6">
+                          <!-- Vender Gomas -->
+                          <div id="showtires" class="grid grid-cols-6 gap-6">
+                            <div class="col-span-6 sm:col-span-2">
+                              <label for="quantity" class="block text-sm font-medium leading-6 text-gray-900">Quantity of catalizt to sell:</label>
+                              <input type="number" name="quantity" id="quantity" autocomplete="quantity" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" min="1">
+                            </div>
+              
+                            <div class="col-span-6 sm:col-span-2">
+                              <label for="amount" class="block text-sm font-medium leading-6 text-gray-900">Amount:</label>
+                              <input type="number" name="amount" id="amount" autocomplete="amount" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" min="1">
+                            </div>
+                            <div class="col-span-6 sm:col-span-2">
+                              <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Name of Client:</label>
+                              <input type="text" name="name" id="name" autocomplete="name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            </div>
+              
+                            <div class="col-span-6 sm:col-span-2">
+                              <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Last Name:</label>
+                              <input type="text" name="last_name" id="last-name" autocomplete="year" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            </div>
+                            <div class="col-span-6 sm:col-span-2">
+                              <label for="dni" class="block text-sm font-medium leading-6 text-gray-900">DNI:</label>
+                              <input type="text" name="dni" id="dni" autocomplete="year" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            </div>
+                            <div class="col-span-6 sm:col-span-2">
+                              <label for="date" class="block text-sm font-medium leading-6 text-gray-900">Sale Date:</label>
+                              <input type="date" name="date" id="date" autocomplete="date" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            </div>
+                              
+                          </div>
+                          <!-- Fin vender gomas -->
+                        </div>
+                        <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
+                          <button type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Sell</button>
+                        </div>
+                    </div>
+                  </form>
+                </div>
+              <!-- Fin Catalizadores -->
+
+               <!-- Demas Partes -->
+               <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                  
+                <form action="" method="POST">
+                  {% csrf_token %}
+                  <input type="hidden" value="others" name="form_type">
+                  <div class="overflow-hidden shadow sm:rounded-md">
+                    <div class="bg-white px-4 py-5 sm:p-6">
+      
+                      <!-- Vender parte cualquiera del carro -->
+                      <div id="showparts" class="grid grid-cols-6 gap-6">   
+       
+                        <div class="col-span-6 sm:col-span-3">
+                          <label for="part-name" class="block text-sm font-medium leading-6 text-gray-900">Name of the Part:</label>
+                          <input type="text" name="part_name" id="part-name" autocomplete="part-name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-2">
+                          <label for="car-id" class="block text-sm font-medium leading-6 text-gray-900">Car ID</label>
+                          <input type="text" name="car_id" id="car-id" autocomplete="car-id" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        </div>
+          
+                        <div class="col-span-6 sm:col-span-1">
+                          <label for="price" class="block text-sm font-medium leading-6 text-gray-900">Price</label>
+                          <input type="number" name="price" id="price" autocomplete="price" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        </div>
+                        <div class="col-span-6 sm:col-span-2">
+                          <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Name of Client:</label>
+                          <input type="text" name="name" id="name" autocomplete="name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        </div>
+          
+                        <div class="col-span-6 sm:col-span-2">
+                          <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Last Name:</label>
+                          <input type="text" name="last_name" id="last-name" autocomplete="last-name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        </div>
+                        <div class="col-span-6 sm:col-span-2">
+                          <label for="dni" class="block text-sm font-medium leading-6 text-gray-900">DNI:</label>
+                          <input type="text" name="dni" id="dni" autocomplete="dni" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        </div>
+                        <div class="col-span-6 sm:col-span-3">
+                          <label for="date" class="block text-sm font-medium leading-6 text-gray-900">Sale Date:</label>
+                          <input type="date" name="date" id="date" autocomplete="date" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        </div>
+          
+                       <!-- <div class="col-span-6 sm:col-span-3">
+                          <label for="condition" class="block text-sm font-medium leading-6 text-gray-900">Condition</label>
+                          <select id="condition" name="part_condition" autocomplete="condition" class="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            <option>Good</option>
+                            <option>Medium</option>
+                            <option>Bad</option>
+                          </select>
+                        </div> -->
+                           
+                      </div>
+                      <!-- Fin de vender parte cualquiera del carro -->
+      
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
+                      <button type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Sell</button>
+                    </div>
+                  </div>
+                </form>
 
               </div>
-              <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
-                <button type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Sell</button>
+              <!-- Fin Demas Partes -->
+                
               </div>
+              <!-- Fin de contenido Tabs -->
             </div>
-          </form>
         </div>
       </div>
     </div>
   </div>
-
+  <script src="{% static 'assets/js/plugins/parts.js' %}"></script>
 {% endblock %}
-  
+
     
 
 </body>
