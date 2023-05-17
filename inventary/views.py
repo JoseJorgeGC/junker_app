@@ -547,3 +547,45 @@ def profile(request):
 
 def user_settings(request):
     return render(request, 'user_settings.html')
+
+def inventary_cars(request):
+    car_counter = Cars.objects.filter(waiting = True).count()
+    cars = Cars.objects.filter(waiting = True).all()
+    page = request.GET.get('page', 1)
+
+    cars = Cars.objects.filter(waiting=True).order_by('-entry_date')
+    try:
+        paginator = Paginator(cars, 10)
+        cars = paginator.page(page)
+    except:
+        raise Http404
+    
+    context = {'cars': cars,'paginator':paginator, 'car_counter':car_counter}
+
+    return render(request, 'inventary_cars.html', context)
+
+def inventary_pendings(request):
+    pendings = JunkCars.objects.filter(waiting=True).order_by('to_junk_date')
+
+    junkcar_counter = JunkCars.objects.filter(waiting = True).count()
+    context = {'junkcars': pendings}
+
+    return render(request, 'inventary_pendings.html', context)
+
+def inventary_junked(request):
+    scratched_cars = JunkCars.objects.filter(waiting=False, out=False).order_by('-scratched_date')
+
+    context = {'scratched_cars': scratched_cars}
+    return render(request, 'inventary_junked.html', context)
+
+def inventary_parts(request):
+    parts_sold = SoldParts.objects.all().order_by('-sold_date')
+    context = {'parts_sold': parts_sold}
+
+    return render(request, 'inventary_parts.html', context)
+
+def inventary_cars_sold(request):
+    cars_sold = SoldCars.objects.all().order_by('-date')
+    context = {'cars_sold': cars_sold}
+
+    return render(request, 'inventary_cars_sold.html', context)
