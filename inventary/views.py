@@ -331,11 +331,23 @@ def scratched(request, id):
             return render(request, 'junk.html', context)
         
         junkcar.scratched_date = datetime.date.today()
+        
+        try:
+            stock = Stock.objects.get()
+        except:
+            stock = Stock()
+
         if 'engine' in request.POST:
             engine = True
+            stock.engines += 1
         else:
             engine = False
 
+        stock.tires += int(request.POST['tires'])
+        stock.rims += int(request.POST['rims'])
+        stock.catalysts += int(request.POST['catalyst'])
+        stock.scratched_cars += 1
+        stock.save()
         remove_parts = RemoveParts(car = junkcar.car, rims = request.POST['rims'], tires = request.POST['tires'], catalyst = request.POST['catalyst'], engine = engine)
         remove_parts.save()
         junkcar.waiting = False
@@ -354,6 +366,10 @@ def models(request):
     return JsonResponse(list(models.values("id", "name")), safe=False)
 
 def parts_sell(request):
+    try:
+        stock = Stock.objects.get()
+    except:
+        return redirect('/inventary/')
     #Procesamiento de los Forms
     if request.method == "POST":
         #Forms Tires
@@ -369,6 +385,8 @@ def parts_sell(request):
                 print('Errores numerico.')
                 return redirect('/parts/')  
             
+            if not quantity <= stock.tires:
+                return redirect('/inventary/')
             #if not (request.POST['date'] <= datetime.date.today):
                 #return redirect('/parts/')
             #buyer = Buyers.objects.filter(dni = request.POST['dni'])
@@ -383,6 +401,8 @@ def parts_sell(request):
             sold_part = SoldParts(buyer = buyer, quantity = quantity, part_type = 'Tires', price = amount, sold_date = request.POST['date'], name='Tires')
             print(sold_part)
             sold_part.save()
+            stock.tires -= quantity
+            stock.save()
             print(request.POST['form_type'])
         
         #Forms Rims
@@ -398,6 +418,8 @@ def parts_sell(request):
                 print('Errores numerico.')
                 return redirect('/parts/')  
             
+            if not quantity <= stock.rims:
+                return redirect('/inventary/')
             #if not (request.POST['date'] <= datetime.date.today):
                 #return redirect('/parts/')
             #buyer = Buyers.objects.filter(dni = request.POST['dni'])
@@ -412,6 +434,8 @@ def parts_sell(request):
             sold_part = SoldParts(buyer = buyer, quantity = quantity, part_type = 'Rims', price = amount, sold_date = request.POST['date'], name='Rims')
             print(sold_part)
             sold_part.save()
+            stock.rims -= quantity
+            stock.save()
             print(request.POST['form_type'])
 
         #Forms Catalysts
@@ -427,6 +451,8 @@ def parts_sell(request):
                 print('Errores numerico.')
                 return redirect('/parts/')  
             
+            if not quantity <= stock.tires:
+                return redirect('/inventary/')
             #if not (request.POST['date'] <= datetime.date.today):
                 #return redirect('/parts/')
             #buyer = Buyers.objects.filter(dni = request.POST['dni'])
@@ -441,6 +467,8 @@ def parts_sell(request):
             sold_part = SoldParts(buyer = buyer, quantity = quantity, part_type = 'Catalyst', price = amount, sold_date = request.POST['date'], name='Catalyst')
             print(sold_part)
             sold_part.save()
+            stock.catalysts -= quantity
+            stock.save()
             print(request.POST['form_type'])
 
         #Forms Engines
@@ -456,6 +484,8 @@ def parts_sell(request):
                 print('Errores numerico.')
                 return redirect('/parts/')  
             
+            if not quantity <= stock.engines:
+                return redirect('/inventary/')
             #if not (request.POST['date'] <= datetime.date.today):
                 #return redirect('/parts/')
             #buyer = Buyers.objects.filter(dni = request.POST['dni'])
@@ -470,6 +500,8 @@ def parts_sell(request):
             sold_part = SoldParts(buyer = buyer, quantity = quantity, part_type = 'Engines', price = amount, sold_date = request.POST['date'], name='Engines')
             print(sold_part)
             sold_part.save()
+            stock.engines -= quantity
+            stock.save()
             print(request.POST['form_type'])
 
         #Forms Others
@@ -503,8 +535,8 @@ def parts_sell(request):
 
         else:
             return redirect('/parts/')
-
-    return render(request, 'parts.html')
+    context = {'stock': stock}
+    return render(request, 'parts.html', context)
 
 def chart_prueba(request):
     numeros = [20, 30, 40, 100, 70, 90]
