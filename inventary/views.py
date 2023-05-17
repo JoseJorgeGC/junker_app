@@ -181,7 +181,7 @@ def inventary(request):
     parts_sold = SoldParts.objects.all().order_by('-sold_date')
     cars_sold = SoldCars.objects.all().order_by('-date')
     try:
-        paginator = Paginator(cars, 10)
+        paginator = Paginator(cars, 1)
         cars = paginator.page(page)
     except:
         raise Http404
@@ -548,6 +548,7 @@ def profile(request):
 def user_settings(request):
     return render(request, 'user_settings.html')
 
+#Tabla Cars
 def inventary_cars(request):
     car_counter = Cars.objects.filter(waiting = True).count()
     cars = Cars.objects.filter(waiting = True).all()
@@ -555,37 +556,71 @@ def inventary_cars(request):
 
     cars = Cars.objects.filter(waiting=True).order_by('-entry_date')
     try:
-        paginator = Paginator(cars, 10)
+        paginator = Paginator(cars, 1)
         cars = paginator.page(page)
     except:
         raise Http404
     
     context = {'cars': cars,'paginator':paginator, 'car_counter':car_counter}
-
     return render(request, 'inventary_cars.html', context)
 
+#Tabla Pendientes
 def inventary_pendings(request):
+
     pendings = JunkCars.objects.filter(waiting=True).order_by('to_junk_date')
+    page = request.GET.get('page', 1)
+
+    try:
+        paginator_pendings = Paginator(pendings, 1)
+        pendings = paginator_pendings.page(page)
+    except:
+        raise Http404
 
     junkcar_counter = JunkCars.objects.filter(waiting = True).count()
-    context = {'junkcars': pendings}
+    context = {'junkcars': pendings,'paginator_pendings':paginator_pendings,'junkcar_counter': junkcar_counter}
 
     return render(request, 'inventary_pendings.html', context)
 
+#Tabla Junked Cars
 def inventary_junked(request):
     scratched_cars = JunkCars.objects.filter(waiting=False, out=False).order_by('-scratched_date')
+    page = request.GET.get('page', 1)
 
-    context = {'scratched_cars': scratched_cars}
+    try:
+        paginator_junked = Paginator(scratched_cars, 1)
+        scratched_cars = paginator_junked.page(page)
+    except:
+        raise Http404
+
+    context = {'scratched_cars': scratched_cars,'paginator_junked':paginator_junked}
     return render(request, 'inventary_junked.html', context)
 
+#Tabla Parts Sold
 def inventary_parts(request):
     parts_sold = SoldParts.objects.all().order_by('-sold_date')
-    context = {'parts_sold': parts_sold}
+    page = request.GET.get('page', 1)
+
+    try:
+        paginator_parts = Paginator(parts_sold, 1)
+        parts_sold = paginator_parts.page(page)
+    except:
+        raise Http404
+
+    context = {'parts_sold': parts_sold,'paginator_parts':paginator_parts}
 
     return render(request, 'inventary_parts.html', context)
 
+#Tabla Cars Sold
 def inventary_cars_sold(request):
     cars_sold = SoldCars.objects.all().order_by('-date')
-    context = {'cars_sold': cars_sold}
+    page = request.GET.get('page', 1)
+
+    try:
+        paginator_cars_sold = Paginator(cars_sold, 1)
+        cars_sold = paginator_cars_sold.page(page)
+    except:
+        raise Http404
+
+    context = {'cars_sold': cars_sold,'paginator_cars_sold':paginator_cars_sold}
 
     return render(request, 'inventary_cars_sold.html', context)
