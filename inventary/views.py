@@ -31,7 +31,7 @@ def signin(request):
         if user is None:
             print('Error usuario')
             messages.append('User or password incorrect.')
-            context = {'signinform': AuthenticationForm()}            
+            context = {'signinform': AuthenticationForm(), 'messages': messages}            
             return render(request, 'signin.html', context)
 
         login(request, user)
@@ -181,7 +181,7 @@ def inventary(request):
     parts_sold = SoldParts.objects.all().order_by('-sold_date')
     cars_sold = SoldCars.objects.all().order_by('-date')
     try:
-        paginator = Paginator(cars, 10)
+        paginator = Paginator(cars, 1)
         cars = paginator.page(page)
     except:
         raise Http404
@@ -212,8 +212,11 @@ def entry(request):
     cars = Cars.objects.all()
     if cars:
         for car in cars:
-            if car.inventary_number == entry_car.inventary_number:
-                error_messages.append('Inventary number already exist.')
+            if car.inventary_number == entry_car.inventary_number or car.vin_number == entry_car.vin_number:
+                if car.inventary_number == entry_car.inventary_number:
+                    error_messages.append('Inventary number already exist.')
+                else:
+                    error_messages.append('VIN already exist.')
                 return render(request, 'entry.html', context) 
 
     title_sufix = entry_car.title.name.split('.')[-1]
@@ -265,8 +268,29 @@ def sell(request, id):
     except:
         return redirect('/404/')
     
+    error_messages = []
+    success_messages = []
+    sold_cars = SoldCars.objects.all()
+
+    for car_sold in sold_cars:
+        if car == car_sold.car:
+            error_messages.append(f"Car {car.inventary_number} has already been sold.")
+            context = {'form': ShowCarsForm(instance=car), 'buyerform': BuyersForm(), 'soldcarform': SoldCarsForm(), 'car': car, 'error_messages': error_messages, 'success_messages': success_messages }
+            return render(request, 'sell.html', context) 
+
+
     if request.method == "POST":
-        buyer = Buyers(name = str(request.POST['name']), last_name = request.POST['last_name'], dni = request.POST['dni'], phone_number = request.POST['phone_number'] )
+        try:
+            buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+            if not (str.lower(buyer.name) == str.lower(request.POST['name']) and str.lower(buyer.last_name) == str.lower(request.POST['last_name'])):
+                error_messages.append(f'Other buyer already have the {buyer.dni} DNI.')
+                context = {'form': ShowCarsForm(instance=car), 'buyerform': BuyersForm(), 'soldcarform': SoldCarsForm(), 'car': car, 'error_messages': error_messages, 'success_messages:': success_messages }
+                return render(request, 'sell.html', context) 
+        except:
+            print('Comprador nuevo')
+            buyer = Buyers(name = str(request.POST['name']), last_name = request.POST['last_name'], dni = request.POST['dni'], phone_number = request.POST['phone_number'] )
+            buyer.save()
+        
         sold_car = SoldCars(car = car, buyer = buyer, price = request.POST['price'], date = request.POST['date'])
         car.waiting = False
         car.save()
@@ -274,11 +298,11 @@ def sell(request, id):
         sold_car.save()
         try:
             junk = JunkCars.objects.get(car = car)
-            junk.waiting = False
-            junk.save()
+            junk.delete()
         except:
             pass
-
+        
+        success_messages.append(f'Car {car.inventary_number} has been added to Sold Cars.')
         return redirect('/inventary/')
 
     context = {'form': ShowCarsForm(instance=car), 'buyerform': BuyersForm(), 'soldcarform': SoldCarsForm(), 'car': car }
@@ -322,20 +346,35 @@ def scratched(request, id):
         return redirect('/404/')
 
     if request.method == "POST":
+        error_messages = []
+        success_messages = []
         try:
             if not (int(request.POST['rims']) <= 4 and int(request.POST['rims']) >= 0) and (int(request.POST['tires']) <= 4 and int(request.POST['tires']) >= 0) and (int(request.POST['catalyst']) <= 5 and int(request.POST['catalyst']) >= 0):
-                context = {'form': ShowCarsForm(instance=junkcar.car)}
+                error_messages.append('Incorrect data')
+                context = {'form': ShowCarsForm(instance=junkcar.car), 'error_messages': error_messages, 'success_messages': success_messages}
                 return render(request, 'junk.html', context)
         except:
-            context = {'form': ShowCarsForm(instance=junkcar.car)}
+            context = {'form': ShowCarsForm(instance=junkcar.car), 'error_messages': error_messages, 'success_messages': success_messages}
             return render(request, 'junk.html', context)
         
         junkcar.scratched_date = datetime.date.today()
+        
+        try:
+            stock = Stock.objects.get()
+        except:
+            stock = Stock()
+
         if 'engine' in request.POST:
             engine = True
+            stock.engines += 1
         else:
             engine = False
 
+        stock.tires += int(request.POST['tires'])
+        stock.rims += int(request.POST['rims'])
+        stock.catalysts += int(request.POST['catalyst'])
+        stock.scratched_cars += 1
+        stock.save()
         remove_parts = RemoveParts(car = junkcar.car, rims = request.POST['rims'], tires = request.POST['tires'], catalyst = request.POST['catalyst'], engine = engine)
         remove_parts.save()
         junkcar.waiting = False
@@ -354,12 +393,19 @@ def models(request):
     return JsonResponse(list(models.values("id", "name")), safe=False)
 
 def parts_sell(request):
+    try:
+        stock = Stock.objects.get()
+    except:
+        return redirect('/inventary/')
     #Procesamiento de los Forms
     if request.method == "POST":
+        error_messages = []
+        succes_messages = []
         #Forms Tires
         if request.POST['form_type'] == 'tires':
             if not (request.POST['name'] != '' and request.POST['last_name'] != '' and request.POST['dni'] != '' and request.POST['date'] != '' and request.POST['quantity'] != '' and request.POST['amount'] != ''):
               print('Error')
+              error_messages.append('Please, complete all data.')
               return redirect('/parts/')
 
             try:
@@ -367,13 +413,21 @@ def parts_sell(request):
                 quantity = int(request.POST['quantity'])
             except:
                 print('Errores numerico.')
+                error_messages.append('Please check the data of amount and quantity fields.')
                 return redirect('/parts/')  
             
+            if not quantity <= stock.tires:
+                error_messages.append(f'There is not enough tires in stock({stock.tires})')
+                return redirect('/inventary/')
             #if not (request.POST['date'] <= datetime.date.today):
                 #return redirect('/parts/')
             #buyer = Buyers.objects.filter(dni = request.POST['dni'])
             try:
                 buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+                if not (str.lower(buyer.name) == str.lower(request.POST['name']) and str.lower(buyer.last_name) == str.lower(request.POST['last_name'])):
+                    error_messages.append(f'Other buyer already have the {buyer.dni} DNI.')
+                    context = {'stock': stock, 'error_messages': error_messages, 'success_messages': succes_messages}
+                    return render(request, 'parts.html', context)
             except:
                 print('Comprador nuevo')
                 buyer = Buyers(name = request.POST['name'], last_name = request.POST['last_name'], dni = request.POST['dni'])
@@ -383,6 +437,8 @@ def parts_sell(request):
             sold_part = SoldParts(buyer = buyer, quantity = quantity, part_type = 'Tires', price = amount, sold_date = request.POST['date'], name='Tires')
             print(sold_part)
             sold_part.save()
+            stock.tires -= quantity
+            stock.save()
             print(request.POST['form_type'])
         
         #Forms Rims
@@ -398,11 +454,17 @@ def parts_sell(request):
                 print('Errores numerico.')
                 return redirect('/parts/')  
             
+            if not quantity <= stock.rims:
+                return redirect('/inventary/')
             #if not (request.POST['date'] <= datetime.date.today):
                 #return redirect('/parts/')
             #buyer = Buyers.objects.filter(dni = request.POST['dni'])
             try:
                 buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+                if not (str.lower(buyer.name) == str.lower(request.POST['name']) and str.lower(buyer.last_name) == str.lower(request.POST['last_name'])):
+                    error_messages.append(f'Other buyer already have the {buyer.dni} DNI.')
+                    context = {'stock': stock, 'error_messages': error_messages, 'success_messages': succes_messages}
+                    return render(request, 'parts.html', context)
             except:
                 print('Comprador nuevo')
                 buyer = Buyers(name = request.POST['name'], last_name = request.POST['last_name'], dni = request.POST['dni'])
@@ -412,6 +474,8 @@ def parts_sell(request):
             sold_part = SoldParts(buyer = buyer, quantity = quantity, part_type = 'Rims', price = amount, sold_date = request.POST['date'], name='Rims')
             print(sold_part)
             sold_part.save()
+            stock.rims -= quantity
+            stock.save()
             print(request.POST['form_type'])
 
         #Forms Catalysts
@@ -427,11 +491,17 @@ def parts_sell(request):
                 print('Errores numerico.')
                 return redirect('/parts/')  
             
+            if not quantity <= stock.tires:
+                return redirect('/inventary/')
             #if not (request.POST['date'] <= datetime.date.today):
                 #return redirect('/parts/')
             #buyer = Buyers.objects.filter(dni = request.POST['dni'])
             try:
                 buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+                if not (str.lower(buyer.name) == str.lower(request.POST['name']) and str.lower(buyer.last_name) == str.lower(request.POST['last_name'])):
+                    error_messages.append(f'Other buyer already have the {buyer.dni} DNI.')
+                    context = {'stock': stock, 'error_messages': error_messages, 'success_messages': succes_messages}
+                    return render(request, 'parts.html', context)
             except:
                 print('Comprador nuevo')
                 buyer = Buyers(name = request.POST['name'], last_name = request.POST['last_name'], dni = request.POST['dni'])
@@ -441,6 +511,8 @@ def parts_sell(request):
             sold_part = SoldParts(buyer = buyer, quantity = quantity, part_type = 'Catalyst', price = amount, sold_date = request.POST['date'], name='Catalyst')
             print(sold_part)
             sold_part.save()
+            stock.catalysts -= quantity
+            stock.save()
             print(request.POST['form_type'])
 
         #Forms Engines
@@ -456,11 +528,17 @@ def parts_sell(request):
                 print('Errores numerico.')
                 return redirect('/parts/')  
             
+            if not quantity <= stock.engines:
+                return redirect('/inventary/')
             #if not (request.POST['date'] <= datetime.date.today):
                 #return redirect('/parts/')
             #buyer = Buyers.objects.filter(dni = request.POST['dni'])
             try:
                 buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+                if not (str.lower(buyer.name) == str.lower(request.POST['name']) and str.lower(buyer.last_name) == str.lower(request.POST['last_name'])):
+                    error_messages.append(f'Other buyer already have the {buyer.dni} DNI.')
+                    context = {'stock': stock, 'error_messages': error_messages, 'success_messages': succes_messages}
+                    return render(request, 'parts.html', context)
             except:
                 print('Comprador nuevo')
                 buyer = Buyers(name = request.POST['name'], last_name = request.POST['last_name'], dni = request.POST['dni'])
@@ -470,6 +548,8 @@ def parts_sell(request):
             sold_part = SoldParts(buyer = buyer, quantity = quantity, part_type = 'Engines', price = amount, sold_date = request.POST['date'], name='Engines')
             print(sold_part)
             sold_part.save()
+            stock.engines -= quantity
+            stock.save()
             print(request.POST['form_type'])
 
         #Forms Others
@@ -490,6 +570,10 @@ def parts_sell(request):
             #buyer = Buyers.objects.filter(dni = request.POST['dni'])
             try:
                 buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+                if not (str.lower(buyer.name) == str.lower(request.POST['name']) and str.lower(buyer.last_name) == str.lower(request.POST['last_name'])):
+                    error_messages.append(f'Other buyer already have the {buyer.dni} DNI.')
+                    context = {'stock': stock, 'error_messages': error_messages, 'success_messages': succes_messages}
+                    return render(request, 'parts.html', context)
             except:
                 print('Comprador nuevo')
                 buyer = Buyers(name = request.POST['name'], last_name = request.POST['last_name'], dni = request.POST['dni'])
@@ -503,8 +587,8 @@ def parts_sell(request):
 
         else:
             return redirect('/parts/')
-
-    return render(request, 'parts.html')
+    context = {'stock': stock}
+    return render(request, 'parts.html', context)
 
 def chart_prueba(request):
     numeros = [20, 30, 40, 100, 70, 90]
@@ -515,3 +599,80 @@ def profile(request):
 
 def user_settings(request):
     return render(request, 'user_settings.html')
+
+#Tabla Cars
+def inventary_cars(request):
+    car_counter = Cars.objects.filter(waiting = True).count()
+    cars = Cars.objects.filter(waiting = True).all()
+    page = request.GET.get('page', 1)
+
+    cars = Cars.objects.filter(waiting=True).order_by('-entry_date')
+    try:
+        paginator = Paginator(cars, 1)
+        cars = paginator.page(page)
+    except:
+        raise Http404
+    
+    context = {'cars': cars,'paginator':paginator, 'car_counter':car_counter}
+    return render(request, 'inventary_cars.html', context)
+
+#Tabla Pendientes
+def inventary_pendings(request):
+
+    pendings = JunkCars.objects.filter(waiting=True).order_by('to_junk_date')
+    page = request.GET.get('page', 1)
+
+    try:
+        paginator_pendings = Paginator(pendings, 1)
+        pendings = paginator_pendings.page(page)
+    except:
+        raise Http404
+
+    junkcar_counter = JunkCars.objects.filter(waiting = True).count()
+    context = {'junkcars': pendings,'paginator_pendings':paginator_pendings,'junkcar_counter': junkcar_counter}
+
+    return render(request, 'inventary_pendings.html', context)
+
+#Tabla Junked Cars
+def inventary_junked(request):
+    scratched_cars = JunkCars.objects.filter(waiting=False, out=False).order_by('-scratched_date')
+    page = request.GET.get('page', 1)
+
+    try:
+        paginator_junked = Paginator(scratched_cars, 1)
+        scratched_cars = paginator_junked.page(page)
+    except:
+        raise Http404
+
+    context = {'scratched_cars': scratched_cars,'paginator_junked':paginator_junked}
+    return render(request, 'inventary_junked.html', context)
+
+#Tabla Parts Sold
+def inventary_parts(request):
+    parts_sold = SoldParts.objects.all().order_by('-sold_date')
+    page = request.GET.get('page', 1)
+
+    try:
+        paginator_parts = Paginator(parts_sold, 1)
+        parts_sold = paginator_parts.page(page)
+    except:
+        raise Http404
+
+    context = {'parts_sold': parts_sold,'paginator_parts':paginator_parts}
+
+    return render(request, 'inventary_parts.html', context)
+
+#Tabla Cars Sold
+def inventary_cars_sold(request):
+    cars_sold = SoldCars.objects.all().order_by('-date')
+    page = request.GET.get('page', 1)
+
+    try:
+        paginator_cars_sold = Paginator(cars_sold, 1)
+        cars_sold = paginator_cars_sold.page(page)
+    except:
+        raise Http404
+
+    context = {'cars_sold': cars_sold,'paginator_cars_sold':paginator_cars_sold}
+
+    return render(request, 'inventary_cars_sold.html', context)

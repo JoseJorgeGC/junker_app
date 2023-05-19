@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'layouts/inventary_pendings_nav.html' %}
+
+<div class="p-4 rounded-lg bg-gray-50" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">     
+    <section class="bg-gray-50 p-3 sm:p-5">
+        <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
+            <!-- Start coding here -->
+            <div class="bg-white relative shadow-md sm:rounded-lg overflow-hidden">
+                <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+                    <div class="w-full md:w-1/5">
+                        <form class="flex items-center">
+                            <label for="simple-search" class="sr-only">Search</label>
+                            <div class="relative w-full">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <input type="text" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" required="">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-4 py-3">Inventary No.</th>
+                                <th scope="col" class="px-4 py-3">Brand</th>
+                                <th scope="col" class="px-4 py-3">Model</th>
+                                <th scope="col" class="px-4 py-3">Year</th>
+                                <th scope="col" class="px-4 py-3">Entry Date</th>
+                                <th scope="col" class="px-4 py-3">Condition</th>
+                                <th scope="col" class="px-4 py-3">Title Condition</th>
+                                <th scope="col" class="px-4 py-3">VIN Number</th>
+                                <th scope="col" class="pl-7 px-4 py-3">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for junkcar in junkcars %}
+                            <tr class="border-b dark:border-gray-700">
+                                <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{junkcar.car.inventary_number}}</td>
+                                <td class="px-4 py-3">{{junkcar.car.brand.name}}</td>
+                                <td class="px-4 py-3">{{junkcar.car.model.name}}</td>
+                                <td class="px-4 py-3">{{junkcar.car.year}}</td>
+                                <td class="px-4 py-3">{{junkcar.car.entry_date|date:"M, j Y"}}</td>
+                                <td class="px-4 py-3">{{junkcar.car.condition}}</td>
+                                <td class="px-4 py-3">{{junkcar.car.title_condition}}</td>                        
+                                <td class="px-4 py-3">{{junkcar.car.vin_number}}</td>
+                                <td class="px-4 py-3 flex items-center justify-start">
+                                    <a href="{% url 'sell' junkcar.id %}">
+                                        <button class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button"> 
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            <title>Sell</title>
+                                        </svg>
+                                        </button>
+                                    </a>
+
+                                    <a href="{% url 'scratched' junkcar.id %}">
+                                        <button class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button"> 
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                            <title>Scratched</title>
+                                        </svg>
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% include 'layouts/paginator_pendings.html' %}
+            </div>
+        </div>
+    </section>
+</div>
+
+{% include 'layouts/footer.html' %}
+
+{% endblock %}
+

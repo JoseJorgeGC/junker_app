@@ -1,0 +1,32 @@
+
+<div class="flex justify-center border-b border-gray-200 dark:border-gray-700">
+    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+        <li class="mr-2">
+            <a href="{% url 'cars' %}" class="inline-flex p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group">
+                Cars
+            </a>
+        </li>
+        <li class="mr-2">
+            <a href="{% url 'pendings' %}" class="inline-flex p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500 group" aria-current="page">
+                Pendings for Junk
+            </a>
+        </li>
+        <li class="mr-2">
+            <a href="{% url 'junked' %}" class="inline-flex p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group">
+                Junked Cars
+            </a>
+        </li>
+        <li class="mr-2">
+            <a href="{% url 'parts' %}" class="inline-flex p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group">
+                Parts Sold
+            </a>
+        </li>
+
+        <li class="mr-2">
+            <a href="{% url 'cars_sold' %}" class="inline-flex p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group">
+                Cars Sold
+            </a>
+        </li>
+        
+    </ul>
+</div>

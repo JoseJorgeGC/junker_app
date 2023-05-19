@@ -26,5 +26,10 @@ urlpatterns = [
     path('charts/', views.chart_prueba, name='charts'),
     path('profile/', views.profile, name='profile'),
     path('user_settings/', views.user_settings, name='user_settings'),
+    path('inventary/cars', views.inventary_cars, name='cars'),
+    path('inventary/pendings', views.inventary_pendings, name='pendings'),
+    path('inventary/junked', views.inventary_junked, name='junked'),
+    path('inventary/parts', views.inventary_parts, name='parts'),
+    path('inventary/cars-sold', views.inventary_cars_sold, name='cars_sold'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
