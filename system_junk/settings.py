@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-kts5(7v*8&em1bhee6&w#^7mbsj(!mne4xt^km8g04(n9_mjko
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['josejorgegc.pythonanywhere.com']
+ALLOWED_HOSTS = ['190.92.151.179', 'localhost']
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
@@ -82,9 +82,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'JoseJorgeGC$junker',
-        'USER': 'JoseJorgeGC',
-        'PASSWORD': 'MySQL2023/*',
-        'HOST': 'JoseJorgeGC.mysql.pythonanywhere-services.com',
+        'USER': 'softimuspro_jjam',
+        'PASSWORD': '00052063127JJAM',
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }
