@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'system_junk.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'JoseJorgeGC$junker',
+        'NAME': 'softimuspro_junker',
         'USER': 'softimuspro_jjam',
         'PASSWORD': '00052063127JJAM',
         'HOST': 'localhost',
