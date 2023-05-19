@@ -31,7 +31,7 @@ def signin(request):
         if user is None:
             print('Error usuario')
             messages.append('User or password incorrect.')
-            context = {'signinform': AuthenticationForm()}            
+            context = {'signinform': AuthenticationForm(), 'messages': messages}            
             return render(request, 'signin.html', context)
 
         login(request, user)
@@ -212,8 +212,11 @@ def entry(request):
     cars = Cars.objects.all()
     if cars:
         for car in cars:
-            if car.inventary_number == entry_car.inventary_number:
-                error_messages.append('Inventary number already exist.')
+            if car.inventary_number == entry_car.inventary_number or car.vin_number == entry_car.vin_number:
+                if car.inventary_number == entry_car.inventary_number:
+                    error_messages.append('Inventary number already exist.')
+                else:
+                    error_messages.append('VIN already exist.')
                 return render(request, 'entry.html', context) 
 
     title_sufix = entry_car.title.name.split('.')[-1]
@@ -265,8 +268,29 @@ def sell(request, id):
     except:
         return redirect('/404/')
     
+    error_messages = []
+    success_messages = []
+    sold_cars = SoldCars.objects.all()
+
+    for car_sold in sold_cars:
+        if car == car_sold.car:
+            error_messages.append(f"Car {car.inventary_number} has already been sold.")
+            context = {'form': ShowCarsForm(instance=car), 'buyerform': BuyersForm(), 'soldcarform': SoldCarsForm(), 'car': car, 'error_messages': error_messages, 'success_messages': success_messages }
+            return render(request, 'sell.html', context) 
+
+
     if request.method == "POST":
-        buyer = Buyers(name = str(request.POST['name']), last_name = request.POST['last_name'], dni = request.POST['dni'], phone_number = request.POST['phone_number'] )
+        try:
+            buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+            if not (str.lower(buyer.name) == str.lower(request.POST['name']) and str.lower(buyer.last_name) == str.lower(request.POST['last_name'])):
+                error_messages.append(f'Other buyer already have the {buyer.dni} DNI.')
+                context = {'form': ShowCarsForm(instance=car), 'buyerform': BuyersForm(), 'soldcarform': SoldCarsForm(), 'car': car, 'error_messages': error_messages, 'success_messages:': success_messages }
+                return render(request, 'sell.html', context) 
+        except:
+            print('Comprador nuevo')
+            buyer = Buyers(name = str(request.POST['name']), last_name = request.POST['last_name'], dni = request.POST['dni'], phone_number = request.POST['phone_number'] )
+            buyer.save()
+        
         sold_car = SoldCars(car = car, buyer = buyer, price = request.POST['price'], date = request.POST['date'])
         car.waiting = False
         car.save()
@@ -274,11 +298,11 @@ def sell(request, id):
         sold_car.save()
         try:
             junk = JunkCars.objects.get(car = car)
-            junk.waiting = False
-            junk.save()
+            junk.delete()
         except:
             pass
-
+        
+        success_messages.append(f'Car {car.inventary_number} has been added to Sold Cars.')
         return redirect('/inventary/')
 
     context = {'form': ShowCarsForm(instance=car), 'buyerform': BuyersForm(), 'soldcarform': SoldCarsForm(), 'car': car }
@@ -322,12 +346,15 @@ def scratched(request, id):
         return redirect('/404/')
 
     if request.method == "POST":
+        error_messages = []
+        success_messages = []
         try:
             if not (int(request.POST['rims']) <= 4 and int(request.POST['rims']) >= 0) and (int(request.POST['tires']) <= 4 and int(request.POST['tires']) >= 0) and (int(request.POST['catalyst']) <= 5 and int(request.POST['catalyst']) >= 0):
-                context = {'form': ShowCarsForm(instance=junkcar.car)}
+                error_messages.append('Incorrect data')
+                context = {'form': ShowCarsForm(instance=junkcar.car), 'error_messages': error_messages, 'success_messages': success_messages}
                 return render(request, 'junk.html', context)
         except:
-            context = {'form': ShowCarsForm(instance=junkcar.car)}
+            context = {'form': ShowCarsForm(instance=junkcar.car), 'error_messages': error_messages, 'success_messages': success_messages}
             return render(request, 'junk.html', context)
         
         junkcar.scratched_date = datetime.date.today()
@@ -372,10 +399,13 @@ def parts_sell(request):
         return redirect('/inventary/')
     #Procesamiento de los Forms
     if request.method == "POST":
+        error_messages = []
+        succes_messages = []
         #Forms Tires
         if request.POST['form_type'] == 'tires':
             if not (request.POST['name'] != '' and request.POST['last_name'] != '' and request.POST['dni'] != '' and request.POST['date'] != '' and request.POST['quantity'] != '' and request.POST['amount'] != ''):
               print('Error')
+              error_messages.append('Please, complete all data.')
               return redirect('/parts/')
 
             try:
@@ -383,15 +413,21 @@ def parts_sell(request):
                 quantity = int(request.POST['quantity'])
             except:
                 print('Errores numerico.')
+                error_messages.append('Please check the data of amount and quantity fields.')
                 return redirect('/parts/')  
             
             if not quantity <= stock.tires:
+                error_messages.append(f'There is not enough tires in stock({stock.tires})')
                 return redirect('/inventary/')
             #if not (request.POST['date'] <= datetime.date.today):
                 #return redirect('/parts/')
             #buyer = Buyers.objects.filter(dni = request.POST['dni'])
             try:
                 buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+                if not (str.lower(buyer.name) == str.lower(request.POST['name']) and str.lower(buyer.last_name) == str.lower(request.POST['last_name'])):
+                    error_messages.append(f'Other buyer already have the {buyer.dni} DNI.')
+                    context = {'stock': stock, 'error_messages': error_messages, 'success_messages': succes_messages}
+                    return render(request, 'parts.html', context)
             except:
                 print('Comprador nuevo')
                 buyer = Buyers(name = request.POST['name'], last_name = request.POST['last_name'], dni = request.POST['dni'])
@@ -425,6 +461,10 @@ def parts_sell(request):
             #buyer = Buyers.objects.filter(dni = request.POST['dni'])
             try:
                 buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+                if not (str.lower(buyer.name) == str.lower(request.POST['name']) and str.lower(buyer.last_name) == str.lower(request.POST['last_name'])):
+                    error_messages.append(f'Other buyer already have the {buyer.dni} DNI.')
+                    context = {'stock': stock, 'error_messages': error_messages, 'success_messages': succes_messages}
+                    return render(request, 'parts.html', context)
             except:
                 print('Comprador nuevo')
                 buyer = Buyers(name = request.POST['name'], last_name = request.POST['last_name'], dni = request.POST['dni'])
@@ -458,6 +498,10 @@ def parts_sell(request):
             #buyer = Buyers.objects.filter(dni = request.POST['dni'])
             try:
                 buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+                if not (str.lower(buyer.name) == str.lower(request.POST['name']) and str.lower(buyer.last_name) == str.lower(request.POST['last_name'])):
+                    error_messages.append(f'Other buyer already have the {buyer.dni} DNI.')
+                    context = {'stock': stock, 'error_messages': error_messages, 'success_messages': succes_messages}
+                    return render(request, 'parts.html', context)
             except:
                 print('Comprador nuevo')
                 buyer = Buyers(name = request.POST['name'], last_name = request.POST['last_name'], dni = request.POST['dni'])
@@ -491,6 +535,10 @@ def parts_sell(request):
             #buyer = Buyers.objects.filter(dni = request.POST['dni'])
             try:
                 buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+                if not (str.lower(buyer.name) == str.lower(request.POST['name']) and str.lower(buyer.last_name) == str.lower(request.POST['last_name'])):
+                    error_messages.append(f'Other buyer already have the {buyer.dni} DNI.')
+                    context = {'stock': stock, 'error_messages': error_messages, 'success_messages': succes_messages}
+                    return render(request, 'parts.html', context)
             except:
                 print('Comprador nuevo')
                 buyer = Buyers(name = request.POST['name'], last_name = request.POST['last_name'], dni = request.POST['dni'])
@@ -522,6 +570,10 @@ def parts_sell(request):
             #buyer = Buyers.objects.filter(dni = request.POST['dni'])
             try:
                 buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
+                if not (str.lower(buyer.name) == str.lower(request.POST['name']) and str.lower(buyer.last_name) == str.lower(request.POST['last_name'])):
+                    error_messages.append(f'Other buyer already have the {buyer.dni} DNI.')
+                    context = {'stock': stock, 'error_messages': error_messages, 'success_messages': succes_messages}
+                    return render(request, 'parts.html', context)
             except:
                 print('Comprador nuevo')
                 buyer = Buyers(name = request.POST['name'], last_name = request.POST['last_name'], dni = request.POST['dni'])
