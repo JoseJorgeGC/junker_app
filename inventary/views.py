@@ -396,7 +396,8 @@ def parts_sell(request):
     try:
         stock = Stock.objects.get()
     except:
-        return redirect('/inventary/')
+        stock = Stock()
+        stock.save()
     #Procesamiento de los Forms
     if request.method == "POST":
         error_messages = []
