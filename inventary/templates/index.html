@@ -239,14 +239,20 @@
         name: 'Cars',
         data: {{cars_data|safe}}
       }, {
-        name: 'Parts',
-        data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+        name: 'Others Parts',
+        data: {{parts_data|safe}}
       }, {
         name: 'Tires',
-        data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-      },{
+        data: {{tires_data|safe}}
+      }, {
         name: 'Rims',
-        data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+        data: {{rims_data|safe}}
+      }, {
+        name: 'Catalysts',
+        data: {{catalysts_data|safe}}
+      }, {
+        name: 'Engines',
+        data: {{engines_data|safe}}
       }],
         chart: {
         type: 'bar',

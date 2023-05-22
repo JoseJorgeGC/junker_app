@@ -136,34 +136,162 @@ def home(request):
     print(year)
 
     context |= {'categories_all_profit': categories_all_profit}
-    cars1 = SoldCars.objects.filter(date__month = month[0], date__year = year[0]).count()
-    cars_data.append(cars1)
 
-    cars2 = SoldCars.objects.filter(date__month = month[1], date__year = year[1]).count()
-    cars_data.append(cars2)
+    try:
+        cars1 = SoldCars.objects.filter(date__month = month[0], date__year = year[0]).all()
+        total_price1 = 0
+        for car in cars1:
+            total_price1 += car.price
+        total_price1 /= 1000
+    except:
+        total_price1 = 0
 
-    cars3 = SoldCars.objects.filter(date__month = month[2], date__year = year[2]).count()
-    cars_data.append(cars3)
+    cars_data.append(total_price1)
 
-    cars4 = SoldCars.objects.filter(date__month = month[3], date__year = year[3]).count()
-    cars_data.append(cars4)
+    try:
+        cars2 = SoldCars.objects.filter(date__month = month[1], date__year = year[1]).all()
+        total_price2 = 0
+        for car in cars2:
+            total_price2 += car.price
+        total_price2 /= 1000
+    except:
+        total_price2 = 0
 
-    cars5 = SoldCars.objects.filter(date__month = month[4], date__year = year[4]).count()
-    cars_data.append(cars5)
+    cars_data.append(total_price2)
 
-    cars6 = SoldCars.objects.filter(date__month = month[5], date__year = year[5]).count()
-    cars_data.append(cars6)
+    try:
+        cars3 = SoldCars.objects.filter(date__month = month[2], date__year = year[2]).all()
+        total_price3 = 0
+        for car in cars3:
+            total_price3 += car.price
+        total_price3 /= 1000
+    except:
+        total_price3 = 0
 
-    cars7 = SoldCars.objects.filter(date__month = month[6], date__year = year[6]).count()
-    cars_data.append(cars7)
+    cars_data.append(total_price3)
 
-    cars8 = SoldCars.objects.filter(date__month = month[7], date__year = year[7]).count()
-    cars_data.append(cars8)
+    try:
+        cars4 = SoldCars.objects.filter(date__month = month[3], date__year = year[3]).all()
+        total_price4 = 0
+        for car in cars4:
+            total_price4 += car.price
+        total_price4 /= 1000
+    except:
+        total_price4 = 0
 
-    cars9 = SoldCars.objects.filter(date__month = month[8], date__year = year[8]).count()
-    cars_data.append(cars9)
+    cars_data.append(total_price4)
+
+    try:
+        cars5 = SoldCars.objects.filter(date__month = month[4], date__year = year[4]).all()
+        total_price5 = 0
+        for car in cars5:
+            total_price5 += car.price
+        total_price5 /= 1000
+    except:
+        total_price5 = 0
+
+    cars_data.append(total_price5)
+
+    try:
+        cars6 = SoldCars.objects.filter(date__month = month[5], date__year = year[5]).all()
+        total_price6 = 0
+        for car in cars6:
+            total_price6 += car.price
+        total_price6 /= 1000
+    
+    except:
+        total_price6 = 0
+
+    cars_data.append(total_price6)
+
+    try:
+        cars7 = SoldCars.objects.filter(date__month = month[6], date__year = year[6]).all()
+        total_price7 = 0
+        for car in cars7:
+            total_price7 += car.price
+        total_price7 /= 1000
+    except:
+        total_price7 = 0
+
+    cars_data.append(total_price7)
+
+    try:
+        cars8 = SoldCars.objects.filter(date__month = month[7], date__year = year[7]).all()
+        total_price8 = 0
+        for car in cars8:
+            total_price8 += car.price
+        total_price8 /= 1000
+    except:
+        total_price8 = 0
+
+    cars_data.append(total_price8)
+
+    try:
+        cars9 = SoldCars.objects.filter(date__month = month[8], date__year = year[8]).all()
+        total_price9 = 0
+        for car in cars9:
+            total_price9 += car.price
+        total_price9 /= 1000
+    except:
+        total_price9 = 0
+
+    cars_data.append(total_price9)
 
     context |= {'cars_data': cars_data}
+
+
+#Otras Partes Vendidas ingresos
+    parts_data = []
+    rims_data = []
+    tires_data = []
+    catalysts_data = []
+    engines_data = []
+    for i in range(0, 9, 1):
+        print(i)
+        rims_price = 0
+        tires_price = 0
+        catalysts_price = 0
+        engines_price = 0
+        parts_price = 0
+        try:
+            parts = SoldParts.objects.filter(sold_date__month = month[i], sold_date__year = year[i]).all()
+            for part in parts:
+                if part.part_type == "Rims":
+                    rims_price += part.price
+                elif part.part_type == "Others":
+                    parts_price += part.price
+                elif part.part_type == "Catalyst":
+                    catalysts_price += part.price
+                elif part.part_type == "Engines":
+                    engines_price += part.price
+                else:
+                    tires_price += part.price
+            
+            rims_price /= 1000
+            tires_price /= 1000
+            catalysts_price /= 1000
+            engines_price /= 1000
+            parts_price /= 1000
+            #print(rim_price)
+        except:
+            pass
+            
+        parts_data.append(parts_price)
+        rims_data.append(rims_price)
+        tires_data.append(tires_price)
+        catalysts_data.append(catalysts_price)
+        engines_data.append(engines_price)
+
+    print(parts_data)
+    print(tires_data)
+    print(rims_data)
+    print(catalysts_data)
+    print(engines_data)
+    context |= {'parts_data': parts_data}
+    context |= {'rims_data': rims_data}
+    context |= {'tires_data': tires_data}
+    context |= {'engines_data': engines_data}
+    context |= {'catalysts_data': catalysts_data}
 
     
     return render(request, 'index.html', context)
@@ -425,7 +553,7 @@ def parts_sell(request):
             #buyer = Buyers.objects.filter(dni = request.POST['dni'])
             try:
                 buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
-                if not (str.lower(buyer.name) == str.lower(request.POST['name']) and str.lower(buyer.last_name) == str.lower(request.POST['last_name'])):
+                if not (str.lower(buyer.name) == str.lower(request.POST['name']) and (str.lower(buyer.last_name) == str.lower(request.POST['last_name']))):
                     error_messages.append(f'Other buyer already have the {buyer.dni} DNI.')
                     context = {'stock': stock, 'error_messages': error_messages, 'success_messages': succes_messages}
                     return render(request, 'parts.html', context)
@@ -462,7 +590,7 @@ def parts_sell(request):
             #buyer = Buyers.objects.filter(dni = request.POST['dni'])
             try:
                 buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
-                if not (str.lower(buyer.name) == str.lower(request.POST['name']) and str.lower(buyer.last_name) == str.lower(request.POST['last_name'])):
+                if not (str.lower(buyer.name) == str.lower(request.POST['name']) and (str.lower(buyer.last_name) == str.lower(request.POST['last_name']))):
                     error_messages.append(f'Other buyer already have the {buyer.dni} DNI.')
                     context = {'stock': stock, 'error_messages': error_messages, 'success_messages': succes_messages}
                     return render(request, 'parts.html', context)
@@ -492,15 +620,16 @@ def parts_sell(request):
                 print('Errores numerico.')
                 return redirect('/parts/')  
             
-            if not quantity <= stock.tires:
+            if not quantity <= stock.catalysts:
                 return redirect('/inventary/')
             #if not (request.POST['date'] <= datetime.date.today):
                 #return redirect('/parts/')
             #buyer = Buyers.objects.filter(dni = request.POST['dni'])
             try:
                 buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
-                if not (str.lower(buyer.name) == str.lower(request.POST['name']) and str.lower(buyer.last_name) == str.lower(request.POST['last_name'])):
+                if not (str.lower(buyer.name) == str.lower(request.POST['name']) and (str.lower(buyer.last_name) == str.lower(request.POST['last_name']))):
                     error_messages.append(f'Other buyer already have the {buyer.dni} DNI.')
+                    print('Error comprador')
                     context = {'stock': stock, 'error_messages': error_messages, 'success_messages': succes_messages}
                     return render(request, 'parts.html', context)
             except:
@@ -536,8 +665,9 @@ def parts_sell(request):
             #buyer = Buyers.objects.filter(dni = request.POST['dni'])
             try:
                 buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
-                if not (str.lower(buyer.name) == str.lower(request.POST['name']) and str.lower(buyer.last_name) == str.lower(request.POST['last_name'])):
+                if not (str.lower(buyer.name) == str.lower(request.POST['name']) and (str.lower(buyer.last_name) == str.lower(request.POST['last_name']))):                    
                     error_messages.append(f'Other buyer already have the {buyer.dni} DNI.')
+                    print('error comprador')
                     context = {'stock': stock, 'error_messages': error_messages, 'success_messages': succes_messages}
                     return render(request, 'parts.html', context)
             except:
@@ -555,13 +685,16 @@ def parts_sell(request):
 
         #Forms Others
         if request.POST['form_type'] == 'others':
+            print('others')
             if not (request.POST['name'] != '' and request.POST['last_name'] != '' and request.POST['dni'] != '' and request.POST['date'] != '' and request.POST['part_name'] != '' and request.POST['price'] != '' and request.POST['car_id'] != ''):
               print('Error')
               return redirect('/parts/')
 
             try:
+
                 price = float(request.POST['price'])
                 car = Cars.objects.filter(inventary_number = request.POST['car_id']).get()
+                print('Convertido')
             except:
                 print('Errores numerico o ID de auto.')
                 return redirect('/parts/')  
@@ -571,8 +704,9 @@ def parts_sell(request):
             #buyer = Buyers.objects.filter(dni = request.POST['dni'])
             try:
                 buyer = Buyers.objects.filter(dni = request.POST['dni']).get()
-                if not (str.lower(buyer.name) == str.lower(request.POST['name']) and str.lower(buyer.last_name) == str.lower(request.POST['last_name'])):
+                if not (str.lower(buyer.name) == str.lower(request.POST['name']) and (str.lower(buyer.last_name) == str.lower(request.POST['last_name']))):
                     error_messages.append(f'Other buyer already have the {buyer.dni} DNI.')
+                    print('error comprador.')
                     context = {'stock': stock, 'error_messages': error_messages, 'success_messages': succes_messages}
                     return render(request, 'parts.html', context)
             except:
