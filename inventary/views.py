@@ -86,6 +86,44 @@ def home(request):
     today = timezone.localtime(timezone.now())
     first_day = utils.get_first_day(today.year, today.month)
     context = {}
+
+    #Revenue Data 
+    cars_costs = 0
+    last_month_cars_costs = 0
+    cars_revenue = 0
+    last_month_cars_revenue = 0
+    parts_revenue = 0
+    last_month_parts_revenue = 0
+    
+    sold_parts = SoldParts.objects.all()
+    cars = Cars.objects.all()
+    sold_cars = SoldCars.objects.all()
+
+    for sold_part in sold_parts:
+        parts_revenue += sold_part.price
+        if sold_part.sold_date > first_day:
+            last_month_parts_revenue += sold_part.price
+ 
+    for sold_car in sold_cars:
+        cars_revenue += sold_car.price
+        if sold_car.date > first_day:
+            last_month_cars_revenue += sold_car.price
+
+    for car in cars:
+        cars_costs += car.price
+        if car.entry_date > first_day:
+            last_month_cars_costs += car.price
+
+
+    total_revenue = parts_revenue + cars_revenue
+    last_month_revenue = last_month_cars_revenue + last_month_parts_revenue
+
+    total_profit = total_revenue - cars_costs
+    last_month_profit = last_month_revenue - last_month_cars_costs
+
+    context |= {'total_revenue': total_revenue, 'last_month_revenue': last_month_revenue}
+    context |= {'total_profit': total_profit, 'last_month_profit': last_month_profit}
+
     #Data for counters
     pendings_for_junk = JunkCars.objects.filter(waiting = True).count()
     total_junked_cars = JunkCars.objects.filter(scratched_date__isnull = False).count()
