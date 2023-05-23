@@ -143,18 +143,26 @@
             curve: 'smooth'
         },
         series: [{
-            name: 'Engines',
-            data: [50, 50, 30, 60, 30, 50]
+            name: 'Tires',
+            data: {{sr_tires|safe}}
         }, {
-            name: 'Catalyst',
-            data: [60, 30, 65, 45, 67, 70]
+            name: 'Rims',
+            data: {{sr_rims|safe}}
+        }, {
+            name: 'Engines',
+            data: {{sr_engines|safe}}
+        }, {
+            name: 'Catalysts',
+            data: {{sr_catalysts|safe}}
+        }, {
+            name: 'Others Parts',
+            data: {{sr_parts|safe}}
         }],
         legend: {
             position: 'top',
         },
         xaxis: {
-            type: 'datetime',
-            categories: ['1/11/2000', '2/11/2000', '3/11/2000', '4/11/2000', '5/11/2000', '6/11/2000'],
+            categories: {{categories_all_profit|safe}},
             axisBorder: {
                 show: false,
             },
@@ -165,21 +173,17 @@
             },
         },
         yaxis: {
-            show: true,
-            min: 10,
-            max: 70,
+            show: true,            
             labels: {
                 style: {
                     color: '#ccc'
                 }
             }
         },
-        colors: ['#73b4ff', '#59e0c5'],
         fill: {
             type: 'gradient',
             gradient: {
                 shade: 'light',
-                gradientToColors: ['#4099ff', '#2ed8b6'],
                 shadeIntensity: 0.5,
                 type: 'horizontal',
                 opacityFrom: 1,

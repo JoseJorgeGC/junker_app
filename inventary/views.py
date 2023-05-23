@@ -240,32 +240,49 @@ def home(request):
     context |= {'cars_data': cars_data}
 
 
-#Otras Partes Vendidas ingresos
+#Incomes and Counters for Sales Ratio
     parts_data = []
     rims_data = []
     tires_data = []
     catalysts_data = []
     engines_data = []
+
+    #Counters Array
+    sr_rims = []
+    sr_tires = []
+    sr_catalysts = []
+    sr_engines = []
+    sr_parts = []
     for i in range(0, 9, 1):
         print(i)
         rims_price = 0
+        rims_counter = 0
         tires_price = 0
+        tires_counter = 0
         catalysts_price = 0
+        catalysts_counter = 0
         engines_price = 0
+        engines_counter = 0
         parts_price = 0
+        parts_counter = 0
         try:
             parts = SoldParts.objects.filter(sold_date__month = month[i], sold_date__year = year[i]).all()
             for part in parts:
                 if part.part_type == "Rims":
                     rims_price += part.price
+                    rims_counter += part.quantity 
                 elif part.part_type == "Others":
                     parts_price += part.price
+                    parts_counter += part.quantity
                 elif part.part_type == "Catalyst":
                     catalysts_price += part.price
+                    catalysts_counter += part.quantity
                 elif part.part_type == "Engines":
                     engines_price += part.price
+                    engines_counter += part.quantity
                 else:
                     tires_price += part.price
+                    tires_counter += part.quantity
             
             rims_price /= 1000
             tires_price /= 1000
@@ -275,7 +292,15 @@ def home(request):
             #print(rim_price)
         except:
             pass
-            
+
+        #Counters for Sales Ratio
+        sr_tires.append(tires_counter)
+        sr_rims.append(rims_counter)
+        sr_engines.append(engines_counter)
+        sr_catalysts.append(catalysts_counter)
+        sr_parts.append(parts_counter)
+
+        #Incomes    
         parts_data.append(parts_price)
         rims_data.append(rims_price)
         tires_data.append(tires_price)
@@ -292,6 +317,14 @@ def home(request):
     context |= {'tires_data': tires_data}
     context |= {'engines_data': engines_data}
     context |= {'catalysts_data': catalysts_data}
+
+    #Sales Ratio Data
+    context |= {'sr_tires': sr_tires}
+    context |= {'sr_rims': sr_rims}
+    context |= {'sr_engines': sr_engines}
+    context |= {'sr_catalysts': sr_catalysts}
+    context |= {'sr_parts': sr_parts}
+
 
     
     return render(request, 'index.html', context)
