@@ -882,3 +882,20 @@ def inventary_cars_sold(request):
     context = {'cars_sold': cars_sold,'paginator_cars_sold':paginator_cars_sold}
 
     return render(request, 'inventary_cars_sold.html', context)
+
+#Paginas del Footer
+#Licensing
+def footer_licensing(request):
+    return render(request, 'licensing.html')
+
+def footer_privacy_policy(request):
+    return render(request, 'privacy_policy.html')
+
+def footer_about(request):
+    return render(request, 'about.html')
+
+def footer_faq(request):
+    return render(request, 'faq.html')
+
+def footer_contact(request):
+    return render(request, 'contact.html')

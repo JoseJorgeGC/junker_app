@@ -31,5 +31,10 @@ urlpatterns = [
     path('inventary/junked', views.inventary_junked, name='junked'),
     path('inventary/parts', views.inventary_parts, name='parts'),
     path('inventary/cars-sold', views.inventary_cars_sold, name='cars_sold'),
+    path('licensing/', views.footer_licensing, name='licensing'),
+    path('privacy/', views.footer_privacy_policy, name='privacy_policy'),
+    path('about/', views.footer_about, name='about'),
+    path('faq/', views.footer_faq, name='faq'),
+    path('contact/', views.footer_contact, name='contact'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
