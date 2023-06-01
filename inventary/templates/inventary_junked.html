@@ -19,13 +19,13 @@
                                         <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                     </svg>
                                 </div>
-                                <input type="text" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" required="">
+                                <input type="text" id="junked_search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" required="">
                             </div>
                         </form>
                     </div>
                 </div>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400" id="junked_inventary">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-4 py-3">Inventary No.</th>
@@ -56,5 +56,41 @@
     </section>
 </div>
 {% include 'layouts/footer.html' %}
+<script>
+    // Obtener la tabla
+let table = document.getElementById('junked_inventary');
 
+// Obtener las filas de la tabla
+let rows = table.getElementsByTagName('tr');
+
+// Obtener el input del usuario
+let input = document.getElementById('junked_search');
+
+// Agregar un evento de escucha al input
+input.addEventListener('keyup', function() {
+
+  // Obtener el valor del input
+  let filter = input.value;
+
+  // Crear una expresión regular para buscar en todas las columnas y filas
+  let regex = new RegExp(filter, 'i');
+
+  // Recorrer todas las filas de la tabla y ocultar aquellas que no coincidan con la expresión regular
+  for (let i = 1; i < rows.length; i++) {
+    let cells = rows[i].getElementsByTagName('td');
+    let found = false;
+    for (let j = 0; j < cells.length; j++) {
+      if (regex.test(cells[j].textContent)) {
+        found = true;
+        break;
+      }
+    }
+    if (found) {
+      rows[i].style.display = '';
+    } else {
+      rows[i].style.display = 'none';
+    }
+  }
+});
+</script>
 {% endblock %}
