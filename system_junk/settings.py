@@ -25,10 +25,14 @@ SECRET_KEY = 'django-insecure-kts5(7v*8&em1bhee6&w#^7mbsj(!mne4xt^km8g04(n9_mjko
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['smrinventory.com']
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
+#CSRF Validation
+CSRF_TRUSTED_ORIGINS = [
+	'https://smrinventory.com'
+]
 
 # Application definition
 
@@ -82,12 +86,13 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'junker',
-        'USER': 'root',
-        'PASSWORD': '',
+        'USER': 'softimus',
+        'PASSWORD': 'softimuspro',
         'HOST': 'localhost',
         'PORT': '3306',
     }
 }
+
 
 
 # Password validation
