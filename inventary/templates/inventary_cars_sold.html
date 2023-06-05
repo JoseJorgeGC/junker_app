@@ -40,7 +40,7 @@
                         </thead>
                         <tbody>
                             {% for car in cars_sold %}
-                            <tr class="border-b dark:border-gray-700">
+                            <tr class="border-b dark:border-gray-700 cursor-pointer">
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{car.car.inventary_number}}</td>
                                 <td class="px-4 py-3">{{car.car.brand.name}}</td>
                                 <td class="px-4 py-3">{{car.car.model.name}}</td>

@@ -86,7 +86,14 @@ def home(request):
     today = timezone.localtime(timezone.now())
     first_day = utils.get_first_day(today.year, today.month)
     context = {}
+    #
+    try:
+        stock = Stock.objects.get()
+    except:
+        stock = Stock()
+        stock.save()
 
+    context |={'stock': stock}
     #Revenue Data 
     cars_costs = 0
     last_month_cars_costs = 0
@@ -876,6 +883,7 @@ def inventary_parts(request):
 def inventary_cars_sold(request):
     junkcar_counter = JunkCars.objects.filter(waiting = True).count()
     cars_sold = SoldCars.objects.all().order_by('-date')
+    buyers_data = Buyers.objects.all()
     page = request.GET.get('page', 1)
 
     try:
@@ -884,7 +892,7 @@ def inventary_cars_sold(request):
     except:
         raise Http404
 
-    context = {'cars_sold': cars_sold,'paginator_cars_sold':paginator_cars_sold,'junkcar_counter': junkcar_counter}
+    context = {'cars_sold': cars_sold,'paginator_cars_sold':paginator_cars_sold,'junkcar_counter': junkcar_counter,'buyers_data': buyers_data}
 
     return render(request, 'inventary_cars_sold.html', context)
 

@@ -28,7 +28,7 @@
             <div class="col-md-6 col-xl-3">
                 <div class="card bg-c-green order-card">
                     <div class="card-body">
-                        <h6 class="text-2xl text-white">Tires and Rims Sales</h6>
+                        <h6 class="text-2xl text-white">Tires and Rims</h6>
                         <h2 class="text-3xl text-end text-white"><i
                                 class="feather icon-tag float-start"></i><span>{{total_rims_and_tires}}</span>
                         </h2>
@@ -215,7 +215,7 @@
 <!--  Inventary Chart -->
 <script>
     var options = {
-        series: [{{total_cars|safe}}, {{total_catalyst|safe}}, {{total_rims|safe}}, {{total_tires|safe}}, {{total_junked_cars|safe}}],
+        series: [{{total_cars|safe}}, {{stock.catalysts|safe}}, {{stock.rims|safe}}, {{stock.tires|safe}}, {{total_junked_cars|safe}}],
         chart: {
         width: 380,
         type: 'pie',
