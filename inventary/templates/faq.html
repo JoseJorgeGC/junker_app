@@ -3,43 +3,78 @@
 
 {% block content %}
 
-<div class="container w-4/5 mt-10 m-auto">
+<div class="container w-4/5 mt-10 m-auto mb-20">
 
-<div id="accordion-color" data-accordion="collapse" data-active-classes="bg-blue-100 dark:bg-gray-800 text-blue-600 dark:text-white">
-  <h2 id="accordion-color-heading-1">
-    <button type="button" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800" data-accordion-target="#accordion-color-body-1" aria-expanded="true" aria-controls="accordion-color-body-1">
-      <span>How I can add a new car to inventory?</span>
-      <svg data-accordion-icon class="w-6 h-6 rotate-180 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-    </button>
-  </h2>
-  <div id="accordion-color-body-1" class="hidden" aria-labelledby="accordion-color-heading-1">
-    <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
-      <p class="mb-2 text-gray-500 dark:text-gray-400">In the <b>entry</b> section, you can add a car by filling in all the required fields with its information. When uploading the car title, it must be in PDF format, and for the image, it can be either JPEG or PNG.</p>
+  <div id="accordion-color" data-accordion="collapse" data-active-classes="bg-blue-100 text-blue-600 dark:text-white">
+    <h2 id="accordion-color-heading-1">
+      <button type="button" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800" data-accordion-target="#accordion-color-body-1" aria-expanded="true" aria-controls="accordion-color-body-1">
+        <span>How I can add a new car to inventory?</span>
+        <svg data-accordion-icon class="w-6 h-6 rotate-180 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+      </button>
+    </h2>
+    <div id="accordion-color-body-1" class="hidden" aria-labelledby="accordion-color-heading-1">
+      <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
+        <p class="mb-2 text-gray-500 dark:text-gray-400">In the <b>entry</b> section, you can add a car by filling in all the required fields with its information. When uploading the car title, it must be in PDF format, and for the image, it can be either JPEG or PNG.</p>
+      </div>
     </div>
-  </div>
-  <h2 id="accordion-color-heading-2">
-    <button type="button" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800" data-accordion-target="#accordion-color-body-2" aria-expanded="false" aria-controls="accordion-color-body-2">
-      <span>How can I sell a car in the app?</span>
-      <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-    </button>
-  </h2>
-  <div id="accordion-color-body-2" class="hidden" aria-labelledby="accordion-color-heading-2">
-    <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
-      <p class="mb-2 text-gray-500 dark:text-gray-400">You can sell a car in different ways. In the inventory section, you can choose the car you want to sell and follow the provided steps. You can also use the "Cars pending for scrapping" tab to complete the sale.</p>
+    <h2 id="accordion-color-heading-2">
+      <button type="button" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800" data-accordion-target="#accordion-color-body-2" aria-expanded="false" aria-controls="accordion-color-body-2">
+        <span>How can I sell a car in the app?</span>
+        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+      </button>
+    </h2>
+    <div id="accordion-color-body-2" class="hidden" aria-labelledby="accordion-color-heading-2">
+      <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
+        <p class="mb-2 text-gray-500 dark:text-gray-400">You can sell a car in different ways. In the inventory section, you can choose the car you want to sell and follow the provided steps. You can also use the "Cars pending for scrapping" tab to complete the sale.</p>
+      </div>
     </div>
-  </div>
-  <h2 id="accordion-color-heading-3">
-    <button type="button" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800" data-accordion-target="#accordion-color-body-3" aria-expanded="false" aria-controls="accordion-color-body-3">
-      <span>How can I junk a car?</span>
-      <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-    </button>
-  </h2>
-  <div id="accordion-color-body-3" class="hidden" aria-labelledby="accordion-color-heading-3">
-    <div class="p-5 border border-t-0 border-gray-200 dark:border-gray-700">
-      <p class="mb-2 text-gray-500 dark:text-gray-400">To junk a car, the first thing you should do is mark the car you want to junk as pending in the "Cars" tab within the table displaying all the cars in the inventory. Click on the <b>bookmark</b> icon in the "Actions" column of the table. After that, go to the "Pending for Junking" tab and in the table displaying all the pending cars, you can press the <b>X</b> icon on the car you want to junk and follow the steps requested to junk the car.</p>
+    <h2 id="accordion-color-heading-3">
+      <button type="button" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800" data-accordion-target="#accordion-color-body-3" aria-expanded="false" aria-controls="accordion-color-body-3">
+        <span>How can I junk a car?</span>
+        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+      </button>
+    </h2>
+    <div id="accordion-color-body-3" class="hidden" aria-labelledby="accordion-color-heading-3">
+      <div class="p-5 border border-t-0 border-gray-200 dark:border-gray-700">
+        <p class="mb-2 text-gray-500 dark:text-gray-400">To junk a car, the first thing you should do is mark the car you want to junk as pending in the "Cars" tab within the table displaying all the cars in the inventory. Click on the <b>bookmark</b> icon in the "Actions" column of the table. After that, go to the "Pending for Junking" tab and in the table displaying all the pending cars, you can press the <b>X</b> icon on the car you want to junk and follow the steps requested to junk the car.</p>
+      </div>
     </div>
+
+    <h2 id="accordion-color-heading-4">
+      <button type="button" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800" data-accordion-target="#accordion-color-body-4" aria-expanded="false" aria-controls="accordion-color-body-4">
+        <span>What does each graph on the main page mean?</span>
+        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+      </button>
+    </h2>
+    <div id="accordion-color-body-4" class="hidden" aria-labelledby="accordion-color-heading-4">
+      <div class="p-5 border border-t-0 border-gray-200 dark:border-gray-700">
+        <p class="mb-2 text-gray-500 dark:text-gray-400">On the main page of the app, you can observe various graphs. Firstly, we have four cards, which from left to right, display the following information. In the first card, you can see the number of cars pending to be junked and the total number of cars that have already been junked. In the second card, you can view all the tires and wheels in the inventory, with the quantity obtained in the current month displayed below. The next card shows the profits obtained from sales of all items, excluding the investment, focusing solely on profits. And in the fourth card, you can see the total profit including the investment. In both cards, the bottom section displays the earnings generated in the current month.
+
+          Below these four cards, we have a graph that shows the sales relationship by month for tires, wheels, catalytic converters, and other parts sold.
+          
+          To the right, you can see a graph displaying the total inventory, including cars, catalytic converters, tires, scrapped cars, and wheels.
+          
+          Finally, we have a graph showing the income from the last few months for each item sold, including parts and the aforementioned categories.</p>
+      </div>
+    </div>
+
+    <h2 id="accordion-color-heading-5">
+      <button type="button" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800" data-accordion-target="#accordion-color-body-5" aria-expanded="false" aria-controls="accordion-color-body-5">
+        <span>How to sell a part?</span>
+        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+      </button>
+    </h2>
+    <div id="accordion-color-body-5" class="hidden" aria-labelledby="accordion-color-heading-5">
+      <div class="p-5 border border-t-0 border-gray-200 dark:border-gray-700">
+        <p class="mb-2 text-gray-500 dark:text-gray-400">To sell a part of a car, the procedure is simple. In the navigation bar, click on "Sell Parts," and within that section, select the specific part you wish to sell: Tires, Wheels, Engines, Catalytic Converters, and other parts. Under this category, you can include other car parts such as doors, lights, or any other part of the car. 
+
+          After selecting the part you want to sell, in the case of other parts, you need to enter the name of the part and the inventory number of the car from which the part is being removed. Then, simply enter the selling price, buyer's information, and the date of the sale.
+          
+          For selling other types of parts, you only need to enter the quantity you are selling and complete the remaining fields in the same way.</p>
+      </div>
+    </div>
+
   </div>
-</div>
 
 </div>
 
