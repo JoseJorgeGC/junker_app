@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-kts5(7v*8&em1bhee6&w#^7mbsj(!mne4xt^km8g04(n9_mjko
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['smrinventory.com']
+ALLOWED_HOSTS = ['smrinventory.com', '127.0.0.1']
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
@@ -56,6 +56,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    #Django auto logout session
+    'django_auto_logout.middleware.auto_logout',
 ]
 
 ROOT_URLCONF = 'system_junk.urls'
@@ -71,6 +74,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                #Django auto logout
+                'django_auto_logout.context_processors.auto_logout_client',
             ],
         },
     },
@@ -86,8 +91,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'junker',
-        'USER': 'softimus',
-        'PASSWORD': 'softimuspro',
+        'USER': 'root',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -140,3 +145,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = BASE_DIR / 'inventary/'
 MEDIA_URL = '/inventary/media/'
+
+#Django auto logout
+AUTO_LOGOUT = {'IDLE_TIME': 1800, 'REDIRECT_TO_LOGIN_IMMEDIATELY': True, 
+               'MESSAGE': 'The session has expired. Please login again to continue.',}
