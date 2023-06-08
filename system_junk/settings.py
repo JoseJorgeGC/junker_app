@@ -148,4 +148,7 @@ MEDIA_URL = '/inventary/media/'
 
 #Django auto logout
 AUTO_LOGOUT = {'IDLE_TIME': 1800, 'REDIRECT_TO_LOGIN_IMMEDIATELY': True, 
+               'SESSION_TIME': 3600,
                'MESSAGE': 'The session has expired. Please login again to continue.',}
+
+
