@@ -865,6 +865,7 @@ def inventary_junked(request):
 
 #Tabla Parts Sold
 def inventary_parts(request):
+    buyer = Buyers.objects.all();
     junkcar_counter = JunkCars.objects.filter(waiting = True).count()
     parts_sold = SoldParts.objects.all().order_by('-sold_date')
     page = request.GET.get('page', 1)
@@ -875,7 +876,7 @@ def inventary_parts(request):
     except:
         raise Http404
 
-    context = {'parts_sold': parts_sold,'paginator_parts':paginator_parts,'junkcar_counter': junkcar_counter}
+    context = {'parts_sold': parts_sold,'paginator_parts':paginator_parts,'junkcar_counter': junkcar_counter, 'buyer':buyer}
 
     return render(request, 'inventary_parts.html', context)
 

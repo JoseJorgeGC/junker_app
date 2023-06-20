@@ -40,7 +40,7 @@
                         </thead>
                         <tbody>
                             {% for part in parts_sold %}
-                            <tr class="border-b dark:border-gray-700 cursor-pointer" data-modal-target="defaultModal" data-modal-toggle="defaultModal">
+                            <tr data-cliente-id="{{ part.buyer.id }}" class="border-b dark:border-gray-700 cursor-pointer">
                                 {% if part.car.inventary_number == NULL %}
                                     <td class="px-4 py-3">{{part.name}}-{{part.part_type}}</td>
                                     <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">--</td>                                            
@@ -51,7 +51,7 @@
                                     <td class="px-4 py-3">{{part.sold_date|date:"M, j Y"}}</td>
                                     <td class="px-4 py-3">{{part.price}}</td>
                                 {% else %}
-                                <td class="px-4 py-3">{{part.name}}-{{part.part_type}}</td>
+                                <td data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="px-4 py-3">{{part.name}}-{{part.part_type}}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{part.car.inventary_number}}</td>                                            
                                 <td class="px-4 py-3">{{part.car.vin_number}}</td>
                                 <td class="px-4 py-3">{{part.car.brand.name}}</td>
@@ -71,6 +71,76 @@
     </section>
 
 </div>
+
+<div id="defaultModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative w-full max-w-4xl max-h-full">
+      <!-- Modal content -->
+      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <!-- Modal header -->
+        <div class="mx-auto max-w-2xl ml-5 mr-5">
+          <div class="px-4 sm:px-0">
+            <h3 class="text-base font-semibold leading-7 text-gray-900">Sale Information</h3>
+            <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Details of the buyer and their purchase.</p>
+          </div>
+          
+          <div class="mt-6 border-t border-gray-100">
+            <dl class="divide-y divide-gray-100">
+              <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt class="text-sm font-medium leading-6 text-gray-900">Full name</dt>
+                <dd id="buyer-name" class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"></dd>
+              </div>
+              <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt class="text-sm font-medium leading-6 text-gray-900">Email address</dt>
+                <dd id="buyer-last-name" class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"></dd>
+              </div>
+              <!-- Agrega más campos de datos del cliente aquí según tus necesidades -->
+            </dl>
+          </div>
+         
+        </div>
+        <!-- Modal footer -->
+        <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+          <button data-modal-hide="defaultModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
+          <button data-modal-hide="defaultModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
+        </div>
+      </div>
+    </div>
+  <script>
+    
+  // Obtener todas las filas de la tabla que tienen un atributo data-cliente-id
+  let rows = document.querySelectorAll('tr[data-cliente-id]');
+
+// Agregar un evento de clic a cada fila
+rows.forEach(row => {
+  row.addEventListener('click', function() {
+    // Obtener el ID del cliente desde el atributo data-cliente-id de la fila
+    let clienteId = row.getAttribute('data-cliente-id');
+
+    // Realizar una solicitud AJAX para obtener los detalles del comprador
+    // Puedes usar la función fetch o XMLHttpRequest para esto
+
+    // Una vez que obtengas los datos del comprador, puedes llenar los campos correspondientes en el modal
+    // Por ejemplo, asumiendo que el objeto de respuesta se llama 'buyerData'
+    let buyerName = buyer.name;
+    let buyerEmail = buyer.last_name;
+
+    // Insertar los valores en los elementos del modal
+    document.getElementById('buyer-name').textContent = buyerName;
+    document.getElementById('buyer-last-name').textContent = buyerEmail;
+
+    // Mostrar el modal
+    document.getElementById('defaultModal').classList.remove('hidden');
+  });
+});
+
+// Agregar un evento de clic al botón "I accept" del modal para cerrarlo
+document.getElementById('accept-button').addEventListener('click', function() {
+  document.getElementById('defaultModal').classList.add('hidden');
+});
+  </script>  
+</div> 
+
+
 {% include 'layouts/footer.html' %}
 <script>
     // Obtener la tabla
