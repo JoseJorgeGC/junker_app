@@ -39,4 +39,4 @@ class SoldCarsForm(forms.ModelForm):
 class ShowCarsForm(forms.ModelForm):
     class Meta:
         model = Cars
-        fields = ('brand', 'model', 'inventary_number', 'year', 'entry_date', 'condition', 'title', 'image')
+        fields = ('brand', 'model', 'inventary_number', 'year', 'entry_date', 'condition', 'price', 'title', 'image')
