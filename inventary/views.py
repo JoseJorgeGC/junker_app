@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.db import IntegrityError
 from django.core.paginator import Paginator
 from django.contrib import messages
@@ -18,10 +18,66 @@ from .entry_functions import *
 from .forms import *
 import json
 import datetime
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.views.generic import ListView
 
 # Create your views here.
 # cars = form.save(commit=false)
 
+#Vista basada en clase para obtener la lista de datos
+class CustomerListView(ListView):
+    model = Customer
+    template_name = 'customer_main.html'
+
+#Vista para mostrar el contenido dentro del PDF de manera dinamica
+def customer_render_pdf_view(request, *args, **kwargs):
+    pk = kwargs.get('pk')
+    customer = get_object_or_404(Customer, pk=pk)
+
+    template_path = 'pdf2.html'
+    context = {'customer': customer}
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    #para descargalo se usa este codigo de abajo:
+    #response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+
+    # Y para verlo en el navegador sin descargarlo aun se usa este codigo:
+    response['Content-Disposition'] = 'filename="report.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+       html, dest=response)
+    # if error then show some funny view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
+
+#Prueba de creacion de PDF
+def render_pdf_view(request):
+    template_path = 'pdf1.html'
+    context = {'myvar': 'this is your template context'}
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    #para descargalo se usa este codigo de abajo:
+    #response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+
+    # Y para verlo en el navegador sin descargarlo aun se usa este codigo:
+    response['Content-Disposition'] = 'filename="report.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+       html, dest=response)
+    # if error then show some funny view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
 
 #Sessions views
 def signin(request):

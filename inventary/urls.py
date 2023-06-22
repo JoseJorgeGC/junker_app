@@ -36,5 +36,8 @@ urlpatterns = [
     path('about/', views.footer_about, name='about'),
     path('faq/', views.footer_faq, name='faq'),
     path('contact/', views.footer_contact, name='contact'),
+    path('pdf/', views.CustomerListView.as_view(), name='customer-list-view'),
+    path('test/', views.render_pdf_view, name='test-view'),
+    path('invoice/<pk>/', views.customer_render_pdf_view, name='customer-pdf-view'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
