@@ -1,15 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice PDF</title>
+    <style>
+        .img-invoice {
+            width: 90px;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        #invoice th{
+            font-size: 12px;
+        }
+
+        .detalles{
+            font-size: 14px;
+        }
+
+        .invoice-footer{
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .datos{
+            font-size: 12px;
+        }
+
+        .totales{
+            font-size: 12px;
+        }
+
+        .head {
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+
+        #invoice thead tr th {
+            text-align: left;
+            border-bottom: 1px solid black;
+            border-top: 1px solid black;
+            padding-top: 4px;
+        }
+
+        #invoice thead tr {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        #invoice tbody tr {
+            padding: 0;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+    </style>
 </head>
+
 <body>
-    {{customer}}
+    <img src="{{customer.logo.path}}" class="img-invoice">
+<p class="head">
+    {{ customer|upper }}<br>
+</p>
+<p class="detalles">
+    <b>FACTURA:</b> 009847<br>
+    <b>FECHA DE VENTA:</b> 23/6/1023<br>
+    <b>CLIENTE:</b> {{ customer|upper }}<br>
+    <b>DNI:</b> 00020384651<br>
+</p>
+<table id="invoice" style="margin-top: 50px;">
+    <thead>
+    <tr>
+        <th style="width: 28%;">NAME</th>
+        <th style="width: 33%;">CAR INV. NO.</th>
+        <th style="width: 40%;">CAR VIN</th>
+        <th style="width: 30%;">CAR BRAND</th>
+        <th style="width: 30%;">CAR MODEL</th>
+        <th style="width: 30%;">QUANTITY</th>
+        <th style="width: 25%;">PRICE</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr style="padding-top: 3px;">
+            <td class="datos" style="text-align: left;">{{customer}}</td>
+            <td class="datos" style="text-align: left;">12UBS3</td>
+            <td class="datos">WODMER716267348</td>
+            <td class="datos">BMW</td>
+            <td class="datos" style="text-align: left;">MODELO</td>
+            <td class="datos" style="text-align: left;">1</td>
+            <td class="datos" style="text-align: left;">900</td>
+        </tr>
+    
+    <tr class="totales" style="border-top: 1px solid black; padding-top: 5px;">
+        <td colspan="4"><b>SUBTOTAL</b></td>
+        <td style="margin-left: 200px;">501</td>
+    </tr>
+    <tr class="totales" style="padding-top: 3px;">
+        <td colspan="4"><b>TOTAL A PAGAR</b></td>
+        <td style="margin-left: 200px;"><b><u>501.00</u></b></td>
+    </tr>
+    </tbody>
+</table>
+<table style="margin-top: 450px;">
+    <thead>
+    <tr>
+        <th class="invoice-footer">****GRACIAS POR SU COMPRA****</th>
+    </tr>
+    <tr>
+        <th class="invoice-footer">NOSE ACEPTAN CAMBIOS NI DEVOLUCIONES</th>
+    </tr>
+    </thead>
+</table>
+
     <hr>
-    {{customer.description|linebreaks}}
-    <br>
-    <img src="{{customer.logo.path}}" height="200px" alt="">
 </body>
+
 </html>
