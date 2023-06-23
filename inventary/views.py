@@ -921,7 +921,6 @@ def inventary_junked(request):
 
 #Tabla Parts Sold
 def inventary_parts(request):
-    buyer = Buyers.objects.all();
     junkcar_counter = JunkCars.objects.filter(waiting = True).count()
     parts_sold = SoldParts.objects.all().order_by('-sold_date')
     page = request.GET.get('page', 1)
@@ -932,9 +931,36 @@ def inventary_parts(request):
     except:
         raise Http404
 
-    context = {'parts_sold': parts_sold,'paginator_parts':paginator_parts,'junkcar_counter': junkcar_counter, 'buyer':buyer}
+    context = {'parts_sold': parts_sold,'paginator_parts':paginator_parts,'junkcar_counter': junkcar_counter}
 
     return render(request, 'inventary_parts.html', context)
+
+
+#Vista para mostrar el contenido dentro del PDF de manera dinamica de las Partes
+def parts_render_pdf_view(request, *args, **kwargs):
+    pk = kwargs.get('pk')
+    parts = get_object_or_404(SoldParts, pk=pk)
+
+    template_path = 'parts_pdf.html'
+    context = {'parts': parts}
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    #para descargalo se usa este codigo de abajo:
+    #response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+
+    # Y para verlo en el navegador sin descargarlo aun se usa este codigo:
+    response['Content-Disposition'] = 'filename="report.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+       html, dest=response)
+    # if error then show some funny view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
 
 #Tabla Cars Sold
 def inventary_cars_sold(request):

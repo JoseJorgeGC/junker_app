@@ -1,4 +1,4 @@
-{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -63,14 +63,14 @@
 </head>
 
 <body>
-    <img src="" class="img-invoice">
+    <img src="static/img/logo.jpg" class="img-invoice">
 <p class="head">
-    {{ customer|upper }}<br>
+    {{ parts.name|upper }}<br>
 </p>
 <p class="detalles">
     <b>FACTURA:</b> 009847<br>
-    <b>FECHA DE VENTA:</b> 23/6/1023<br>
-    <b>CLIENTE:</b> {{ customer|upper }}<br>
+    <b>FECHA DE VENTA:</b> {{parts.sold_date|date:"M, j Y"}}<br>
+    <b>CLIENTE:</b> {{ parts.buyer.name|upper }}<br>
     <b>DNI:</b> 00020384651<br>
 </p>
 <table id="invoice" style="margin-top: 50px;">
@@ -88,13 +88,13 @@
     <tbody>
     
         <tr style="padding-top: 3px;">
-            <td class="datos" style="text-align: left;">{{customer}}</td>
-            <td class="datos" style="text-align: left;">12UBS3</td>
-            <td class="datos">WODMER716267348</td>
-            <td class="datos">BMW</td>
-            <td class="datos" style="text-align: left;">MODELO</td>
-            <td class="datos" style="text-align: left;">1</td>
-            <td class="datos" style="text-align: left;">900</td>
+            <td class="datos" style="text-align: left;">{{parts.name}}</td>
+            <td class="datos" style="text-align: left;">{{parts.car.inventary_number}}</td>
+            <td class="datos">{{parts.car.vin_number}}</td>
+            <td class="datos">{{parts.car.brand.name}}</td>
+            <td class="datos" style="text-align: left;">{{parts.car.model.name}}</td>
+            <td class="datos" style="text-align: left;">{{parts.quantity}}</td>
+            <td class="datos" style="text-align: left;">{{parts.price|floatformat:2}}</td>
         </tr>
     
     <tr class="totales" style="border-top: 1px solid black; padding-top: 5px;">
@@ -103,7 +103,7 @@
     </tr>
     <tr class="totales" style="padding-top: 3px;">
         <td colspan="4"><b>TOTAL A PAGAR</b></td>
-        <td style="margin-left: 200px;"><b><u>501.00</u></b></td>
+        <td style="margin-left: 200px;"><b><u>{{parts.price|floatformat:2}}</u></b></td>
     </tr>
     </tbody>
 </table>
