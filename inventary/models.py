@@ -39,7 +39,7 @@ class Cars(models.Model):
     inventary_number = models.CharField(max_length = 25, null = True)
     vin_number = models.CharField(max_length=17, default = '00')
     title_condition = models.CharField(choices=TITLE_CONDITIONS, max_length=11, default='Clean')
-    price = models.FloatField(default=1000.00)
+    cost = models.FloatField(default=1000.00)
     condition = models.CharField(choices = CONDITIONS, max_length = 6)
     entry_date = models.DateField(null = True)
     title = models.FileField(upload_to="media/titles/", null = True)
@@ -153,3 +153,4 @@ class Customer(models.Model):
 
     def __str__(self):
         return str(self.name)
+    

@@ -11,7 +11,7 @@ class UserCreationForm(forms.ModelForm):
 class CarsForm(forms.ModelForm):
     class Meta:
         model = Cars
-        fields = ('brand', 'model', 'inventary_number', 'year', 'entry_date', 'condition', 'title', 'image', 'title_condition', 'vin_number', 'price')
+        fields = ('brand', 'model', 'inventary_number', 'year', 'entry_date', 'condition', 'title', 'image', 'title_condition', 'vin_number', 'cost')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -39,4 +39,4 @@ class SoldCarsForm(forms.ModelForm):
 class ShowCarsForm(forms.ModelForm):
     class Meta:
         model = Cars
-        fields = ('brand', 'model', 'inventary_number', 'year', 'entry_date', 'condition', 'price', 'title', 'image')
+        fields = ('brand', 'model', 'inventary_number', 'year', 'entry_date', 'condition', 'cost', 'title', 'image')

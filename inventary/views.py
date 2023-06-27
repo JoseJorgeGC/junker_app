@@ -173,9 +173,9 @@ def home(request):
             last_month_cars_revenue += sold_car.price
 
     for car in cars:
-        cars_costs += car.price
+        cars_costs += car.cost
         if car.entry_date > first_day:
-            last_month_cars_costs += car.price
+            last_month_cars_costs += car.cost
 
 
     total_revenue = parts_revenue + cars_revenue
@@ -565,7 +565,7 @@ def sell(request, id):
             pass
         
         success_messages.append(f'Car {car.inventary_number} has been added to Sold Cars.')
-        return redirect('/inventary/')
+        return redirect('/inventary/cars')
 
     context = {'form': ShowCarsForm(instance=car), 'buyerform': BuyersForm(), 'soldcarform': SoldCarsForm(), 'car': car }
     return render(request, 'sell.html', context) 

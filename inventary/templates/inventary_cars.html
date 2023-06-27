@@ -54,7 +54,7 @@
                                 <td class="px-4 py-3">{{car.condition}}</td>                        
                                 <td class="px-4 py-3">{{car.title_condition}}</td>                        
                                 <td class="px-4 py-3">{{car.vin_number}}</td>                        
-                                <td class="px-4 py-3">{{car.price|floatformat:2}}</td>                        
+                                <td class="px-4 py-3">{{car.cost|floatformat:2}}</td>                        
                                 <td class="px-4 py-3">
                                     <a href="{% url 'sell' car.id %}">
                                         <button class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button"> 
