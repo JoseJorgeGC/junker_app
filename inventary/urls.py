@@ -40,5 +40,6 @@ urlpatterns = [
     path('test/', views.render_pdf_view, name='test-view'),
     path('invoice/<pk>/', views.customer_render_pdf_view, name='customer-pdf-view'),
     path('invoice/parts/<pk>/', views.parts_render_pdf_view, name='parts-pdf-view'),
+    path('invoice/prueba/<pk>/', views.prueba_invoice, name='prueba_invoice'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 

@@ -5,11 +5,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <title>Invoice</title>
 </head>
 <style>
+    @page {
+    size: letter landscape;
+    margin: 2cm;
+    }
+    .container {
+        margin-left: -30px;
+    }
     .custom-table {
         border-collapse: separate;
         border-spacing: 0;
@@ -27,34 +32,41 @@
         border-top-right-radius: 10px;
     }
 
-
-
-    .custom-table thead th {
-        border-top: 2px solid #0d6efd;
-        border-bottom: 2px solid #0d6efd;
-    }
-
-    .custom-table tbody td {
-        border-bottom: 1px solid #2e81d4;
-    }
-
     .align-right {
         text-align: right;
+        color: #ff3d2f;
     }
 
-    .custom-width {
+    .title-invoice {
         width: 200px;
         /* Ajusta el ancho según tus necesidades */
         border-top-right-radius: 20px;
         border-right: 2px solid #0d6efd;
+        border-bottom: 2px solid #0d6efd;
+        background-color: #b1d0f0;
+        height: 40px;
+        font-size: 50px;
+        text-align: center;
     }
 
-    .custom-borders {
+    .no-invoice {
         border-left: none;
+        border-bottom: 2px solid #0d6efd;
+    }
+
+    .soldto-invoice{
+        border-bottom: 1px solid #0d6efd;
+        border-right: 1px solid #0d6efd;
+    }
+
+    .city1-invoice{
+        border-right: 1px solid #0d6efd;   
     }
 
     .custom-description {
         width: 400px;
+        text-align: center;
+        border-right: solid 1px #0d6efd;
     }
 
     .custom-amount {
@@ -63,62 +75,94 @@
 
     .custom-unit {
         width: 50px;
+        border-right: solid 1px #0d6efd;
     }
 
     .custom-ordered {
         width: 100px;
+        border-right: solid 1px #0d6efd;
     }
 
     .custom-shipped {
         width: 100px;
+        border-right: solid 1px #0d6efd;
     }
 
     .custom-price {
         width: 100px;
+        border-right: solid 1px #0d6efd;
     }
 
     .invoice-content-list {
-        height: 30px;
+        height: 20px;
+        border-right: solid 1px #0d6efd;
+        border-bottom: solid 1px #0d6efd;
+        font-size: 15px;
+        text-align: center;
+        text-decoration: solid;
     }
 
-    .second-table {
-        background-color: red;
+    .invoice-title{
+        font-size: large;
+    }
+    
+    .first-table{
+        border: solid 2px #0d6efd;
+    }
+    
+    .second-table{
+        border: solid 2px #0d6efd;
+        
+    }
+    
+    .third-table{
+        border: solid 2px #0d6efd;
+        margin-left: -8px;
+    }
+
+    .second-table-rows{
+        border-right: 1px solid #0d6efd;
+        text-align: center;
+    }
+
+    .first-row-second-table{
+        background-color:  #b1d0f0;
     }
 </style>
 
 <body>
-    <div class="container-sm mt-5">
-        <table class="table custom-table table-bordered border border-primary">
+    <div class="container mr-10">
+        <table class="table custom-table table-bordered border border-primary first-table">
             <thead>
-                <tr class="">
-                    <th class="h3 table-primary custom-width">Invoice</th>
+                <tr class="invoice-title">
+                    <th class="h3 table-primary title-invoice">Invoice</th>
 
-                    <th colspan="2" class="h3 text-danger align-right custom-borders">No.</th>
+                    <th colspan="3" class="h3 text-danger align-right no-invoice">No. 9350487</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td colspan="2">Sold to:</td>
+                    <td class="soldto-invoice" colspan="2"><b>Sold to: </b> {{ parts.buyer.name|upper }}</td>
 
-                    <td colspan="2">Ship to:</td>
+                    <td class="soldto-invoice" colspan="2"><b>Ship to:</b></td>
                 </tr>
                 <tr>
-                    <td colspan="2">Address:</td>
+                    <td class="soldto-invoice" colspan="2"><b>Address:</b></td>
 
-                    <td colspan="2">Address:</td>
+                    <td class="soldto-invoice" colspan="2"><b>Address:</b></td>
                 </tr>
                 <tr>
-                    <td colspan="2">City, State, ZIP:</td>
+                    <td class="city1-invoice" colspan="2"><b>City, State, ZIP:</b></td>
 
-                    <td colspan="2">City, State, ZIP:</td>
+                    <td class="city2-invoice" colspan="2"><b>City, State, ZIP:</b></td>
                 </tr>
             </tbody>
         </table>
 
-        <table class="table custom-table table-bordered border border-primary">
+        <table class="table custom-table table-bordered border border-primary second-table">
             <thead>
-                <tr class="second-table">
-                    <th colspan="3" class="h6">
+                <tr>
+                    <th class="second-table-rows" colspan="3" class="h6">
                         CUSTOMER ORDER NO.
                         <br>
                         <br>
@@ -126,40 +170,40 @@
 
                     </th>
 
-                    <th colspan="3" class="h6">
+                    <th class="second-table-rows" colspan="3" class="h6">
                         SOLD BY
                         <br>
                         <br>
                         {{contenido}}
                     </th>
 
-                    <th colspan="3" class="h6">
+                    <th class="second-table-rows" colspan="3" class="h6">
                         TERMS
                         <br>
                         <br>
                         {{contenido}}
                     </th>
 
-                    <th colspan="3" class="h6">
+                    <th class="second-table-rows" colspan="3" class="h6">
                         F.O.B
                         <br>
                         <br>
                         {{contenido}}
                     </th>
 
-                    <th colspan="3" class="h6">
+                    <th class="second-table-rows" colspan="3" class="h6">
                         DATE
                         <br>
                         <br>
-                        {{contenido}}
+                        {{parts.sold_date|date:"M, j Y"}}
                     </th>
                 </tr>
             </thead>
         </table>
 
-        <table class="table custom-table table-bordered border border-primary">
+        <table class="table custom-table table-bordered border border-primary third-table">
             <thead>
-                <tr class="table-primary">
+                <tr class="first-row-second-table">
                     <th class="h6 custom-ordered">ORDERED</th>
                     <th class="h6 custom-shipped">SHIPPED</th>
                     <th class="h6 custom-description">DESCRIPTION</th>
@@ -170,52 +214,52 @@
             </thead>
             <tbody>
                 <tr>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
+                    <td class="invoice-content-list"><b>{{parts.sold_date|date:"n/j/Y"}}</b></td>
+                    <td class="invoice-content-list"><b>{{parts.sold_date|date:"n/j/Y"}}</b></td>
+                    <td class="invoice-content-list"><b>{{parts.name}}</b></td>
+                    <td class="invoice-content-list"><b>{{parts.price|floatformat:2}}</b></td>
+                    <td class="invoice-content-list"><b>{{parts.quantity}}</b></td>
+                    <td class="invoice-content-list"><b>{{parts.price|floatformat:2}}</b></td>
                 </tr>
                 <tr>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
                 </tr>
                 <tr>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
                 </tr>
                 <tr>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
                 </tr>
                 <tr>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
                 </tr>
                 <tr>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
-                    <td class="invoice-content-list"></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
+                    <td class="invoice-content-list"><b></b></td>
                 </tr>
             </tbody>
         </table>

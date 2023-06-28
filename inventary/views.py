@@ -21,9 +21,30 @@ import datetime
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.views.generic import ListView
+from weasyprint import HTML, CSS
+import os
+from django.conf import settings
 
 # Create your views here.
 # cars = form.save(commit=false)
+
+#Prueba invoice
+def prueba_invoice(request, *args, **kwargs):
+    pk = kwargs.get('pk')
+    parts = get_object_or_404(SoldParts, pk=pk)
+
+    template_path = 'invoice.html'
+    context = {'parts': parts}
+    template = get_template(template_path)
+    html = template.render(context)
+    css_basic = os.path.join(settings.BASE_DIR, 'inventary/static/assets/css/invoice.css')
+    css_bootstrap = os.path.join(settings.BASE_DIR, 'inventary/static/assets/css/plugins/bootstrap.min.css')
+    pdf = HTML(string=html).write_pdf(stylesheets=[CSS(css_bootstrap)]) 
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="report.pdf"'
+    return response
+
+
 
 #Vista basada en clase para obtener la lista de datos
 class CustomerListView(ListView):
@@ -961,6 +982,7 @@ def parts_render_pdf_view(request, *args, **kwargs):
     if pisa_status.err:
        return HttpResponse('We had some errors <pre>' + html + '</pre>')
     return response
+
 
 #Tabla Cars Sold
 def inventary_cars_sold(request):
