@@ -42,7 +42,7 @@
                         </thead>
                         <tbody>
                             {% for part in parts_sold %}
-                            <tr data-cliente-id="{{ part.buyer.id }}" class="border-b dark:border-gray-700 cursor-pointer">
+                            <tr class="border-b dark:border-gray-700 cursor-pointer">
                                 {% if part.car.inventary_number == NULL %}
                                     <td class="px-4 py-3">{{part.name}}-{{part.part_type}}</td>
                                     <td class="px-4 py-3">{{part.buyer.name}}</td>
@@ -54,7 +54,7 @@
                                     <td class="px-4 py-3">{{part.sold_date|date:"M, j Y"}}</td>
                                     <td class="px-4 py-3">{{part.price|floatformat:2}}</td>
                                     <td class="px-4 py-3">
-                                      <a href="{% url 'prueba_invoice' part.pk %}">
+                                      <a href="{% url 'invoice_parts' part.pk %}">
                                             <button class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button"> 
                                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75l3 3m0 0l3-3m-3 3v-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -73,7 +73,7 @@
                                 <td class="px-4 py-3">{{part.sold_date|date:"M, j Y"}}</td>
                                 <td class="px-4 py-3">{{part.price|floatformat:2}}</td>
                                 <td class="px-4 py-3">
-                                  <a href="{% url 'prueba_invoice' part.pk %}">
+                                  <a href="{% url 'invoice_parts' part.pk %}">
                                         <button class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button"> 
                                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75l3 3m0 0l3-3m-3 3v-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -126,40 +126,7 @@
           <button data-modal-hide="defaultModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
         </div>
       </div>
-    </div>
-  <script>
-    
-  // Obtener todas las filas de la tabla que tienen un atributo data-cliente-id
-  let rows = document.querySelectorAll('tr[data-cliente-id]');
-
-// Agregar un evento de clic a cada fila
-rows.forEach(row => {
-  row.addEventListener('click', function() {
-    // Obtener el ID del cliente desde el atributo data-cliente-id de la fila
-    let clienteId = row.getAttribute('data-cliente-id');
-
-    // Realizar una solicitud AJAX para obtener los detalles del comprador
-    // Puedes usar la función fetch o XMLHttpRequest para esto
-
-    // Una vez que obtengas los datos del comprador, puedes llenar los campos correspondientes en el modal
-    // Por ejemplo, asumiendo que el objeto de respuesta se llama 'buyerData'
-    let buyerName = buyer.name;
-    let buyerEmail = buyer.last_name;
-
-    // Insertar los valores en los elementos del modal
-    document.getElementById('buyer-name').textContent = buyerName;
-    document.getElementById('buyer-last-name').textContent = buyerEmail;
-
-    // Mostrar el modal
-    document.getElementById('defaultModal').classList.remove('hidden');
-  });
-});
-
-// Agregar un evento de clic al botón "I accept" del modal para cerrarlo
-document.getElementById('accept-button').addEventListener('click', function() {
-  document.getElementById('defaultModal').classList.add('hidden');
-});
-  </script>  
+    </div> 
 </div> 
 
 

@@ -39,7 +39,8 @@ urlpatterns = [
     path('pdf/', views.CustomerListView.as_view(), name='customer-list-view'),
     path('test/', views.render_pdf_view, name='test-view'),
     path('invoice/<pk>/', views.customer_render_pdf_view, name='customer-pdf-view'),
-    path('invoice/parts/<pk>/', views.parts_render_pdf_view, name='parts-pdf-view'),
-    path('invoice/prueba/<pk>/', views.prueba_invoice, name='prueba_invoice'),
+    path('invoice/prueba/<pk>/', views.parts_render_pdf_view, name='parts-pdf-view'),
+    path('invoice_parts/<pk>/', views.pdf_invoice_parts, name='invoice_parts'),
+    path('invoice_cars_sold/<pk>/', views.pdf_invoice_cars_sold, name='invoice_cars_sold'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 

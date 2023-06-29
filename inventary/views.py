@@ -28,12 +28,13 @@ from django.conf import settings
 # Create your views here.
 # cars = form.save(commit=false)
 
-#Prueba invoice
-def prueba_invoice(request, *args, **kwargs):
+# Generacion de Facturas para partes vendidas
+
+def pdf_invoice_parts(request, *args, **kwargs):
     pk = kwargs.get('pk')
     parts = get_object_or_404(SoldParts, pk=pk)
 
-    template_path = 'invoice.html'
+    template_path = 'invoice_parts.html'
     context = {'parts': parts}
     template = get_template(template_path)
     html = template.render(context)
@@ -44,7 +45,21 @@ def prueba_invoice(request, *args, **kwargs):
     response['Content-Disposition'] = 'filename="report.pdf"'
     return response
 
+# Creacion de facturas de carros vendidos 
+def pdf_invoice_cars_sold(request, *args, **kwargs):
+    pk = kwargs.get('pk')
+    car = get_object_or_404(SoldCars, pk=pk)
 
+    template_path = 'invoice_cars_sold.html'
+    context = {'car': car}
+    template = get_template(template_path)
+    html = template.render(context)
+    css_basic = os.path.join(settings.BASE_DIR, 'inventary/static/assets/css/invoice.css')
+    css_bootstrap = os.path.join(settings.BASE_DIR, 'inventary/static/assets/css/plugins/bootstrap.min.css')
+    pdf = HTML(string=html).write_pdf(stylesheets=[CSS(css_bootstrap)]) 
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="report.pdf"'
+    return response
 
 #Vista basada en clase para obtener la lista de datos
 class CustomerListView(ListView):
