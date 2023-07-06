@@ -42,8 +42,8 @@ class Cars(models.Model):
     cost = models.FloatField(default=1000.00)
     condition = models.CharField(choices = CONDITIONS, max_length = 6)
     entry_date = models.DateField(null = True)
-    title = models.FileField(upload_to="media/titles/", null = True)
-    image = models.ImageField(upload_to="static/cars/", null = True)
+    title = models.FileField(upload_to="media/titles/", null = True, blank=True)
+    image = models.ImageField(upload_to="static/cars/", null = True, blank=True)
     waiting = models.BooleanField(default = True)
 
     def __str__(self):
