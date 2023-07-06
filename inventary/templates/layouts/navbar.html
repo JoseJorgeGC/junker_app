@@ -41,6 +41,7 @@
             <a href="{% url 'cars' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium {% if request.path|slice:'11' == '/inventary/' %}bg-gray-900 text-white{% endif %}">Inventory</a>
             <a href="{% url 'entry' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium {% if request.path == '/entry/' %}bg-gray-900 text-white{% endif %}">Entry</a>
             <a href="{% url 'parts_sell' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium {% if request.path == '/parts/' %}bg-gray-900 text-white{% endif %}">Sell Parts</a>
+            <a href="{% url 'parts_new' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium {% if request.path == '/parts_new/' %}bg-gray-900 text-white{% endif %}">Sell Parts New</a>
           </div>
         </div>
       </div>
@@ -114,6 +115,7 @@
       <a href="{% url 'cars' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Inventory</a>
       <a href="{% url 'entry' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Entry</a>
       <a href="{% url 'parts_sell' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Sell Parts</a>
+      <a href="{% url 'parts_new' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium {% if request.path == 'parts_new/' %}bg-gray-900 text-white{% endif %}">Sell Parts New</a>
     </div>
   </div>
 </nav>

@@ -516,23 +516,29 @@ def entry(request):
                 else:
                     error_messages.append('VIN already exist.')
                 return render(request, 'entry.html', context) 
-
-    title_sufix = entry_car.title.name.split('.')[-1]
-    if not (str.lower(title_sufix) == 'pdf'):
-        error_messages.append('Title: Unknow file type. Select a PDF file.')
-        messages.warning(request, "Error select a PDF file.")
-        return render(request, 'entry.html', context)   
+    try: 
+        if entry_car.title:
+            title_sufix = entry_car.title.name.split('.')[-1]
+            if not (str.lower(title_sufix) == 'pdf'):
+                error_messages.append('Title: Unknow file type. Select a PDF file.')
+                return render(request, 'entry.html', context)   
         
-    entry_car.title = rename_file(entry_car.title, entry_car.inventary_number, entry_car.entry_date)
-    print(entry_car.title.name)
-
-    image_sufix = entry_car.image.name.split('.')[-1]
-    if not (str.lower(image_sufix) == 'jpeg' or str.lower(image_sufix) == 'jpg' or str.lower(image_sufix) == 'png'):
-        error_messages.append('Image: Unknow image type. Select a JPG or PNG file.')
-        return render(request, 'entry.html', context)
+            entry_car.title = rename_file(entry_car.title, entry_car.inventary_number, entry_car.entry_date)
+            print(entry_car.title.name)
+    except:
+        print("Doesn't exists pdf file.")
+    try:
+        if entry_car.image:
+            image_sufix = entry_car.image.name.split('.')[-1]
+            if not (str.lower(image_sufix) == 'jpeg' or str.lower(image_sufix) == 'jpg' or str.lower(image_sufix) == 'png'):
+                error_messages.append('Image: Unknow image type. Select a JPG or PNG file.')
+                return render(request, 'entry.html', context)
     
-    entry_car.image = rename_file(entry_car.image, entry_car.inventary_number, entry_car.entry_date)
-    print(entry_car.year)
+            entry_car.image = rename_file(entry_car.image, entry_car.inventary_number, entry_car.entry_date)
+            print(entry_car.year)
+    except:
+        print("Doesn't exists image.")
+
     try:
         year = int(entry_car.year)
         if not ((year <= 2023) and (year >= 1940)):
@@ -546,7 +552,6 @@ def entry(request):
         #messages.warning(request, "Error enter a valid year")
         return render(request, 'entry.html', context)
 
-    print(title_sufix)
     entry_car.save()
     success_messages.append(f'Car {entry_car.inventary_number} added successfully.')
     #probando swet_alert
@@ -1032,3 +1037,6 @@ def footer_faq(request):
 
 def footer_contact(request):
     return render(request, 'contact.html')
+
+def sell_parts_new(request):
+    return render(request, 'sell_parts_new.html')

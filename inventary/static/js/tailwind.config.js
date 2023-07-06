@@ -41,6 +41,15 @@ tailwind.config = {
       'Segoe UI Symbol', 
       'Noto Color Emoji'
     ]
-      }
-    }
+      },
+      animation: {
+        'fadeIn': 'fadeIn 300ms ease-out',
+      },
+      keyframes: {
+        'fadeIn': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+      },
+    },  
   }
