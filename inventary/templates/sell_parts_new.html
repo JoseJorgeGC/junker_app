@@ -62,7 +62,7 @@
                     
                     <input type="hidden" value="tires" name="form_type">
                     <div class="overflow-hidden shadow sm:rounded-md">
-                        <div class="bg-white px-4 py-5 sm:p-6">
+                        <div class="bg-white px-4 py-5 sm:p-6" id="parts-container">
                           <!-- Vender Partes -->
                           <div id="showtires" class="grid grid-cols-6 gap-6 ">                           
                             <div class="col-span-6 sm:col-span-3">
@@ -100,15 +100,15 @@
                             </div>
                           </div>
                           <!-- Fin vender partes -->
-                            <div class="col-span-6 sm:col-span-1 cursor-pointer mt-10">
-                              <svg data-tooltip-target="tooltip-default" data-tooltip-placement="right" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        </div>
+                          <div class="col-span-6 sm:col-span-1 cursor-pointer mt-10">
+                              <svg id="add-parts" data-tooltip-target="tooltip-default" data-tooltip-placement="right" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                               </svg>  
                               <div id="tooltip-default" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip">
                                 Add more parts
                               <div class="tooltip-arrow" data-popper-arrow></div>
-                            </div>                            
-                            </div>
+                          </div>                            
                         </div>
                     
                           <div class="grid grid-cols-6 gap-6 bg-white px-4 py-5 sm:p-6 ">
@@ -146,5 +146,7 @@
   </div>
   {% include 'layouts/footer.html' %}
   <script src="{% static 'assets/js/plugins/parts.js' %}"></script>
+  <script src="{% static 'assets/js/plugins/dom-minifw.js' %}"></script>
+  <script src="{% static 'assets/js/plugins/sell-parts.js' %}"></script>
   <script src="{% static 'assets/js/plugins/car_id.js' %}"></script>
 {% endblock %}
