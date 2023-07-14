@@ -47,7 +47,7 @@
                   {% for message in success %}       
                   <span class="font-medium">{{message}}</span> 
                   {% endfor %}            
-              </div>
+                </div>
             </div>
             {% endif %}
              <!-- Stock -->
@@ -59,45 +59,34 @@
                   
                   <form action="" method="POST">
                     {% csrf_token %}
-                    
-                    <input type="hidden" value="tires" name="form_type">
                     <div class="overflow-hidden shadow sm:rounded-md">
                         <div class="bg-white px-4 py-5 sm:p-6" id="parts-container">
                           <!-- Vender Partes -->
                           <div id="showtires" class="grid grid-cols-6 gap-6 ">                           
-                            <div class="col-span-6 sm:col-span-3">
-                              <label for="quantity" class="block text-sm font-medium leading-6 text-gray-900">Part type:</label>
-                              <input type="text" name="part_type" id="part_type" autocomplete="quantity" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" min="1" max="{{stock.tires}}">
+                            
+                            <div class="col-span-6 sm:col-span-2">
+                              <label for="part_type" class="block text-sm font-medium leading-6 text-gray-900">Part type:</label>
+                              <select required="required" id="select-part-type" name="part_type" autocomplete="off" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                  {% for option in options_select %}
+                                    <option value="{{option.id}}">{{option.name}}</option>
+                                  {% endfor %}    
                             </div>
-              
+                          
                             <div class="col-span-6 sm:col-span-1">
-                              <label for="amount" class="block text-sm font-medium leading-6 text-gray-900">Quantity:</label>
-                              <input type="number" name="amount" id="amount" autocomplete="family-name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" min="1">
+                              <label for="quantity" class="block text-sm font-medium leading-6 text-gray-900">Quantity:</label>
+                              <input required="required" type="number" name="quantity" id="quantity" autocomplete="off" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" min="1">
                             </div>
 
                             <div class="col-span-6 sm:col-span-1">
-                                <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Price:</label>
-                                <input type="text" name="name" id="name" autocomplete="family-name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                <label for="price" class="block text-sm font-medium leading-6 text-gray-900">Price:</label>
+                                <input required="required" type="number" name="price" id="price" autocomplete="off" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                             </div>                          
                             
-                            <div class="col-span-6 sm:col-span-1 mt-9" id="carId_toggle">
-                              <div class="flex cursor-pointer">                                 
-                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                  </svg>
-                                  Add car ID
-                              </div>    
+                            <div class="col-span-6 sm:col-span-2">
+                              <label for="car-id" class="block text-sm font-medium leading-6 text-gray-900">Car ID:</label>
+                              <input required="required" type="text" name="car_id" id="car-id"//cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js autocomplete="off" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                             </div>
-                            <div class="hidden sm:col-start-3 grid grid-cols-2 gap-6 w-80 transition-all duration-300 ease-out" id="add_id">
-                                <div class="col-span-6 sm:col-span-1">
-                                  <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Car ID:</label>
-                                  <input type="text" name="name" id="name" autocomplete="family-name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                </div>           
-                                <div class="col-span-6 sm:col-span-1">
-                                  <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Quantity Parts:</label>
-                                  <input type="text" name="name" id="name" autocomplete="family-name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                </div>     
-                            </div>
+
                           </div>
                           <!-- Fin vender partes -->
                         </div>
@@ -114,20 +103,20 @@
                           <div class="grid grid-cols-6 gap-6 bg-white px-4 py-5 sm:p-6 ">
                             <div class="col-span-6 sm:col-span-2">
                               <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Name of Buyer:</label>
-                              <input type="text" name="name" id="name" autocomplete="family-name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                              <input required="required" type="text" name="name" id="name" autocomplete="name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                             </div>
               
                             <div class="col-span-6 sm:col-span-2">
                               <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Last Name:</label>
-                              <input type="text" name="last_name" id="last-name" autocomplete="year" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                              <input required="required" type="text" name="last_name" id="last-name" autocomplete="last-name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                             </div>
                             <div class="col-span-6 sm:col-span-2">
                               <label for="dni" class="block text-sm font-medium leading-6 text-gray-900">DNI:</label>
-                              <input type="text" name="dni" id="dni" autocomplete="year" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                              <input required="required" type="text" name="dni" id="dni" autocomplete="dni" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                             </div>
                             <div class="col-span-6 sm:col-span-2">
                               <label for="date" class="block text-sm font-medium leading-6 text-gray-900">Sale Date:</label>
-                              <input type="date" name="date" id="date" autocomplete="date" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                              <input required="required" type="date" name="date" id="date" autocomplete="date" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                             </div>
                           </div>
                         <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
@@ -147,6 +136,70 @@
   {% include 'layouts/footer.html' %}
   <script src="{% static 'assets/js/plugins/parts.js' %}"></script>
   <script src="{% static 'assets/js/plugins/dom-minifw.js' %}"></script>
-  <script src="{% static 'assets/js/plugins/sell-parts.js' %}"></script>
   <script src="{% static 'assets/js/plugins/car_id.js' %}"></script>
+  <script type="text/javascript">
+    var options_select = {{options_select|safe}};
+
+    const btn_agregar = document.getElementById('add-parts');
+    console.log(btn_agregar)
+    btn_agregar.addEventListener("click", function( ){
+    //crear el div que contiene los 2 sub-divs
+    const div_principal = D.create('div', {id:"showtires", className:'grid grid-cols-6 gap-6 '});
+    
+    
+    //crear el div para el span e input del part-type
+    const div_part_type = D.create('div', {className:'col-span-6 sm:col-span-2'});
+
+    //crear el div para el span e input del quantity
+    const div_quantity = D.create('div', {className:'col-span-6 sm:col-span-1'});
+
+    //crear el div para el span e input del price
+    const div_price = D.create('div', {className:'col-span-6 sm:col-span-1'});
+
+    //crear el div para el span e input del Add-Car-ID
+    const div_car_id = D.create('div', {className:'col-span-6 sm:col-span-2'});
+
+    
+    //crear los label de type quantity and price
+    const label_part_type = D.create('label', { innerHTML: 'Part Type:',for:'part-type', className:"block text-sm font-medium leading-6 text-gray-900" } );
+    const label_quantity = D.create('label', { innerHTML: 'Quantity:',for:'quantity', className:"block text-sm font-medium leading-6 text-gray-900" });
+    const label_price = D.create('label', { innerHTML: 'Price:', for:'price',className:"block text-sm font-medium leading-6 text-gray-900" });
+    const label_car_id = D.create('label', { innerHTML: 'Car ID:',for:'part-type', className:"block text-sm font-medium leading-6 text-gray-900" } );
+
+    //crear los inputs de type quantity and price
+    const select_part_type = D.create('select', { required: 'required', id:'select-part-type', name: 'part_type', autocomplete: 'off', className:'mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'} );
+    
+    for(var i=0;i<options_select.length;i++){
+      const option_part = D.create('option', { value: options_select[i].id, innerHTML: options_select[i].name});
+      D.append([option_part], select_part_type);
+    }
+
+    const input_quantity = D.create('input', { required: 'required', type: 'number', id:'quantity', name: 'quantity', autocomplete: 'off', className:"mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", min: '1'});
+
+    const input_price = D.create('input', { required: 'required', type: 'number', id:'price', name: 'price', autocomplete: 'off', className:"mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", min: '1'});
+    
+    const input_car_id = D.create('input', { required: 'required', type: 'text', id:'car-id', name: 'car_id', autocomplete: 'off', className:"mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"});
+
+    //crear un botoncito de eliminar este div 
+    const borrar = D.create('a', { href: 'javascript:void(0)', innerHTML: 'x', onclick: function( ){ D.remove(div_principal); } } );
+
+    //agregar cada etiqueta a su nodo padre
+    D.append([label_part_type, select_part_type], div_part_type);
+    D.append([label_quantity, input_quantity], div_quantity);
+    D.append([label_price, input_price], div_price);
+    D.append([label_car_id, input_car_id], div_car_id);
+
+    D.append([div_part_type, div_quantity, div_price, div_car_id, borrar], div_principal);
+    
+    //agregar el div del primer comentario al contenedor con id #container
+    D.append(div_principal, D.id('parts-container') );
+
+} );
+/*
+      <div class="col-span-6 sm:col-span-1">
+        <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Car ID:</label>
+        <input type="text" name="name" id="name" autocomplete="family-name" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+      </div>
+*/
+  </script>
 {% endblock %}

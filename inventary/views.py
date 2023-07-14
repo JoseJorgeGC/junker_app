@@ -1039,4 +1039,11 @@ def footer_contact(request):
     return render(request, 'contact.html')
 
 def sell_parts_new(request):
-    return render(request, 'sell_parts_new.html')
+    if request.method == "POST":
+        print("Metodo POST")
+        part_type = request.POST.getlist("part_type")
+        print(request.POST)
+        print(part_type)
+    options_select = [{'name': 'Tires', 'id': 1}, {'name': 'Rims', 'id': 2}]
+    context = {'options_select': options_select}
+    return render(request, 'sell_parts_new.html', context)
