@@ -1039,7 +1039,12 @@ def footer_contact(request):
     return render(request, 'contact.html')
 
 def sell_parts_new(request):
-    options_select = [{'name': 'Tires', 'id': 1}, {'name': 'Rims', 'id': 2}]
+    options = PartType.objects.all()
+    options_select = []
+    for option in options:
+        options_select.append({"name": option.name, "id": option.id})
+
+    print(options_select)
     context = {'options_select': options_select}
     
     if request.method == "POST":
