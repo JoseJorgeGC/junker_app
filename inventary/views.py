@@ -1039,11 +1039,61 @@ def footer_contact(request):
     return render(request, 'contact.html')
 
 def sell_parts_new(request):
-    if request.method == "POST":
-        print("Metodo POST")
-        part_type = request.POST.getlist("part_type")
-        print(request.POST)
-        print(part_type)
     options_select = [{'name': 'Tires', 'id': 1}, {'name': 'Rims', 'id': 2}]
     context = {'options_select': options_select}
+    
+    if request.method == "POST":
+        #Datos del form
+        part_type = request.POST.getlist("part_type")
+        quantity = request.POST.getlist("quantity")
+        price = request.POST.getlist("price")
+        car_id = request.POST.getlist("car_id")
+
+        #Datos del comprador
+        name = request.POST['name']
+        last_name = request.POST['last_name']
+        dni = request.POST['dni']
+        date = request.POST['date']
+
+        if not ((len(part_type) == len(quantity)) and (len(part_type) == len(price)) and (len(part_type) == len(car_id))): 
+            return render(request, 'sell_parts_new.html', context)
+        
+        #Comprador
+        try:
+                buyer = Buyers.objects.filter(dni = dni).get()
+                if not (str.lower(buyer.name) == str.lower(name) and (str.lower(buyer.last_name) == str.lower(last_name))):
+                    #error_messages.append(f'Other buyer already have the {buyer.dni} DNI.')
+                    print('error comprador.')
+                    #context = {'stock': stock, 'error_messages': error_messages, 'success_messages': succes_messages}
+                    #return render(request, 'parts.html', context)
+        except:
+            print('Comprador nuevo')
+            buyer = Buyers(name = name, last_name = last_name, dni = dni)
+            buyer.save()
+
+        #Partes vendidas
+        part_quantity = 0
+        total_amount = 0
+        sold_parts_list = []
+        for i in range(0, len(part_type)):
+            car = Cars.objects.filter(inventary_number = car_id[i]).get()
+            part_type_for = PartType.objects.filter(id = part_type[i]).get()
+            sold_part = SoldParts(name = "", car = car, part_type = part_type_for, buyer = buyer, price = price[i], quantity = quantity[i], sold_date = date)
+
+            total_amount += int(price[i])
+
+            sold_parts_list.append(sold_part)
+            sold_part.save()
+            print(f'{sold_part.part_type.name} --- {sold_part.quantity}')
+            part_quantity += 1
+        #Invoice Generator
+        invoice = Invoices(code = "45845124", date = date, total_amount = total_amount, parts_quantity = part_quantity, buyer = buyer)
+        invoice.save()
+
+
+        #Relacion partes x factura
+        for part in sold_parts_list:
+            sold_by_invoice = PartsByInvoices(sold_part = part, invoice = invoice)
+            sold_by_invoice.save()
+
     return render(request, 'sell_parts_new.html', context)

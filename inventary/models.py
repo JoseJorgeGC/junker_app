@@ -108,28 +108,13 @@ class RemoveParts(models.Model):
         return f'Rims: {self.rims} --- Tires: {self.tires} --- Catalyst: {self.catalyst} --- Engine: {self.engine}'
     
 
-class SoldParts(models.Model):
-    PART_TYPE = (
-        ('Tires', 'Tires'),
-        ('Rims', 'Rims'),
-        ('Engines', 'Engines'),
-        ('Catalyst', 'Catalyst'),
-        ('Others', 'Others')
-    )
-
+class PartType(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=60)
-    car = models.ForeignKey(Cars, on_delete=models.CASCADE, blank=True, null=True)
-    part_type = models.CharField(choices=PART_TYPE, max_length=8)
-    buyer = models.ForeignKey(Buyers, on_delete=models.CASCADE)
-    sold_date = models.DateField()
-    add_date = models.DateField(auto_now_add=True)
-    quantity = models.IntegerField(default=1)
-    price = models.FloatField()
+    name = models.CharField(max_length = 200)
 
     def __str__(self):
-        return f'{self.part_type} --- quantity: {self.quantity}'
-    
+        return self.name
+
 
 class Stock(models.Model):
     id = models.AutoField(primary_key=True)
@@ -154,3 +139,35 @@ class Customer(models.Model):
     def __str__(self):
         return str(self.name)
     
+
+class Invoices(models.Model):
+    id = models.AutoField(primary_key=True)
+    code = models.CharField(max_length=50)
+    date = models.DateField()
+    total_amount = models.FloatField()
+    parts_quantity = models.IntegerField()
+    buyer = models.ForeignKey(Buyers, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.code 
+    
+
+class SoldParts(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=60)
+    car = models.ForeignKey(Cars, on_delete=models.CASCADE, blank=True, null=True)
+    part_type = models.ForeignKey(PartType, on_delete=models.CASCADE)
+    buyer = models.ForeignKey(Buyers, on_delete=models.CASCADE)
+    sold_date = models.DateField()
+    add_date = models.DateField(auto_now_add=True)
+    quantity = models.IntegerField(default=1)
+    price = models.FloatField()
+
+    def __str__(self):
+        return f'{self.part_type} --- quantity: {self.quantity}'
+    
+
+class PartsByInvoices(models.Model):
+    id = models.AutoField(primary_key=True) 
+    sold_part = models.ForeignKey(SoldParts, on_delete=models.CASCADE)
+    invoice = models.ForeignKey(Invoices, on_delete=models.CASCADE)
