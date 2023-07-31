@@ -1048,11 +1048,16 @@ def sell_parts_new(request):
     context = {'options_select': options_select}
     
     if request.method == "POST":
+        #MessagesData
+        error_messages = []
+        success_messages = []
+
         #Datos del form
         part_type = request.POST.getlist("part_type")
         quantity = request.POST.getlist("quantity")
         price = request.POST.getlist("price")
         car_id = request.POST.getlist("car_id")
+        invoices_code = request.POST['invoices_code']
 
         #Datos del comprador
         name = request.POST['name']
@@ -1060,6 +1065,17 @@ def sell_parts_new(request):
         dni = request.POST['dni']
         date = request.POST['date']
 
+        if invoices_code == "":
+            return render(request, 'sell_parts_new.html', context)
+        try:
+            invoice = Invoices.objects.filter(code = invoices_code).get()
+            if invoice:
+                error_messages.append(f'Invoice {invoices_code} already exists.')
+                context |= {'error_messages': error_messages}
+                return render(request, 'sell_parts_new.html', context)
+
+        except:
+            pass
         if not ((len(part_type) == len(quantity)) and (len(part_type) == len(price)) and (len(part_type) == len(car_id))): 
             return render(request, 'sell_parts_new.html', context)
         
@@ -1067,38 +1083,62 @@ def sell_parts_new(request):
         try:
                 buyer = Buyers.objects.filter(dni = dni).get()
                 if not (str.lower(buyer.name) == str.lower(name) and (str.lower(buyer.last_name) == str.lower(last_name))):
-                    #error_messages.append(f'Other buyer already have the {buyer.dni} DNI.')
+                    error_messages.append(f'Other buyer already have the {buyer.dni} DNI.')
                     print('error comprador.')
-                    #context = {'stock': stock, 'error_messages': error_messages, 'success_messages': succes_messages}
-                    #return render(request, 'parts.html', context)
+                    context |= {'error_messages': error_messages}
+                    return render(request, 'sell_parts_new.html', context)
         except:
             print('Comprador nuevo')
             buyer = Buyers(name = name, last_name = last_name, dni = dni)
-            buyer.save()
+            
 
         #Partes vendidas
         part_quantity = 0
         total_amount = 0
         sold_parts_list = []
         for i in range(0, len(part_type)):
-            car = Cars.objects.filter(inventary_number = car_id[i]).get()
-            part_type_for = PartType.objects.filter(id = part_type[i]).get()
+            try:
+                car = Cars.objects.filter(inventary_number = car_id[i]).get()
+            except:
+                error_messages.append(f"Car {car_id[i]} does not exists.")
+                context |= {'error_messages': error_messages}
+                return render(request, 'sell_parts_new.html', context)
+            
+            try:
+                part_type_for = PartType.objects.filter(id = part_type[i]).get()
+            except:
+                error_messages.append(f"The selected part type is wrong!")
+                context |= {'error_messages': error_messages}
+                return render(request, 'sell_parts_new.html', context)
+
             sold_part = SoldParts(name = "", car = car, part_type = part_type_for, buyer = buyer, price = price[i], quantity = quantity[i], sold_date = date)
 
             total_amount += int(price[i])
 
             sold_parts_list.append(sold_part)
-            sold_part.save()
+
             print(f'{sold_part.part_type.name} --- {sold_part.quantity}')
-            part_quantity += 1
+            part_quantity += int(sold_part.quantity)
+        
         #Invoice Generator
-        invoice = Invoices(code = "45845124", date = date, total_amount = total_amount, parts_quantity = part_quantity, buyer = buyer)
+        invoice = Invoices(code = invoices_code, date = date, total_amount = total_amount, parts_quantity = part_quantity, buyer = buyer)
+        
+        #Guardado de Datos
+        buyer.save()
         invoice.save()
+        
 
 
         #Relacion partes x factura
         for part in sold_parts_list:
+            part.save()
             sold_by_invoice = PartsByInvoices(sold_part = part, invoice = invoice)
             sold_by_invoice.save()
 
+        success_messages.append(f"Invoice {invoices_code} has been created successfully.")
+        context |= {'success_messages': success_messages}
+        print(success_messages)
+        return render(request, 'sell_parts_new.html', context)
+    
+    
     return render(request, 'sell_parts_new.html', context)
