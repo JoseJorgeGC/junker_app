@@ -31,11 +31,18 @@ from django.conf import settings
 # Generacion de Facturas para partes vendidas
 
 def pdf_invoice_parts(request, *args, **kwargs):
-    pk = kwargs.get('pk')
-    parts = get_object_or_404(SoldParts, pk=pk)
+    code = kwargs.get('code')
+    invoice = get_object_or_404(Invoices, code = code)
 
+    invoices_parts = PartsByInvoices.objects.filter(invoice = invoice).all()
+    print(invoices_parts)
+
+    #Data
+    context = {'invoice': invoice}
+    context |= {'invoices_parts': invoices_parts}
+    
     template_path = 'invoice_parts.html'
-    context = {'parts': parts}
+    
     template = get_template(template_path)
     html = template.render(context)
     css_basic = os.path.join(settings.BASE_DIR, 'inventary/static/assets/css/invoice.css')
@@ -405,21 +412,21 @@ def home(request):
         try:
             parts = SoldParts.objects.filter(sold_date__month = month[i], sold_date__year = year[i]).all()
             for part in parts:
-                if part.part_type == "Rims":
+                if part.part_type.name == "Rims":
                     rims_price += part.price
                     rims_counter += part.quantity 
-                elif part.part_type == "Others":
-                    parts_price += part.price
-                    parts_counter += part.quantity
-                elif part.part_type == "Catalyst":
+                elif part.part_type.name == "Tires":
+                    tires_price += part.price
+                    tires_counter += part.quantity
+                elif part.part_type.name == "Catalyst":
                     catalysts_price += part.price
                     catalysts_counter += part.quantity
-                elif part.part_type == "Engines":
+                elif part.part_type.name == "Engines":
                     engines_price += part.price
                     engines_counter += part.quantity
                 else:
-                    tires_price += part.price
-                    tires_counter += part.quantity
+                    parts_price += part.price
+                    parts_counter += part.quantity
             
             rims_price /= 1000
             tires_price /= 1000
