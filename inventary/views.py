@@ -49,7 +49,7 @@ def pdf_invoice_parts(request, *args, **kwargs):
     css_bootstrap = os.path.join(settings.BASE_DIR, 'inventary/static/assets/css/plugins/bootstrap.min.css')
     pdf = HTML(string=html).write_pdf(stylesheets=[CSS(css_bootstrap)]) 
     response = HttpResponse(pdf, content_type='application/pdf')
-    response['Content-Disposition'] = 'filename="report.pdf"'
+    response['Content-Disposition'] = f'filename="invoice-{code}.pdf"'
     return response
 
 # Creacion de facturas de carros vendidos 
