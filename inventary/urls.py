@@ -43,5 +43,8 @@ urlpatterns = [
     path('invoice_parts/<code>/', views.pdf_invoice_parts, name='invoice_parts'),
     path('invoice_cars_sold/<pk>/', views.pdf_invoice_cars_sold, name='invoice_cars_sold'),
     path('parts_new/', views.sell_parts_new, name='parts_new'),
+    path('add_brands/', views.add_brands, name='add_brands'),
+    path('add_models/', views.add_models, name='add_models'),
+    path('add_parts/', views.add_parts, name='add_parts'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 

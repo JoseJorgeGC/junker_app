@@ -1149,3 +1149,12 @@ def sell_parts_new(request):
     
     
     return render(request, 'sell_parts_new.html', context)
+
+def add_brands(request):
+    return render(request, 'add_brands.html');
+
+def add_models(request):
+    return render(request, 'add_models.html');
+
+def add_parts(request):
+    return render(request, 'add_parts.html');
