@@ -1163,7 +1163,28 @@ def sell_parts_new(request):
 
 @login_required
 def add_brands(request):
-    return render(request, 'add_brands.html');
+    success_messages = []
+    error_messages = []
+    brands = Brands.objects.all()
+    if request.method == "POST":
+        brand_new = request.POST['brand']
+        print(brand_new)
+        print(brands)
+        addBrand = True
+        for brand in brands:
+            if str.lower(brand.name) == str.lower(brand_new):
+                addBrand = False
+                error_messages.append(f'{brand_new} already exists.')
+                break
+        
+        if addBrand:
+            new_brand = Brands(name = brand_new)
+            new_brand.save()
+            success_messages.append(f'Brand {brand_new} successfully add.')
+        
+    context = {'brands': brands, 'error_messages': error_messages, 'success_messages': success_messages}
+    
+    return render(request, 'add_brands.html', context);
 
 @login_required
 def add_models(request):
