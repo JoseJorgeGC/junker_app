@@ -702,6 +702,7 @@ def models(request):
     print(models.values("id", "name"))
     return JsonResponse(list(models.values("id", "name")), safe=False)
 
+@login_required
 def parts_sell(request):
     try:
         stock = Stock.objects.get()
@@ -907,17 +908,21 @@ def parts_sell(request):
     context = {'stock': stock}
     return render(request, 'parts.html', context)
 
+@login_required
 def chart_prueba(request):
     numeros = [20, 30, 40, 100, 70, 90]
     return render(request, 'chart_mio.html', {'numeros':numeros})
 
+@login_required
 def profile(request):
     return render(request, 'profile.html')
 
+@login_required
 def user_settings(request):
     return render(request, 'user_settings.html')
 
 #Tabla Cars
+@login_required
 def inventary_cars(request):
     car_counter = Cars.objects.filter(waiting = True).count()
     cars = Cars.objects.filter(waiting = True).all()
@@ -936,6 +941,7 @@ def inventary_cars(request):
     return render(request, 'inventary_cars.html', context)
 
 #Tabla Pendientes
+@login_required
 def inventary_pendings(request):
 
     pendings = JunkCars.objects.filter(waiting=True).order_by('to_junk_date')
@@ -953,6 +959,7 @@ def inventary_pendings(request):
     return render(request, 'inventary_pendings.html', context)
 
 #Tabla Junked Cars
+@login_required
 def inventary_junked(request):
     junkcar_counter = JunkCars.objects.filter(waiting = True).count()
     scratched_cars = JunkCars.objects.filter(waiting=False, out=False).order_by('-scratched_date')
@@ -968,6 +975,7 @@ def inventary_junked(request):
     return render(request, 'inventary_junked.html', context)
 
 #Tabla Parts Sold
+@login_required
 def inventary_parts(request):
     junkcar_counter = JunkCars.objects.filter(waiting = True).count()
     parts_sold = SoldParts.objects.all().order_by('-sold_date')
@@ -985,6 +993,7 @@ def inventary_parts(request):
 
 
 #Vista para mostrar el contenido dentro del PDF de manera dinamica de las Partes
+@login_required
 def parts_render_pdf_view(request, *args, **kwargs):
     pk = kwargs.get('pk')
     parts = get_object_or_404(SoldParts, pk=pk)
@@ -1012,6 +1021,7 @@ def parts_render_pdf_view(request, *args, **kwargs):
 
 
 #Tabla Cars Sold
+@login_required
 def inventary_cars_sold(request):
     junkcar_counter = JunkCars.objects.filter(waiting = True).count()
     cars_sold = SoldCars.objects.all().order_by('-date')
@@ -1045,6 +1055,7 @@ def footer_faq(request):
 def footer_contact(request):
     return render(request, 'contact.html')
 
+@login_required
 def sell_parts_new(request):
     options = PartType.objects.all()
     options_select = []
@@ -1150,11 +1161,34 @@ def sell_parts_new(request):
     
     return render(request, 'sell_parts_new.html', context)
 
+@login_required
 def add_brands(request):
     return render(request, 'add_brands.html');
 
+@login_required
 def add_models(request):
     return render(request, 'add_models.html');
 
-def add_parts(request):
-    return render(request, 'add_parts.html');
+@login_required
+def add_parts(request): 
+    success_messages = []
+    error_messages = []
+    parts = PartType.objects.all()
+    if request.method == "POST":
+        part_new = request.POST['part_name']
+        print(part_new)
+        print(parts)
+        addPart = True
+        for part in parts:
+            if str.lower(part.name) == str.lower(part_new):
+                addPart = False
+                error_messages.append(f'{part_new} already exists.')
+                break
+        
+        if addPart:
+            new_part = PartType(name = part_new)
+            new_part.save()
+            success_messages.append(f'Part {part_new} successfully add.')
+        
+    context = {'parts': parts, 'error_messages': error_messages, 'success_messages': success_messages}
+    return render(request, 'add_parts.html', context);
