@@ -1188,7 +1188,36 @@ def add_brands(request):
 
 @login_required
 def add_models(request):
-    return render(request, 'add_models.html');
+    success_messages = []
+    error_messages = []
+    brands = Brands.objects.all()
+
+    if request.method == "POST":
+        model_brand = request.POST['brand']
+        model_new = request.POST['model']
+        print(model_new)
+        addModel = True
+
+        try:
+            brand = Brands.objects.filter(id = model_brand).get()
+        except:
+            addModel = False
+
+        if addModel:
+            models = Models.objects.filter(brand = brand)
+            for model in models:
+                if str.lower(model.name) == str.lower(model_new):
+                    addModel = False
+                    error_messages.append(f'{model_new} already exists.')
+                    break
+
+        if addModel:
+            new_model = Models(brand = brand,name = model_new)
+            new_model.save()
+            success_messages.append(f'Model {model_new} successfully add to {brand.name}.')
+        
+    context = {'brands': brands, 'error_messages': error_messages, 'success_messages': success_messages}
+    return render(request, 'add_models.html', context);
 
 @login_required
 def add_parts(request): 
