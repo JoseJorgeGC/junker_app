@@ -46,5 +46,6 @@ urlpatterns = [
     path('add_brands/', views.add_brands, name='add_brands'),
     path('add_models/', views.add_models, name='add_models'),
     path('add_parts/', views.add_parts, name='add_parts'),
+    path('all_brands/', views.all_brands, name='all_brands'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 

@@ -1242,3 +1242,13 @@ def add_parts(request):
         
     context = {'parts': parts, 'error_messages': error_messages, 'success_messages': success_messages}
     return render(request, 'add_parts.html', context);
+
+@login_required
+def all_brands(request):
+    brands = Brands.objects.all()
+
+    context = {
+        'brands': brands
+    }
+    
+    return render(request, 'all_brands.html', context)
