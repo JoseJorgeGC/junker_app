@@ -978,16 +978,16 @@ def inventary_junked(request):
 @login_required
 def inventary_parts(request):
     junkcar_counter = JunkCars.objects.filter(waiting = True).count()
-    parts_sold = SoldParts.objects.all().order_by('-sold_date')
+    invoices = Invoices.objects.all().order_by('-date')
     page = request.GET.get('page', 1)
 
     try:
-        paginator_parts = Paginator(parts_sold, 60)
-        parts_sold = paginator_parts.page(page)
+        paginator_parts = Paginator(invoices, 60)
+        invoices = paginator_parts.page(page)
     except:
         raise Http404
 
-    context = {'parts_sold': parts_sold,'paginator_parts':paginator_parts,'junkcar_counter': junkcar_counter}
+    context = {'invoices': invoices,'paginator_parts':paginator_parts,'junkcar_counter': junkcar_counter}
 
     return render(request, 'inventary_parts.html', context)
 

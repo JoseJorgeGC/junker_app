@@ -25,147 +25,43 @@
                     </div>
                 </div>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400" id="parts_inventary">
+                    <table class="w-full text-sm text-left text-center text-gray-500 dark:text-gray-400" id="parts_inventary">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:text-gray-400">
                             <tr>
-                                <th scope="col" class="px-4 py-3">Name</th>
+                                <th scope="col" class="px-4 py-3">Invoice No.</th>
                                 <th scope="col" class="px-4 py-3">Buyer Name</th>
-                                <th scope="col" class="px-4 py-3">Car Inv. Num.</th>
-                                <th scope="col" class="px-4 py-3">Car VIN</th>
-                                <th scope="col" class="px-4 py-3">Car Brand</th>
-                                <th scope="col" class="px-4 py-3">Car Model</th>
-                                <th scope="col" class="px-4 py-3">Quantity</th>
-                                <th scope="col" class="px-4 py-3">Sale Date</th>
-                                <th scope="col" class="px-4 py-3">Price</th>
+                                <th scope="col" class="px-4 py-3">Invoice Date</th>                                                          
+                                <th scope="col" class="px-4 py-3">Purchased parts</th>
+                                <th scope="col" class="px-4 py-3">Amount</th>
                                 <th scope="col" class="px-4 py-3">Invoice</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for part in parts_sold %}
-                            <tr class="border-b dark:border-gray-700 cursor-pointer">
-                                {% if part.car.inventary_number == NULL %}
-                                    <td class="px-4 py-3">{{part.name}}-{{part.part_type}}</td>
-                                    <td class="px-4 py-3">{{part.buyer.name}}</td>
-                                    <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">--</td>                                            
-                                    <td class="px-4 py-3">--</td>
-                                    <td class="px-4 py-3">--</td>
-                                    <td class="px-4 py-3">--</td>
-                                    <td class="px-4 py-3">{{part.quantity}}</td>
-                                    <td class="px-4 py-3">{{part.sold_date|date:"M, j Y"}}</td>
-                                    <td class="px-4 py-3">{{part.price|floatformat:2}}</td>
+                            {% for invoice in invoices %}
+                            <tr class="border-b">
+                                    <td class="px-4 py-3 font-bold text-gray-900">{{invoice.code}}</td>
+                                    <td class="px-4 py-3">{{invoice.buyer.name}} {{invoice.buyer.last_name}}</td>
+                                    <td class="px-4 py-3">{{invoice.date}}</td>                                                                       
+                                    <td class="px-4 py-3">{{invoice.parts_quantity}}</td>
+                                    <td class="px-4 py-3">{{invoice.total_amount|floatformat:2}}</td>
                                     <td class="px-4 py-3">
-                                      <a href="{% url 'invoice_parts' part.pk %}">
+                                      <a href="{% url 'invoice_parts' invoice.code %}">
                                             <button class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button"> 
                                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75l3 3m0 0l3-3m-3 3v-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                               </svg>                                          
                                             </button>
                                         </a>
-                                    </td>
-                                {% else %}
-                                <td data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="px-4 py-3">{{part.name}}-{{part.part_type}}</td>
-                                <td class="px-4 py-3">{{part.buyer.name}}</td>
-                                <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{part.car.inventary_number}}</td>                                            
-                                <td class="px-4 py-3">{{part.car.vin_number}}</td>
-                                <td class="px-4 py-3">{{part.car.brand.name}}</td>
-                                <td class="px-4 py-3">{{part.car.model.name}}</td>
-                                <td class="px-4 py-3">{{part.quantity}}</td>
-                                <td class="px-4 py-3">{{part.sold_date|date:"M, j Y"}}</td>
-                                <td class="px-4 py-3">{{part.price|floatformat:2}}</td>
-                                <td class="px-4 py-3">
-                                  <a href="{% url 'invoice_parts' part.pk %}">
-                                        <button class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button"> 
-                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75l3 3m0 0l3-3m-3 3v-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                          </svg>                                          
-                                        </button>
-                                    </a>
-                                </td>
-                                {% endif %}                        
+                                    </td>                      
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
-                {% include 'layouts/paginator_parts.html' %}
+                <!-- {% include 'layouts/paginator_parts.html' %} -->
             </div>
         </div>
     </section>
 
 </div>
-
-<div id="defaultModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative w-full max-w-4xl max-h-full">
-      <!-- Modal content -->
-      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-        <!-- Modal header -->
-        <div class="mx-auto max-w-2xl ml-5 mr-5">
-          <div class="px-4 sm:px-0">
-            <h3 class="text-base font-semibold leading-7 text-gray-900">Sale Information</h3>
-            <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Details of the buyer and their purchase.</p>
-          </div>
-          
-          <div class="mt-6 border-t border-gray-100">
-            <dl class="divide-y divide-gray-100">
-              <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt class="text-sm font-medium leading-6 text-gray-900">Full name</dt>
-                <dd id="buyer-name" class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"></dd>
-              </div>
-              <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt class="text-sm font-medium leading-6 text-gray-900">Email address</dt>
-                <dd id="buyer-last-name" class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"></dd>
-              </div>
-              <!-- Agrega más campos de datos del cliente aquí según tus necesidades -->
-            </dl>
-          </div>
-         
-        </div>
-        <!-- Modal footer -->
-        <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-          <button data-modal-hide="defaultModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
-          <button data-modal-hide="defaultModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
-        </div>
-      </div>
-    </div> 
-</div> 
-
-
-{% include 'layouts/footer.html' %}
-<script>
-    // Obtener la tabla
-let table = document.getElementById('parts_inventary');
-
-// Obtener las filas de la tabla
-let rows = table.getElementsByTagName('tr');
-
-// Obtener el input del usuario
-let input = document.getElementById('parts_search');
-
-// Agregar un evento de escucha al input
-input.addEventListener('keyup', function() {
-
-  // Obtener el valor del input
-  let filter = input.value;
-
-  // Crear una expresión regular para buscar en todas las columnas y filas
-  let regex = new RegExp(filter, 'i');
-
-  // Recorrer todas las filas de la tabla y ocultar aquellas que no coincidan con la expresión regular
-  for (let i = 1; i < rows.length; i++) {
-    let cells = rows[i].getElementsByTagName('td');
-    let found = false;
-    for (let j = 0; j < cells.length; j++) {
-      if (regex.test(cells[j].textContent)) {
-        found = true;
-        break;
-      }
-    }
-    if (found) {
-      rows[i].style.display = '';
-    } else {
-      rows[i].style.display = 'none';
-    }
-  }
-});
-</script>
 {% endblock %}
