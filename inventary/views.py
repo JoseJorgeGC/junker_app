@@ -637,13 +637,13 @@ def to_junk(request, id):
         return redirect('/404/')
     
     if car.waiting == False:
-        return redirect('/inventary/')
+        return redirect('/inventary/cars')
     
     car.waiting = False
     car.save()
     car_to_junk = JunkCars(car = car)
     car_to_junk.save()
-    return redirect('/inventary/')
+    return redirect('/inventary/cars')
 
 @login_required
 def scratched(request, id):
@@ -689,7 +689,7 @@ def scratched(request, id):
         remove_parts.save()
         junkcar.waiting = False
         junkcar.save()
-        return redirect('/inventary/')
+        return redirect('/inventary/junked')
     
     context = {'form': ShowCarsForm(instance=junkcar.car)}
     return render(request, 'junk.html', context)
@@ -924,27 +924,44 @@ def user_settings(request):
 #Tabla Cars
 @login_required
 def inventary_cars(request):
-    car_counter = Cars.objects.filter(waiting = True).count()
-    cars = Cars.objects.filter(waiting = True).all()
-    page = request.GET.get('page', 1)
+    q = request.GET.get('search_cars', '')
+    if q:
+        multiple_q = Q(inventary_number__icontains=q) | Q(cost__icontains=q)
+        cars = Cars.objects.filter(multiple_q, waiting=True).order_by('-entry_date')
+    else:
+        cars = Cars.objects.filter(waiting=True).order_by('-entry_date')
+    
+    car_counter = cars.count()
 
-    cars = Cars.objects.filter(waiting=True).order_by('-entry_date')
+    # Paginacion
+    page = request.GET.get('page', 1)
+    paginator = Paginator(cars, 50)
+
     try:
-        paginator = Paginator(cars, 60)
-        cars = paginator.page(page)
+        cars_page = paginator.page(page)
     except:
         raise Http404
 
-    junkcar_counter = JunkCars.objects.filter(waiting = True).count()
-    
-    context = {'cars': cars,'paginator':paginator, 'car_counter':car_counter, 'junkcar_counter': junkcar_counter}
+    junkcar_counter = JunkCars.objects.filter(waiting=True).count()
+
+    context = {
+        'cars': cars_page,
+        'paginator': paginator,
+        'car_counter': car_counter,
+        'junkcar_counter': junkcar_counter,
+        'q': q
+    }
     return render(request, 'inventary_cars.html', context)
 
 #Tabla Pendientes
 @login_required
 def inventary_pendings(request):
-
-    pendings = JunkCars.objects.filter(waiting=True).order_by('to_junk_date')
+    q = request.GET.get('pendings_search', '')
+    if q:
+        multiple_q = Q(car__inventary_number__icontains=q)
+        pendings = JunkCars.objects.filter(multiple_q, waiting=True).order_by('-to_junk_date')
+    else:
+        pendings = JunkCars.objects.filter(waiting=True).order_by('to_junk_date')
     page = request.GET.get('page', 1)
 
     try:
