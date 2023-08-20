@@ -40,8 +40,7 @@
             <a href="/" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium {% if request.path == '/' %}bg-gray-900 text-white{% endif %}">Home</a>
             <a href="{% url 'cars' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium {% if request.path|slice:'11' == '/inventary/' %}bg-gray-900 text-white{% endif %}">Inventory</a>
             <a href="{% url 'entry' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium {% if request.path == '/entry/' %}bg-gray-900 text-white{% endif %}">Entry</a>
-            <a href="{% url 'parts_sell' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium {% if request.path == '/parts/' %}bg-gray-900 text-white{% endif %}">Sell Parts</a>
-            <a href="{% url 'parts_new' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium {% if request.path == '/parts_new/' %}bg-gray-900 text-white{% endif %}">Sell Parts New</a>
+            <a href="{% url 'parts_new' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium {% if request.path == '/parts_new/' %}bg-gray-900 text-white{% endif %}">Sell Parts</a>
           </div>
         </div>
       </div>
@@ -114,14 +113,13 @@
   </div>
 
   <!-- Mobile menu, show/hide based on menu state. -->
-  <div id="menu" class="sm:hidden text-center" id="mobile-menu">
+  <div id="menu" class="sm:hidden hidden text-center" id="mobile-menu">
     <div class="space-y-1 px-2 pb-3 pt-2">
       <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
       <a href="/" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Home</a>
       <a href="{% url 'cars' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Inventory</a>
       <a href="{% url 'entry' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Entry</a>
-      <a href="{% url 'parts_sell' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Sell Parts</a>
-      <a href="{% url 'parts_new' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium {% if request.path == 'parts_new/' %}bg-gray-900 text-white{% endif %}">Sell Parts New</a>
+      <a href="{% url 'parts_new' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium {% if request.path == 'parts_new/' %}bg-gray-900 text-white{% endif %}">Sell Parts</a>
     </div>
   </div>
 </nav>
@@ -153,6 +151,7 @@
       </div>
       <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
         <div class="flex flex-shrink-0 items-center">
+          <a href="/">
           <span class="self-center text-3xl font-black whitespace-nowrap text-amber-400 ml-5 font-black">SMR</span>
           <span class="self-center text-2xl font-normal whitespace-nowrap text-white ml-2 font-black">Inventory</span>
         </div>

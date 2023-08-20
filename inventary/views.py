@@ -627,7 +627,7 @@ def delete(request, id):
     
     car.delete()
     messages.success(request, "The car has been deleted.")
-    return redirect('/inventary/')
+    return redirect('/inventary/cars')
 
 @login_required
 def to_junk(request, id):
@@ -1198,7 +1198,12 @@ def sell_parts_new(request):
 def add_brands(request):
     success_messages = []
     error_messages = []
-    brands = Brands.objects.all()
+    q = request.GET.get('add_brands_search', '')
+    if q:
+        multiple_q = Q(name__icontains=q)
+        brands = Brands.objects.filter(multiple_q)
+    else:
+        brands = Brands.objects.all()
     if request.method == "POST":
         brand_new = request.POST['brand']
         print(brand_new)
@@ -1256,7 +1261,12 @@ def add_models(request):
 def add_parts(request): 
     success_messages = []
     error_messages = []
-    parts = PartType.objects.all()
+    q = request.GET.get('add_parts_search', '')
+    if q:
+        multiple_q = Q(name__icontains=q)
+        parts = PartType.objects.filter(multiple_q)
+    else:
+        parts = PartType.objects.all()
     if request.method == "POST":
         part_new = request.POST['part_name']
         print(part_new)

@@ -22,7 +22,6 @@ urlpatterns = [
     path('cars/scratched/<int:id>', views.scratched, name='scratched'),
     #JSON Urls
     path('models/', views.models, name='models'),
-    path('parts/', views.parts_sell, name='parts_sell'),
     path('charts/', views.chart_prueba, name='charts'),
     path('profile/', views.profile, name='profile'),
     path('user_settings/', views.user_settings, name='user_settings'),
