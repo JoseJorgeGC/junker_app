@@ -978,8 +978,12 @@ def inventary_pendings(request):
 #Tabla Junked Cars
 @login_required
 def inventary_junked(request):
-    junkcar_counter = JunkCars.objects.filter(waiting = True).count()
-    scratched_cars = JunkCars.objects.filter(waiting=False, out=False).order_by('-scratched_date')
+    q = request.GET.get('junked_search', '')
+    if q:
+        multiple_q = Q(car__inventary_number__icontains=q)
+        scratched_cars = JunkCars.objects.filter(multiple_q, waiting=False, out=False).order_by('-scratched_date')
+    else:       
+        scratched_cars = JunkCars.objects.filter(waiting=False, out=False).order_by('-scratched_date')
     page = request.GET.get('page', 1)
 
     try:
@@ -988,14 +992,19 @@ def inventary_junked(request):
     except:
         raise Http404
 
+    junkcar_counter = JunkCars.objects.filter(waiting = True).count()
     context = {'scratched_cars': scratched_cars,'paginator_junked':paginator_junked,'junkcar_counter': junkcar_counter}
     return render(request, 'inventary_junked.html', context)
 
 #Tabla Parts Sold
 @login_required
 def inventary_parts(request):
-    junkcar_counter = JunkCars.objects.filter(waiting = True).count()
-    invoices = Invoices.objects.all().order_by('-date')
+    q = request.GET.get('parts_search', '')
+    if q:
+        multiple_q = Q(code__icontains=q)
+        invoices = Invoices.objects.filter(multiple_q).order_by('-date')
+    else: 
+        invoices = Invoices.objects.all().order_by('-date')
     page = request.GET.get('page', 1)
 
     try:
@@ -1004,6 +1013,7 @@ def inventary_parts(request):
     except:
         raise Http404
 
+    junkcar_counter = JunkCars.objects.filter(waiting = True).count()
     context = {'invoices': invoices,'paginator_parts':paginator_parts,'junkcar_counter': junkcar_counter}
 
     return render(request, 'inventary_parts.html', context)
@@ -1040,8 +1050,13 @@ def parts_render_pdf_view(request, *args, **kwargs):
 #Tabla Cars Sold
 @login_required
 def inventary_cars_sold(request):
-    junkcar_counter = JunkCars.objects.filter(waiting = True).count()
-    cars_sold = SoldCars.objects.all().order_by('-date')
+    q = request.GET.get('cars_sold_search', '')
+    if q:
+        multiple_q = Q(car__inventary_number__icontains=q)
+        cars_sold = SoldCars.objects.filter(multiple_q).order_by('-date')
+
+    else:  
+        cars_sold = SoldCars.objects.all().order_by('-date')
     buyers_data = Buyers.objects.all()
     page = request.GET.get('page', 1)
 
@@ -1051,6 +1066,7 @@ def inventary_cars_sold(request):
     except:
         raise Http404
 
+    junkcar_counter = JunkCars.objects.filter(waiting = True).count()
     context = {'cars_sold': cars_sold,'paginator_cars_sold':paginator_cars_sold,'junkcar_counter': junkcar_counter,'buyers_data': buyers_data}
 
     return render(request, 'inventary_cars_sold.html', context)
