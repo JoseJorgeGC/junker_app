@@ -1286,3 +1286,23 @@ def add_parts(request):
     context = {'parts': parts, 'error_messages': error_messages, 'success_messages': success_messages}
     return render(request, 'add_parts.html', context);
 
+def delete_parts(request, id):
+    try:
+        part = PartType.objects.get(id = id)
+    except:
+        return redirect('/404/')
+    
+    part.delete()
+    messages.success(request, "The part has been deleted.")
+    return redirect('/add_parts/')
+
+def delete_brands(request, id):
+    try:
+        brand = Brands.objects.get(id = id)
+    except:
+        return redirect('/404/')
+    
+    brand.delete()
+    messages.success(request, "The part has been deleted.")
+    return redirect('/add_brands/')
+

@@ -17,7 +17,6 @@ urlpatterns = [
     path('entry/', views.entry, name='entry'),
     path('sell/<int:id>', views.sell, name='sell'),
     path('junk/', views.junk, name='junk'),
-    path('cars/delete/<int:id>', views.delete, name='delete'),
     path('cars/to_junk/<int:id>', views.to_junk, name='to_junk'),
     path('cars/scratched/<int:id>', views.scratched, name='scratched'),
     #JSON Urls
@@ -26,6 +25,7 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('user_settings/', views.user_settings, name='user_settings'),
     path('inventary/cars', views.inventary_cars, name='cars'),
+    path('inventary/cars/delete/<str:id>', views.delete, name='delete'),
     path('inventary/pendings', views.inventary_pendings, name='pendings'),
     path('inventary/junked', views.inventary_junked, name='junked'),
     path('inventary/parts', views.inventary_parts, name='parts'),
@@ -45,5 +45,7 @@ urlpatterns = [
     path('add_brands/', views.add_brands, name='add_brands'),
     path('add_models/', views.add_models, name='add_models'),
     path('add_parts/', views.add_parts, name='add_parts'),
+    path('add_parts/delete/<int:id>', views.delete_parts, name='delete_parts'),
+    path('add_brands/delete/<int:id>', views.delete_brands, name='delete_brands'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
